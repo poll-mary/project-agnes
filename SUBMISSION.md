@@ -4,35 +4,27 @@
 **Agnes**
 
 ## Project Description
-A company making a big decision normally needs a team to hold it together — strategy,
-finance, operations, market research — each watching one piece, none of them holding the
-whole thing, and nobody re-reading the original reasoning six months later.
+Holding a big decision together normally takes a department — strategy, finance,
+operations, research. Each watches one piece. Nobody holds the whole thing, and nobody
+re-reads the original reasoning six months later.
 
-**Agnes does that job.** It holds what the decision depends on, watches every input that
-bears on it, and says when something has changed. The same information those people would
-have. Continuously. Without forgetting.
+**Agnes does that job.** It holds what the decision depends on, watches everything that
+bears on it, and says when something changed. Same information those people would have.
+Continuously. Without forgetting.
 
-It is not trying to see more than a company can see. It is doing what a company's own
-people would do if they never stopped looking.
-
-We tested it on Zillow's 2021 bet on buying homes because the evidence is public, so
+We tested it on Zillow's 2021 bet on buying homes, because the evidence is public and
 anyone can check our work. Inside a company, Agnes would have the internal numbers too.
 
-Every piece of evidence carries the date it became public, and Agnes refuses to look at
-anything published later. Move the date and it recomputes from nothing — so you see what
-could genuinely have been known at the time, not what you know now.
+Every fact carries the date it became public. Agnes refuses to look at anything later, so
+you see what was genuinely knowable at the time.
 
-**The finding.** Zillow had teams and far better data than this graph. The information was not the
+**The finding.** Zillow had teams, and far better data than this graph. The information was not the
 problem.
 
-The problem is that a decision's reasoning lives in a slide deck nobody opens again. The
-assumption that ended the company — that it could predict what a home would resell for —
-was never re-examined in public once. It took a competitor's filing in May and record
-price data in July to challenge it, and neither landed on anyone's desk next to the
-original argument.
+A decision's reasoning lives in a deck nobody opens again. The assumption that ended the
+company — that it could predict what a home would resell for — was never re-examined once.
 
-Agnes is the thing that keeps them next to each other. Not a smarter analyst — the
-same work a department already does, done continuously and without forgetting.
+Agnes keeps the original argument sitting next to the new evidence.
 
 ## Team Lead Name and Email
 Mary Rojas — mcrw.de@gmail.com
