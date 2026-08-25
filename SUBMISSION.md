@@ -4,13 +4,19 @@
 **Agnes**
 
 ## Project Description
-Holding a big decision together normally takes a department — strategy, finance,
-operations, research. Each watches one piece. Nobody holds the whole thing, and nobody
-re-reads the original reasoning six months later.
+Holding a big decision together takes a department — strategy, finance, operations,
+research. Each watches one piece. Nobody holds the whole thing.
 
-**Agnes does that job.** It holds what the decision depends on, watches everything that
-bears on it, and says when something changed. Same information those people would have.
-Continuously. Without forgetting.
+**Agnes does that job.** Three things, continuously:
+
+- **Validate** — what has to be true for this to work, and does the evidence actually
+  support it, or is it just unexamined?
+- **Simulate** — run the alternatives in parallel against the same evidence. Change the
+  variables, change how the bet is built, and see which version the evidence supports.
+- **Monitor** — re-score every time something new is published, and say when the case has
+  changed enough to act.
+
+Same information those people would have. Without forgetting what was originally assumed.
 
 We tested it on Zillow's 2021 bet on buying homes, because the evidence is public and
 anyone can check our work. Inside a company, Agnes would have the internal numbers too.
