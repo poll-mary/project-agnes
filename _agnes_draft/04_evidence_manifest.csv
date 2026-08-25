@@ -1,9 +1,0 @@
-id,statement,public_from,source_document,metric,value,polarity,target_assumption,eligible_2021_02_10,eligible_2021_08_05
-ev_10k2019,"FY2019 Form 10-K: inventory and holding-cost exposure is structural to principal iBuying.",2020-02-19,"SEC Form 10-K, Zillow Group, FY2019",,,CONTRADICTS,asm_holding (0.2),yes,yes
-ev_mgmt_conf,"Q4/FY2020 earnings release: management expresses confidence in scaling the Homes segment.",2021-02-10,"Zillow Group Q4/FY2020 earnings release",,,SUPPORTS,asm_demand (0.5),yes,yes
-ev_homes_loss,"Homes segment loss of $320.254m for FY2020.",2021-02-10,"Zillow Group Q4/FY2020 earnings release",homes_segment_loss_usd,320254000,CONTRADICTS,asm_unit_econ (0.7),yes,yes
-ev_cash,"Cash and investments of approximately $3.9bn.",2021-02-10,"Zillow Group Q4/FY2020 earnings release",cash_and_investments_usd,3900000000,SUPPORTS,asm_liquidity (0.8),yes,yes
-ev_10k2020,"FY2020 Form 10-K filed; inventory and holding-cost risk factors restated.",2021-02-12,"SEC Form 10-K, Zillow Group, FY2020",,,CONTRADICTS,asm_holding (0.2),NO — filed 2 days after the checkpoint,yes
-ev_homes_sold,"Q2 2021: 2,086 homes sold, $772m Homes segment revenue.",2021-08-05,"SEC Form 10-Q, Zillow Group, Q2 2021",homes_sold_count,2086,SUPPORTS,asm_demand (0.7),no,yes
-ev_inventory,"Homes inventory $1.169601bn, against $491.293m in the prior period.",2021-08-05,"SEC Form 10-Q, Zillow Group, Q2 2021",homes_inventory_usd,1169601000,CONTRADICTS,asm_throughput (0.9); asm_liquidity (0.5),no,yes
-ev_holding,"Holding costs $5.3m, against $2.6m in the prior period.",2021-08-05,"SEC Form 10-Q, Zillow Group, Q2 2021",holding_costs_usd,5300000,CONTRADICTS,asm_holding (0.8),no,yes

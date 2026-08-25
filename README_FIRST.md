@@ -1,3 +1,23 @@
+<!-- ADDED: file index and run order -->
+## Files, and the order you use them
+
+| File | What it is | When |
+|---|---|---|
+| `01_seed_graph.cypher` | Builds the graph. Safe to re-run. | First, once Aura is up |
+| `01b_additions.cypher` | Adds the FY2020 10-K node + the assumption that holds | Straight after `01` |
+| `02_demo_queries.cypher` | The seven demo queries | The rest of the day |
+| `03_demo_script.md` | Pitch, 3-minute beats, judge answers | **The stage document** |
+| `07_supplement.md` | Verified expected numbers + extra judge answers | Read before demoing |
+| `04_evidence_manifest.csv` | Source register | Reference / "data used" |
+| `05_optional_blinded_llm_prompt.md` | The naked-LLM contrast | Optional, ~10 min |
+| `08_agent_setup.md` | Neo4j MCP + Skills | Optional, 15:00 block |
+| `06_optional_coding_agent_prompt.md` | Prompt for building a small UI | **Not doing this** — kept as fallback only |
+
+**Check your numbers against `07_supplement.md`.** If Aura returns something different from
+the table there, the seed didn't fully load — don't start editing the ontology.
+
+---
+
 # Zillow Strategy Time Machine — Hackathon Starter Kit
 
 ## The idea in one sentence
