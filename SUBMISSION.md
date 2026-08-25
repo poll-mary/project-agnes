@@ -49,27 +49,35 @@ reasoning under "anything missing" below.)*
 
 ## What is your graph problem, and how / why did you implement these technologies?
 
-**The same piece of news is good for one part of your decision and bad for another.**
+**A decision is not a list. It is a network, and the answer is a path through it.**
 
-In July 2021 house prices hit an all-time record. For Zillow that was good news — the
-houses they already owned were worth more. It was also bad news — their software guessed
-what a house would sell for, and it had never seen prices this high, so nobody could know
-if it still worked.
+One fact touches several beliefs. Each belief carries several consequences. Each
+consequence hits each strategy by a different amount. So "what does this news mean for my
+decision" cannot be looked up — you have to walk it.
 
-A report has to pick one. It says "prices are up, good." A graph can say both, because one
-fact can point at two things at once and disagree with itself. Six of our eighteen facts do
-exactly that, and Agnes flags it rather than hiding it.
+Concrete: the Federal Reserve reports builder shortages in January. To find out what that
+means for "should we keep buying houses", Agnes walks
 
-**The second problem is time.** Every fact has a date it became public. If you ask Agnes
-what was known in February, it refuses to show you anything from March. That is what makes
-it a real rewind instead of hindsight dressed up.
+> shortage report → *renovations take longer* → **houses sit unsold** → *capital tied up*
+> → the strategy that **owns** inventory is hit three times harder than the one that does not
 
-**Why a graph and not a spreadsheet.** Every decision has a different shape — different
-things that must be true, different evidence, different consequences. A spreadsheet has
-fixed columns, so a new decision means a new spreadsheet. A graph does not care what shape
-the decision is. And the useful questions are chains, not lookups: this fact affects this
-belief, which affects this risk, which hurts one strategy three times more than another.
-Following chains is what a graph is for.
+Four hops, and **the path is the answer** — it is the explanation you show a board, not
+just a score. A different fact reaches the same conclusion by a completely different route.
+The relationships are the information; there is nothing useful in the nodes alone.
+
+Three properties make this graph-shaped rather than table-shaped:
+
+**One node, contradictory edges.** July 2021: house prices hit a record. That single node
+*supports* "homes will resell easily" and *undermines* "our pricing model can be trusted" —
+two edges of opposite polarity from one fact. A row in a table has one value. Six of our
+eighteen facts disagree with themselves this way.
+
+**Every path is time-gated.** Every evidence node carries the date it became public, so the
+same traversal returns a different answer depending on the date you ask for. Rewinding is a
+filter on the walk, not a different dataset.
+
+**The shape changes per decision.** Different beliefs, different consequences, different
+strategies. A schema would have to be redefined each time. A graph does not care.
 
 We used Neo4j Aura and Cypher only.
 
