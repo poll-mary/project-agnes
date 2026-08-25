@@ -31,9 +31,6 @@ h1{font-size:clamp(26px,3.2vw,44px);font-weight:800;letter-spacing:-.025em;
 .sub{font-size:clamp(16px,1.5vw,22px);color:var(--mute);margin-top:10px;max-width:56ch}
 
 /* connect */
-.conn{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;
- margin:clamp(22px,2.6vw,36px) 0;padding-bottom:clamp(20px,2.4vw,32px);
- border-bottom:1px solid var(--rule)}
 label{display:block;font-size:12px;font-weight:600;letter-spacing:.14em;
  text-transform:uppercase;color:var(--mute);margin-bottom:6px}
 input{font:inherit;font-size:16px;padding:11px 14px;border:1px solid var(--rule);
@@ -53,6 +50,13 @@ button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .ask input{flex:1;min-width:0;font-size:clamp(16px,1.5vw,21px);padding:14px 17px}
 .askhint{font-size:13px;color:var(--mute);margin-top:8px}
 
+.setup{margin-top:clamp(30px,4vw,56px);border-top:1px solid var(--rule);padding-top:16px}
+.setup summary{cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.16em;
+ text-transform:uppercase;color:var(--mute)}
+.conn{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:16px}
+.ans:empty{display:none}
+.ans{margin-top:clamp(14px,1.8vw,24px)}
+
 /* questions */
 .qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:10px;
  margin:clamp(20px,2.4vw,32px) 0}
@@ -65,6 +69,17 @@ button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
 /* answer */
 .ans{margin-top:clamp(22px,2.6vw,36px)}
+.hero{display:flex;gap:clamp(36px,6vw,110px);flex-wrap:wrap;align-items:flex-start;
+ margin:clamp(10px,1.4vw,20px) 0 clamp(18px,2.2vw,30px)}
+.hero .n{font-size:clamp(84px,15vw,220px);font-weight:800;letter-spacing:-.05em;
+ line-height:.85;font-variant-numeric:tabular-nums}
+.hero .n.bad{color:var(--red)}
+.hero .l{font-size:clamp(17px,1.8vw,26px);font-weight:600;line-height:1.2;
+ margin-top:clamp(10px,1.2vw,18px);max-width:16ch}
+.hero .l span{display:block;font-weight:400;color:var(--mute);font-size:clamp(14px,1.4vw,20px);margin-top:5px}
+.belief{font-size:clamp(22px,2.6vw,40px);font-weight:700;letter-spacing:-.02em;
+ line-height:1.15;max-width:26ch}
+
 .stamp{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
  color:var(--blue);margin-bottom:10px}
 .headline{font-size:clamp(20px,2.2vw,32px);font-weight:700;letter-spacing:-.015em;
@@ -90,40 +105,45 @@ pre{font-family:var(--mono);font-size:13px;line-height:1.5;background:var(--sunk
 <div class="wrap">
   <div class="mark">Project Agnes <span id="livetag">not connected</span></div>
 
-  <h1 id="h1">Ask the graph.</h1>
-  <p class="sub" id="sub">Every answer below is a live query against the Neo4j database. Nothing on this page is stored.</p>
+  <div id="intro">
+    <h1>Ask the graph.</h1>
+    <p class="sub">Every answer is a live query against the Neo4j database. Nothing here is a stored copy.</p>
+  </div>
 
-  <div class="conn">
+  <!-- the answer sits at the top: it is the thing people look at -->
+  <div class="ans" id="ans"></div>
+
+  <div class="dateline" id="dateline" hidden>
     <div>
-      <label for="uri">Connection URI</label>
-      <input id="uri" placeholder="neo4j+s://xxxxxxxx.databases.neo4j.io" autocomplete="off" spellcheck="false">
+      <label for="cut">As known on</label>
+      <input id="cut" type="date" value="2021-05-11" min="2020-12-01" max="2021-11-30">
     </div>
-    <div>
-      <label for="pw">Password</label>
-      <input id="pw" type="password" placeholder="from your Aura credentials file" autocomplete="off">
-    </div>
-    <button class="pri" id="go">Connect</button>
-    <div class="status" id="st">Paste your Aura URI and password.</div>
+    <button id="rerun">Re-run</button>
+    <div class="status">Nothing published after this date can appear in the answer.</div>
   </div>
 
   <div class="ask" id="askbox" hidden>
     <input id="ask" placeholder="Ask in your own words — e.g. what did Zillow never check?" autocomplete="off">
     <button class="pri" id="asksend">Ask</button>
   </div>
-  <p class="askhint" id="askhint" hidden>Agnes matches your question to what the graph can answer. If it cannot, it says so instead of inventing one.</p>
 
   <div class="qs" id="qs"></div>
 
-  <div class="dateline" id="dateline" hidden>
-    <div>
-      <label for="cut">As known on</label>
-      <input id="cut" type="date" value="2021-08-05" min="2020-12-01" max="2021-11-30">
+  <details class="setup" id="setup" open>
+    <summary>Connection</summary>
+    <div class="conn">
+      <div>
+        <label for="uri">Connection URI</label>
+        <input id="uri" placeholder="neo4j+s://xxxxxxxx.databases.neo4j.io" autocomplete="off" spellcheck="false">
+      </div>
+      <div>
+        <label for="pw">Password</label>
+        <input id="pw" type="password" placeholder="from your Aura credentials file" autocomplete="off">
+      </div>
+      <button class="pri" id="go">Connect</button>
+      <div class="status" id="st">Paste your Aura URI and password.</div>
     </div>
-    <button id="rerun">Re-run at this date</button>
-    <div class="status">Nothing published after this date can appear in the answer.</div>
-  </div>
-
-  <div class="ans" id="ans"></div>
+  </details>
 </div>
 
 <script src="agnes-live-config.js"></script>
@@ -154,6 +174,19 @@ RETURN toString(step) AS on_this_date,
        sum(coalesce(r.direction,0) * coalesce(r.weight,0)) AS support,
        sum(CASE WHEN e.origin = 'INTERNAL' THEN 1 ELSE 0 END) AS from_zillow
 ORDER BY on_this_date`,
+  hero: rows => {
+    const last = rows[rows.length-1];
+    const v = num(last.support);
+    return {
+      belief: "“We can predict what a house will resell for.”",
+      stats: [
+        {value: v === 0 ? "—" : String(v), bad: v < 0,
+         label: "how well the evidence supports it", sub: v < 0 ? "and falling" : "nothing known yet"},
+        {value: String(num(last.from_zillow)), bad: num(last.from_zillow) === 0,
+         label: "times Zillow published anything about it", sub: "everything else came from outside"}
+      ]
+    };
+  },
   read: rows => {
     const last = rows[rows.length-1];
     const v = num(last.support);
@@ -182,6 +215,18 @@ RETURN a.name AS had_to_be_true,
        sum(CASE WHEN e.origin = 'INTERNAL' THEN 1 ELSE 0 END) AS zillow_checked,
        sum(CASE WHEN e.origin = 'EXTERNAL' THEN 1 ELSE 0 END) AS outsiders_checked
 ORDER BY zillow_checked, outsiders_checked DESC`,
+  hero: rows => {
+    const silent = rows.filter(r => num(r.zillow_checked) === 0);
+    return {
+      belief: silent.length ? "“" + silent[0].had_to_be_true + "”" : "Zillow published evidence on all six.",
+      stats: [
+        {value: silent.length ? String(num(silent[0].zillow_checked)) : "—", bad: silent.length > 0,
+         label: "times Zillow checked it", sub: "in its own filings"},
+        {value: silent.length ? String(num(silent[0].outsiders_checked)) : "—",
+         label: "times outsiders did", sub: "everything Agnes knows came from them"}
+      ]
+    };
+  },
   read: rows => {
     const silent = rows.filter(r => num(r.zillow_checked) === 0);
     if(!silent.length) return ["Zillow published evidence on all six.", "", rows, null];
@@ -328,9 +373,10 @@ document.getElementById("go").onclick = async () => {
     say("Connected", "ok");
     document.getElementById("livetag").textContent = "live · " + uri.replace(/^neo4j\+s:\/\//,"").split(".")[0];
     document.getElementById("pw").value = "";
+    document.getElementById("intro").hidden = true;
+    document.getElementById("setup").open = false;
     document.getElementById("askbox").hidden = false;
     document.getElementById("dateline").hidden = false;
-    document.getElementById("askhint").hidden = false;
     renderQuestions();
     run(Q[0]);
   }catch(err){
@@ -428,6 +474,13 @@ function renderQuestions(){
 document.getElementById("rerun").onclick = () => run(current);
 document.getElementById("cut").onchange = () => run(current);
 
+function heroHTML(h){
+  return `<div class="belief">${esc(h.belief)}</div><div class="hero">` +
+    h.stats.map(st => `<div><div class="n${st.bad ? " bad" : ""}">${esc(st.value)}</div>` +
+      `<div class="l">${esc(st.label)}<span>${esc(st.sub||"")}</span></div></div>`).join("") +
+    `</div>`;
+}
+
 async function run(q){
   if(!driver) return say("Connect first.", "err");
   current = q;
@@ -446,8 +499,9 @@ async function run(q){
     const [headline, detail, table, flag] = q.read(rows, cut);
     const cols = Object.keys(table[0]);
     ans.innerHTML =
-      (q.dated ? `<div class="stamp">As known on ${esc(pretty(cut))} — nothing published after this date is included.</div>` : "") +
-      `<div class="headline${flag ? " hot" : ""}">${esc(headline)}</div>` +
+      (q.dated ? `<div class="stamp">As known on ${esc(pretty(cut))}</div>` : "") +
+      (q.hero ? heroHTML(q.hero(table)) : "") +
+      (q.hero ? "" : `<div class="headline${flag ? " hot" : ""}">${esc(headline)}</div>`) +
       (detail ? `<div class="detail">${esc(detail)}</div>` : "") +
       `<div class="tblwrap"><table><thead><tr>` +
         cols.map(c => `<th>${esc(c.replace(/_/g," "))}</th>`).join("") +
