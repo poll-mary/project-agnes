@@ -33,6 +33,12 @@ _(fill in as we go)_
   A founder doing knowledge-modelling work has to pick "Other", which presumably means
   the tailoring does nothing for exactly the audience most in need of it.
 
+- **Running a multi-statement script hides the final result.** Pasting a ~250-line seed
+  script runs every statement and shows a green tick for each, but the closing `RETURN`
+  displays "Fetch limit hit at 0 records" and no rows. For a sanity-check query at the end
+  of a seed script — a very common pattern — this reads as failure when everything in fact
+  succeeded. We had to re-run the last query on its own to see the numbers.
+
 ## Blocked
 
 _(fill in as we go)_
