@@ -58,6 +58,19 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .three .r.now .k{color:var(--red)}
 .three .r.dim{opacity:.32}
 
+.ways{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,3vw,54px);
+ margin-top:clamp(26px,3vw,46px)}
+@media(max-width:900px){.ways{grid-template-columns:1fr;gap:clamp(18px,2vw,28px)}}
+.way .n{font-size:clamp(44px,5.4vw,84px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.way .nl{font-size:clamp(14px,1.2vw,18px);font-weight:600;color:var(--mute);
+ margin-top:2px;margin-bottom:clamp(12px,1.4vw,20px)}
+.way .h{font-size:clamp(19px,1.9vw,29px);font-weight:700;line-height:1.2;
+ letter-spacing:-.015em;margin-bottom:clamp(8px,.9vw,14px)}
+.way .p{font-size:clamp(15px,1.4vw,21px);line-height:1.4;color:var(--mute)}
+.way.safe .n{color:var(--red)}
+.chose{margin-top:clamp(22px,2.6vw,40px);font-size:clamp(18px,1.8vw,28px);font-weight:600}
+.chose b{color:var(--red)}
+
 /* ---- timeline slide ---- */
 #s7{justify-content:flex-start;padding-top:clamp(28px,3.4vw,52px)}
 .tlhead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:clamp(14px,1.6vw,24px)}
@@ -131,12 +144,25 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 <!-- 3 -->
 <section class="slide" id="s4">
   <div class="eyebrow">Two &nbsp;·&nbsp; Simulate</div>
-  <h2 class="big">Would a different strategy have held up?</h2>
-  <p class="sub">Swap the shape of the bet — own the houses, share the risk, or just refer buyers — and recompute against <b>the same evidence</b>.</p>
-  <div class="three" style="margin-top:clamp(18px,2vw,30px)">
-    <div class="r"><span class="k red">82%</span><span class="x">of what <b>owning the houses</b> needed was unproven by August — against 40% for a business that owns nothing</span></div>
-    <div class="r"><span class="k">4 of 6</span><span class="x">beliefs would change nothing if they failed. They were <b>already unproven</b>. Only demand and financing were still load-bearing.</span></div>
+  <h2 class="mid">Three ways to run the same business.</h2>
+  <div class="ways">
+    <div class="way">
+      <div class="n">6</div><div class="nl">things must go right</div>
+      <div class="h">Buy the houses yourself</div>
+      <div class="p">Most money per sale. But you must guess the price right, fix it up fast, sell it fast, and never run out of cash.</div>
+    </div>
+    <div class="way">
+      <div class="n">6</div><div class="nl">but each hurts less</div>
+      <div class="h">Share the risk with partners</div>
+      <div class="p">Someone else carries part of the loss when it goes wrong.</div>
+    </div>
+    <div class="way safe">
+      <div class="n">3</div><div class="nl">things must go right</div>
+      <div class="h">Own nothing, take a fee</div>
+      <div class="p">Less money per sale. But you never own a house — so you can't misprice one, get stuck with one, or run out of cash holding one.</div>
+    </div>
   </div>
+  <p class="chose">Zillow chose the first. <b>Agnes scores all three against the same evidence, on the same day.</b></p>
 </section>
 
 <!-- 4 -->
