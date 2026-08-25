@@ -20,6 +20,19 @@ _(fill in as we go)_
   or how the MCP config differs — we had to infer that "Neo4j MCP + `.env`" transfers
   unchanged. A one-line "works anywhere an MCP client runs" would have removed the doubt.
 
+- **Instructions said "Aura Free", onboarding delivered a 14-day trial.** The workshop
+  slide reads "Create or open a Neo4j Aura Free database." The signup flow instead ran a
+  five-step wizard (goal / role / use case) and started a 14-day free trial. For a
+  time-boxed hackathon this is friction in the wrong place: you cannot tell whether you
+  have landed on the thing the instructor told you to create, and it introduces an expiry
+  you have to remember to clean up. A clearly-labelled "Free instance" path from the
+  workshop link would remove the doubt.
+
+- **The role picker has no option for founders or product people.** Software Developer,
+  Data Scientist, Data Analyst, Operations Manager, Architect/Tech lead, Student, Other.
+  A founder doing knowledge-modelling work has to pick "Other", which presumably means
+  the tailoring does nothing for exactly the audience most in need of it.
+
 ## Blocked
 
 _(fill in as we go)_
