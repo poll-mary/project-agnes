@@ -162,9 +162,9 @@ const ZI=[{d:"2021-02-10",t:"“Investing aggressively”",lane:0},
  {d:"2021-08-05",t:"Bought more than they sold",lane:0},
  {d:"2021-10-18",t:"Pauses buying — blames capacity",lane:2},
  {d:"2021-11-02",t:"Shuts it down — blames price prediction",lane:1}];
-const G=[{a:"2021-01-13",at:"Homes may sit unsold too long",z:"2021-10-18",zt:"paused buying, blaming capacity"},
- {a:"2021-05-11",at:"Price predictions look unreliable",z:"2021-11-02",zt:"shut the business down, blaming price predictions"},
- {a:"2021-08-05",at:"stop buying and reassess",z:"2021-10-18",zt:"paused buying"}];
+const G=[{a:"2021-01-13",at:"Homes may sit unsold too long",z:"2021-10-18",zt:"paused buying, blaming capacity",rec:"check whether homes are reselling fast enough",w:1},
+ {a:"2021-05-11",at:"Price predictions look unreliable",z:"2021-11-02",zt:"shut the business down, blaming price predictions",rec:"test how accurate its price predictions really are",w:2},
+ {a:"2021-08-05",at:"stop buying and reassess",z:"2021-10-18",zt:"paused buying",rec:"stop buying and reassess",w:3}];
 const MAXG=Math.max(...G.map(g=>(new Date(g.z)-new Date(g.a))/864e5));
 
 let cur=dn("2021-03-01");
@@ -240,7 +240,12 @@ function draw(){
   else if(d>="2021-10-18"){zh="Paused buying homes";zsub="Blaming capacity, 74 days after Agnes said stop."}
   else if(past.length){zh="Still buying";zsub="Latest: "+past[past.length-1].t.replace(/[“”]/g,'\'')+" ("+nice(past[past.length-1].d)+")."}
   else {zh="Still buying";zsub="Nothing announced yet."}
-  if(openGaps)zsub+=" "+openGaps+" Agnes warning"+(openGaps>1?"s":"")+" still unanswered.";
+  const open=G.filter(g=>d>=g.a&&d<g.z).sort((x,y)=>y.w-x.w||x.a.localeCompare(y.a));
+  if(open.length){
+    const top=open[0], ago=Math.round((new Date(d)-new Date(top.a))/864e5);
+    zsub="Agnes advised: "+top.rec+" \u2014 "+ago+" days ago. Zillow has not done it."
+      +(open.length>1?" ("+open.length+" warnings unanswered.)":"");
+  }
   zs.className="stamp bot"+(fired&&d<"2021-10-18"?" alarm":"");
   document.getElementById("zh").textContent=zh;
   document.getElementById("zs").textContent=zsub;
