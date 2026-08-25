@@ -4,14 +4,17 @@
 **Agnes**
 
 ## Project Description
-Agnes is a decision graph. It records what has to be true for a strategic bet to succeed,
-scores each condition against dated evidence, and re-scores as new evidence is published —
-so you can always see what was actually knowable at any point in time, and when the case
-for the bet started to fail.
+When you make a big decision, you are betting that certain things are true.
+Agnes makes you write those things down. Then it watches the world and tells you when one
+of them stops looking true.
+
+That is all it is. A list of what your decision depends on, that checks itself.
+
+Every piece of evidence carries the date it became public, and Agnes refuses to look at
+anything published later. Move the date and it recomputes from nothing — so you see what
+could genuinely have been known at the time, not what you know now.
 
 We tested it on a real, resolved decision: Zillow's 2021 bet on buying homes directly.
-Every piece of evidence carries the date it became public, and the graph refuses to return
-anything published later. Moving the date recomputes the whole assessment from scratch.
 
 **The finding.** Zillow had far more data than this graph does. What it did not have was a written record
 of what the bet depended on, checked as the world moved.

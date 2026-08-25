@@ -1,9 +1,10 @@
 # Agnes
 
-**A decision graph.** It records what has to be true for a strategic bet to succeed, scores
-each condition against dated evidence, and re-scores as new evidence is published — so you
-can see what was actually knowable at any point in time, and when the case for the bet
-started to fail.
+When you make a big decision, you are betting that certain things are true.
+Agnes makes you write those things down. Then it watches the world and tells you when one
+of them stops looking true.
+
+That is all it is. A list of what your decision depends on, that checks itself.
 
 Built at the Neo4j Mini Agentic Hack, Berlin, 25 August 2026.
 
