@@ -1,0 +1,170 @@
+<title>Agnes</title>
+<style>
+:root{--bg:#fbfbfc;--card:#fff;--ink:#15181c;--soft:#69727c;--line:#e2e6ea;
+--red:#c0392b;--redbg:#fdeeeb;--green:#1f7a5c;--greenbg:#e8f4f0;--grey:#8b949e;--greybg:#f0f2f4;--blue:#1f4e79;--amb:#8a5a10;--ambbg:#fbf1de;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111418;--card:#1a1e24;--ink:#eaedf1;
+--soft:#98a2ad;--line:#2b323a;--red:#e28368;--redbg:#2a1d19;--green:#66b295;--greenbg:#182420;
+--grey:#6d7681;--greybg:#1e232a;--blue:#7fb0dc;--amb:#d3a04a;--ambbg:#2a2317;}}
+:root[data-theme="dark"]{--bg:#111418;--card:#1a1e24;--ink:#eaedf1;--soft:#98a2ad;--line:#2b323a;
+--red:#e28368;--redbg:#2a1d19;--green:#66b295;--greenbg:#182420;--grey:#6d7681;--greybg:#1e232a;--blue:#7fb0dc;--amb:#d3a04a;--ambbg:#2a2317;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 19px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:32px 22px 72px}
+
+.top{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.date{font-size:38px;font-weight:600;letter-spacing:-.02em;min-width:230px;
+ font-variant-numeric:tabular-nums}
+.nav{display:flex;gap:8px;margin-left:auto}
+button{font:inherit;font-size:17px;font-weight:500;padding:9px 18px;border-radius:9px;
+ border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+button:disabled{opacity:.35;cursor:default}
+button.main{background:var(--blue);border-color:var(--blue);color:#fff}
+button.main:hover{opacity:.9;color:#fff}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.happened{font-size:20px;color:var(--soft);min-height:30px;margin-bottom:26px}
+.happened b{color:var(--ink);font-weight:600}
+
+.verdict{border-radius:12px;padding:22px 26px;margin-bottom:30px;border:2px solid var(--line);background:var(--card)}
+.verdict.alarm{border-color:var(--red);background:var(--redbg)}
+.verdict .head{font-size:27px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.verdict.alarm .head{color:var(--red)}
+.verdict .sub{font-size:18px;color:var(--soft)}
+
+h2{font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:var(--grey);
+ font-weight:600;margin:0 0 12px}
+
+.row{display:flex;align-items:center;gap:16px;padding:15px 20px;border-radius:10px;
+ background:var(--card);border:1px solid var(--line);margin-bottom:9px;
+ transition:background .25s ease,border-color .25s ease}
+.row .what{flex:1;font-size:19px;min-width:190px}
+.row .tag{font-size:15px;font-weight:600;padding:5px 13px;border-radius:20px;white-space:nowrap}
+.tag.bad{background:var(--redbg);color:var(--red)}
+.tag.good{background:var(--greenbg);color:var(--green)}
+.tag.none{background:var(--greybg);color:var(--grey)}
+.tag.warn{background:var(--ambbg);color:var(--amb)}
+.row .who{font-size:15px;color:var(--grey);width:132px;text-align:right;flex-shrink:0}
+.row .who.silent{color:var(--blue);font-weight:600}
+.row.flash{border-color:var(--red)}
+
+.foot{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);
+ font-size:17px;color:var(--soft)}
+.foot b{color:var(--ink)}
+.steps{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+.dot{height:5px;flex:1;min-width:14px;border-radius:3px;background:var(--line)}
+.dot.on{background:var(--blue)}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="date" id="date"></div>
+    <div class="nav">
+      <button id="back">Back</button>
+      <button id="fwd" class="main">Next date</button>
+    </div>
+  </div>
+  <div class="happened" id="happened"></div>
+
+  <div class="verdict" id="verdict">
+    <div class="head" id="vhead"></div>
+    <div class="sub" id="vsub"></div>
+  </div>
+
+  <h2>Six things that had to be true</h2>
+  <div id="list"></div>
+
+  <div class="foot" id="foot"></div>
+  <div class="steps" id="steps"></div>
+</div>
+
+<script>
+const A=[
+ {id:"F",t:"We can predict what homes will resell for"},
+ {id:"T",t:"We can renovate and resell fast enough"},
+ {id:"U",t:"We make money on each home"},
+ {id:"L",t:"We can offload homes quickly if the market turns"},
+ {id:"C",t:"We can afford to keep buying"},
+ {id:"D",t:"People want instant cash offers"}];
+
+// each item: when it became public, whether it expired, who published it, effect on each belief
+const E=[
+ {d:"2020-02-19",x:null,o:"co",  s:"Zillow's 2019 annual report",           b:{L:-2,T:-1}},
+ {d:"2020-12-29",x:"2021-01-26",o:"world",s:"House prices up 8.4%",         b:{D:1,F:-1}},
+ {d:"2021-01-13",x:"2021-07-14",o:"world",s:"Fed reports builder shortages and delays",b:{T:-2,U:-1}},
+ {d:"2021-01-22",x:"2021-07-22",o:"world",s:"Homes selling in 21 days, record-low supply",b:{D:2,F:-1}},
+ {d:"2021-01-26",x:"2021-07-27",o:"world",s:"House prices up 9.5%",         b:{D:1,F:-1}},
+ {d:"2021-02-04",x:null,o:"world",s:"Mortgage rates near record lows",      b:{D:1}},
+ {d:"2021-02-10",x:null,o:"co",  s:"Zillow's Q4 results",                   b:{U:-2,D:2,C:2}},
+ {d:"2021-02-12",x:null,o:"co",  s:"Zillow's 2020 annual report",           b:{L:-1}},
+ {d:"2021-05-11",x:null,o:"world",s:"Rival Opendoor: profits rely on rising prices",b:{U:1,F:-2,T:-1}},
+ {d:"2021-07-14",x:null,o:"world",s:"Fed: shortages now widespread",        b:{T:-2,U:-1}},
+ {d:"2021-07-22",x:null,o:"world",s:"Homes selling in 17 days, prices up 23%",b:{D:2,F:-2}},
+ {d:"2021-07-27",x:null,o:"world",s:"House prices hit an all-time record",  b:{D:1,F:-2},rec:1},
+ {d:"2021-07-30",x:null,o:"world",s:"Buyer demand starting to soften",      b:{D:-1}},
+ {d:"2021-08-05",x:null,o:"co",  s:"Zillow's Q2 results: inventory doubled",b:{T:-1,D:2,L:-2,C:-2},trip:1}];
+
+const STOPS=["2021-01-13","2021-02-10","2021-05-11","2021-07-27","2021-08-05"];
+let i=0;
+
+const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
+const nice=d=>new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+
+function draw(){
+  const d=STOPS[i];
+  document.getElementById("date").textContent=nice(d);
+  document.getElementById("back").disabled=i===0;
+  document.getElementById("fwd").disabled=i===STOPS.length-1;
+  document.getElementById("fwd").textContent=i===STOPS.length-1?"End":"Next date";
+
+  const now=E.filter(e=>e.d===d);
+  document.getElementById("happened").innerHTML=
+    now.length?"Just published: <b>"+now.map(e=>e.s).join("</b>, <b>")+"</b>":"&nbsp;";
+
+  let bad=0,fired=false,silentF=true;
+  const prev=i>0?STOPS[i-1]:null;
+  let html="";
+  A.forEach(a=>{
+    let n=0,v=0,co=0,wo=0,pv=0,pn=0;
+    E.forEach(e=>{ const w=e.b[a.id]; if(w===undefined)return;
+      if(live(e,d)){n++;v+=w;e.o==="co"?co++:wo++}
+      if(prev&&live(e,prev)){pn++;pv+=w} });
+    if(a.id==="F"&&co>0)silentF=false;
+    let tag,cls;
+    if(n===0){tag="nothing known";cls="none"}
+    else if(v>0){tag="holding up";cls="good"}
+    else if(v===0){tag="mixed";cls="none"}
+    else if(v>=-2){tag="some doubt";cls="warn"}
+    else{tag="in trouble";cls="bad";bad++}
+    const worse=n>0&&pn>0&&v<pv;
+    const who=n===0?"—":(co===0?"only the world":(wo===0?"only Zillow":"both"));
+    html+="<div class='row"+(worse?" flash":"")+"'><div class='what'>"+a.t+"</div>"+
+      "<div class='tag "+cls+"'>"+tag+"</div>"+
+      "<div class='who"+(co===0&&n>0?" silent":"")+"'>"+who+"</div></div>";
+  });
+  document.getElementById("list").innerHTML=html;
+
+  fired=E.some(e=>e.trip&&e.d<=d);
+  const v=document.getElementById("verdict");
+  v.className="verdict"+(fired?" alarm":"");
+  document.getElementById("vhead").textContent=fired?"STOP AND REASSESS":"Keep going — with conditions";
+  document.getElementById("vsub").textContent=fired
+    ? "The $1bn inventory limit set back in February has been crossed. " + bad + " of 6 must-be-trues are in trouble."
+    : bad + " of 6 must-be-trues are in trouble. No pre-set limit crossed yet.";
+
+  document.getElementById("foot").innerHTML=
+    silentF
+      ? "<b>Zillow never said a word</b> about whether it could predict resale prices — the one thing its CEO later blamed for the collapse. Everything Agnes knows about it came from outside the company."
+      : "";
+
+  document.getElementById("steps").innerHTML=
+    STOPS.map((_,k)=>"<div class='dot"+(k<=i?" on":"")+"'></div>").join("");
+}
+document.getElementById("fwd").onclick=()=>{if(i<STOPS.length-1){i++;draw()}};
+document.getElementById("back").onclick=()=>{if(i>0){i--;draw()}};
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"&&i<STOPS.length-1){i++;draw()}
+  if(e.key==="ArrowLeft"&&i>0){i--;draw()}});
+draw();
+</script>
