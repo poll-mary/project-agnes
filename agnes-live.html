@@ -139,24 +139,31 @@ const Q = [
 {
   key:"trajectory",
   q:"Did the evidence get worse over time?",
-  hint:"the one they blamed for the collapse, tracked month by month",
+  hint:"the one they blamed for the collapse — move the date and watch",
+  dated:true,
   cypher:`
 UNWIND [date('2020-12-15'), date('2021-01-13'), date('2021-02-10'),
-        date('2021-05-11'), date('2021-07-27'), date('2021-08-05')] AS cut
+        date('2021-05-11'), date('2021-07-27'), date('2021-08-05')] AS step
+WITH step WHERE step <= date($cut)
 MATCH (a:Assumption {id:'A_FORECAST'})
 OPTIONAL MATCH (e:Evidence)-[r:BEARS_ON]->(a)
-  WHERE e.public_from <= cut
-    AND (e.public_until IS NULL OR e.public_until > cut)
-RETURN toString(cut) AS on_this_date,
+  WHERE e.public_from <= step
+    AND (e.public_until IS NULL OR e.public_until > step)
+RETURN toString(step) AS on_this_date,
        count(r) AS evidence_available,
        sum(coalesce(r.direction,0) * coalesce(r.weight,0)) AS support,
        sum(CASE WHEN e.origin = 'INTERNAL' THEN 1 ELSE 0 END) AS from_zillow
 ORDER BY on_this_date`,
   read: rows => {
     const last = rows[rows.length-1];
+    const v = num(last.support);
     return [
-      `“We can predict what a house will resell for” went from ${num(rows[0].support)} to ${num(last.support)}.`,
-      `And the last column never moves off zero. Zillow published nothing about it at any point — the exact thing its CEO blamed when he shut the business down on 2 November 2021.`,
+      v === 0
+        ? `Nothing yet. Nobody has said anything about whether Zillow can predict resale prices.`
+        : `“We can predict what a house will resell for” is at ${v}, and falling.`,
+      num(last.from_zillow) === 0
+        ? `Zillow itself has published nothing about it. Every warning here came from outside the company — and this is the exact thing its CEO blamed when he shut the business down on 2 November 2021.`
+        : ``,
       rows, r => num(r.from_zillow) === 0 && num(r.support) < 0
     ];
   }
