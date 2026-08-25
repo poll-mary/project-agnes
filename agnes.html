@@ -1,0 +1,303 @@
+<title>Agnes</title>
+<style>
+:root{--bg:#fff;--panel:#f6f7f8;--ink:#1a1d21;--soft:#5c656f;--faint:#8b949e;--line:#dde1e6;
+--neg:#b04a2a;--negbg:#fbeee9;--pos:#2b6b57;--posbg:#e9f2ef;--warn:#8a6d1f;--warnbg:#faf3e0;--acc:#1f4e79;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171b;--panel:#1c2026;--ink:#e6e9ed;
+--soft:#a4adb7;--faint:#6d7681;--line:#2b3138;--neg:#d98a68;--negbg:#2a1f1a;--pos:#6fb096;--posbg:#1a2622;
+--warn:#c9a94e;--warnbg:#2a2417;--acc:#7fb0dc;}}
+:root[data-theme="dark"]{--bg:#14171b;--panel:#1c2026;--ink:#e6e9ed;--soft:#a4adb7;--faint:#6d7681;
+--line:#2b3138;--neg:#d98a68;--negbg:#2a1f1a;--pos:#6fb096;--posbg:#1a2622;--warn:#c9a94e;--warnbg:#2a2417;--acc:#7fb0dc;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:20px;margin:0 0 2px;font-weight:600}
+.q{color:var(--soft);margin:0 0 22px;font-size:14px}
+h2{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+   font-weight:600;margin:26px 0 10px}
+/* time control */
+.timebar{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px}
+.timerow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.asof{font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;min-width:104px}
+input[type=range]{flex:1;min-width:220px;accent-color:var(--acc)}
+button{font:inherit;font-size:13px;padding:5px 11px;border:1px solid var(--line);
+  background:var(--bg);color:var(--ink);border-radius:5px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.arrived{margin-top:11px;font-size:13px;color:var(--soft);min-height:19px}
+.arrived b{color:var(--ink);font-weight:600}
+/* verdict */
+.verdict{margin:16px 0 0;padding:14px 16px;border-radius:6px;border:1px solid var(--line);
+  background:var(--panel);display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.verdict .status{font:600 14px ui-monospace,Menlo,monospace;white-space:nowrap}
+.verdict .why{font-size:13.5px;color:var(--soft);flex:1;min-width:240px}
+.v-fired{border-color:var(--neg);background:var(--negbg)}
+.v-fired .status{color:var(--neg)}
+.v-ok{border-color:var(--line)}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);
+   font-weight:600;padding:0 10px 7px;border-bottom:1px solid var(--line)}
+th.n,td.n{text-align:right;font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.state{display:inline-block;font:500 11px ui-monospace,Menlo,monospace;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.s-neg{background:var(--negbg);color:var(--neg)}
+.s-pos{background:var(--posbg);color:var(--pos)}
+.s-mix{background:var(--warnbg);color:var(--warn)}
+.s-non{background:var(--panel);color:var(--faint)}
+.src{font-size:12px;color:var(--faint);font-family:ui-monospace,Menlo,monospace}
+.silent{color:var(--acc);font-weight:600}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.card ul{margin:0;padding-left:17px}
+.card li{margin-bottom:7px;font-size:13.5px;color:var(--soft)}
+.card li:last-child{margin-bottom:0}
+.card li b{color:var(--ink);font-weight:600}
+.kpi{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.kpi:last-child{border-bottom:none}
+.kpi span:last-child{font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:600}
+details{margin-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--acc)}
+.evlist{margin:8px 0 0;padding:0;list-style:none;font-size:13px}
+.evlist li{padding:5px 0;border-bottom:1px solid var(--line);color:var(--soft)}
+.evlist li:last-child{border-bottom:none}
+.evlist .d{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--faint);margin-right:7px}
+.tag{font:500 10px ui-monospace,Menlo,monospace;padding:1px 5px;border-radius:2px;margin-left:6px}
+.t-in{background:var(--posbg);color:var(--pos)}
+.t-ex{background:var(--warnbg);color:var(--warn)}
+</style>
+
+<div class="wrap">
+<h1>Agnes</h1>
+<p class="q">Should Zillow aggressively scale principal iBuying? &nbsp;·&nbsp; Assessed only on evidence that was public at the selected date.</p>
+
+<div class="timebar">
+  <div class="timerow">
+    <span class="asof" id="asof"></span>
+    <input type="range" id="slider" min="0" value="0" step="1" aria-label="Assessment date">
+    <button id="prev">‹ Prev</button>
+    <button id="next">Next ›</button>
+    <button id="play">▶ Play</button>
+  </div>
+  <div class="arrived" id="arrived"></div>
+</div>
+
+<div class="verdict" id="verdict"></div>
+
+<h2>What must be true</h2>
+<table>
+  <thead><tr>
+    <th>Assumption</th><th class="n">From the company</th><th class="n">From the world</th>
+    <th class="n">Net</th><th>State</th>
+  </tr></thead>
+  <tbody id="rows"></tbody>
+</table>
+
+<div class="cols">
+  <div>
+    <h2>What Agnes cannot see</h2>
+    <div class="card"><ul id="missing"></ul></div>
+  </div>
+  <div>
+    <h2>Decision health</h2>
+    <div class="card" id="kpis"></div>
+  </div>
+</div>
+
+<h2>Evidence in play</h2>
+<details><summary id="evsummary"></summary><ul class="evlist" id="evlist"></ul></details>
+
+<h2>Signals raised, and what happened next</h2>
+<p class="q" style="margin-bottom:14px">Each signal below is computed from the evidence — the date is when the state actually changed, not a date anyone chose. The company's actions are dated public events, shown for comparison only; they never feed the assessment.</p>
+<div class="gap" id="gap"></div>
+<table style="margin-top:14px">
+  <thead><tr><th style="width:96px">Date</th><th>Agnes</th><th>Zillow</th></tr></thead>
+  <tbody id="track"></tbody>
+</table>
+</div>
+
+<script>
+const A=[
+ {id:"A_FORECAST",name:"Forward resale prices can be forecast within tolerable error",crit:3},
+ {id:"A_THROUGHPUT",name:"Renovation and resale throughput keeps pace with acquisitions",crit:3},
+ {id:"A_UNIT",name:"Unit economics remain defensible as volume scales",crit:3},
+ {id:"A_LIQUIDITY",name:"Inventory can be liquidated quickly under adverse moves",crit:3},
+ {id:"A_FINANCING",name:"Working capital and financing stay acceptable at scale",crit:2},
+ {id:"A_DEMAND",name:"Consumer demand for instant cash offers exists at scale",crit:3}];
+
+// from = public_from, until = superseded on (null = still current)
+const E=[
+ {id:"2019 Form 10-K: inventory and holding risk",from:"2020-02-19",until:null,o:"INTERNAL",b:{A_LIQUIDITY:-2,A_THROUGHPUT:-1}},
+ {id:"Case-Shiller: national prices +8.4%",from:"2020-12-29",until:"2021-01-26",o:"EXTERNAL",b:{A_DEMAND:1,A_FORECAST:-1}},
+ {id:"Fed Beige Book: lumber costs, labour shortages, delivery delays",from:"2021-01-13",until:"2021-07-14",o:"EXTERNAL",b:{A_THROUGHPUT:-2,A_UNIT:-1}},
+ {id:"NAR: 1.9 months supply (record low), 21 days on market",from:"2021-01-22",until:"2021-07-22",o:"EXTERNAL",b:{A_DEMAND:2,A_FORECAST:-1}},
+ {id:"Case-Shiller: national prices +9.5%",from:"2021-01-26",until:"2021-07-27",o:"EXTERNAL",b:{A_DEMAND:1,A_FORECAST:-1}},
+ {id:"Freddie Mac: 30-year fixed ~2.73%",from:"2021-02-04",until:null,o:"EXTERNAL",b:{A_DEMAND:1}},
+ {id:"Q4/FY2020 release: management confidence in scaling",from:"2021-02-10",until:null,o:"INTERNAL",b:{A_UNIT:1,A_DEMAND:2}},
+ {id:"Q4/FY2020 release: Homes segment loss $320.3m",from:"2021-02-10",until:null,o:"INTERNAL",b:{A_UNIT:-3}},
+ {id:"Q4/FY2020 release: $3.9bn cash and investments",from:"2021-02-10",until:null,o:"INTERNAL",b:{A_FINANCING:2}},
+ {id:"FY2020 Form 10-K filed",from:"2021-02-12",until:null,o:"INTERNAL",b:{A_LIQUIDITY:-1}},
+ {id:"Opendoor Q1: 3,594 bought vs 2,462 sold, 13% margin, dependent on appreciation",from:"2021-05-11",until:null,o:"EXTERNAL",b:{A_UNIT:1,A_FORECAST:-2,A_THROUGHPUT:-1}},
+ {id:"Fed Beige Book: shortages and delays increasingly widespread",from:"2021-07-14",until:null,o:"EXTERNAL",b:{A_THROUGHPUT:-2,A_UNIT:-1}},
+ {id:"NAR: prices +23.4%, 2.6 months supply, 17 days on market",from:"2021-07-22",until:null,o:"EXTERNAL",b:{A_DEMAND:2,A_FORECAST:-2}},
+ {id:"Case-Shiller: RECORD HIGH annual gain 16.6%",from:"2021-07-27",until:null,o:"EXTERNAL",b:{A_DEMAND:1,A_FORECAST:-2},record:true},
+ {id:"Redfin: homebuyer demand softening",from:"2021-07-30",until:null,o:"EXTERNAL",b:{A_DEMAND:-1}},
+ {id:"Q2 2021 Form 10-Q: 2,086 homes sold, $772m revenue",from:"2021-08-05",until:null,o:"INTERNAL",b:{A_THROUGHPUT:1,A_DEMAND:2}},
+ {id:"Q2 2021 Form 10-Q: inventory $1.1696bn vs $491.3m",from:"2021-08-05",until:null,o:"INTERNAL",b:{A_THROUGHPUT:-2,A_LIQUIDITY:-2,A_FINANCING:-2}},
+ {id:"Q2 2021 Form 10-Q: holding costs $5.3m vs $2.6m",from:"2021-08-05",until:null,o:"INTERNAL",b:{},note:"held, not interpretable — periods not comparable"}];
+
+const MISSING={
+ A_FORECAST:"Realised forecast error on homes bought (offer price vs resale price)",
+ A_THROUGHPUT:"Inventory turnover / days-to-sale for homes held",
+ A_LIQUIDITY:"Holding cost as % of average inventory, matched periods"};
+
+const TRIP={metric:"Homes inventory",threshold:1000,frozen:"2021-02-10",
+ obs:{value:1169.601,from:"2021-08-05"},action:"REASSESS / PAUSE-SCALE"};
+
+const DATES=[...new Set(E.map(e=>e.from))].sort();
+const S=document.getElementById("slider");S.max=DATES.length-1;S.value=DATES.length-1;
+
+const live=(e,d)=>e.from<=d&&(e.until===null||e.until>d);
+const fmt=d=>new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+
+function render(){
+  const d=DATES[+S.value];
+  document.getElementById("asof").textContent=fmt(d);
+
+  const justIn=E.filter(e=>e.from===d);
+  const expired=E.filter(e=>e.until===d);
+  let msg=[];
+  if(justIn.length)msg.push("<b>"+justIn.length+" arrived:</b> "+justIn.map(e=>e.id.split(":")[0]).join(", "));
+  if(expired.length)msg.push("<b>"+expired.length+" superseded</b>");
+  document.getElementById("arrived").innerHTML=msg.join(" &nbsp;·&nbsp; ")||"<span style='color:var(--faint)'>no change on this date</span>";
+
+  // assumption states
+  let rows="",negWeight=0,challenged=0,oneSided=0;
+  A.forEach(a=>{
+    let iN=0,iB=0,xN=0,xB=0;
+    E.forEach(e=>{ if(!live(e,d))return; const w=e.b[a.id]; if(w===undefined)return;
+      if(e.o==="INTERNAL"){iN++;iB+=w}else{xN++;xB+=w} });
+    const net=iB+xB,tot=iN+xN;
+    let st,cls;
+    if(tot===0){st="NOT EVIDENCED";cls="s-non"}
+    else if(net>0){st="supported";cls="s-pos"}
+    else if(net===0){st="mixed";cls="s-mix"}
+    else{st="CHALLENGED";cls="s-neg"}
+    if(net<0){negWeight+=Math.abs(net);challenged++}
+    if(tot>0&&(iN===0||xN===0)&&a.crit>=3)oneSided++;
+    const cell=(n,b)=>n===0?"<span class='silent'>SILENT</span>":(b>0?"+":"")+b+" <span class='src'>("+n+")</span>";
+    rows+="<tr><td>"+a.name+"</td><td class='n'>"+cell(iN,iB)+"</td><td class='n'>"+cell(xN,xB)+
+      "</td><td class='n'>"+(tot===0?"—":(net>0?"+":"")+net)+"</td><td><span class='state "+cls+"'>"+st+"</span></td></tr>";
+  });
+  document.getElementById("rows").innerHTML=rows;
+
+  // tripwire + verdict
+  const obsLive=TRIP.obs.from<=d;
+  const fired=obsLive&&TRIP.obs.value>TRIP.threshold;
+  const v=document.getElementById("verdict");
+  v.className="verdict "+(fired?"v-fired":"v-ok");
+  const unev=A.filter(a=>{let t=0;E.forEach(e=>{if(live(e,d)&&e.b[a.id]!==undefined)t++});return t===0}).length;
+  v.innerHTML="<span class='status'>"+(fired?"⚠ "+TRIP.action:"CONTINUE WITH CONDITIONS")+"</span>"+
+    "<span class='why'>"+(fired
+      ? "Guardrail frozen "+fmt(TRIP.frozen)+" at $"+TRIP.threshold+"m has been crossed — inventory $"+TRIP.obs.value+"m. "+challenged+" of 6 assumptions challenged."
+      : "No frozen guardrail crossed yet. "+challenged+" of 6 assumptions challenged"+(unev?", "+unev+" with no evidence at all":"")+".")+
+    "</span>";
+
+  // missing evidence
+  document.getElementById("missing").innerHTML=Object.entries(MISSING).map(([k,v])=>{
+    const a=A.find(x=>x.id===k);return "<li><b>"+v+"</b><br>would settle: "+a.name.toLowerCase()+"</li>"}).join("")+
+    "<li><b>4 of 6 world indicators carry no data</b><br>days on market, materials cost, and two others were declared relevant and never loaded</li>";
+
+  // kpis
+  const liveEv=E.filter(e=>live(e,d));
+  document.getElementById("kpis").innerHTML=
+    kpi("Evidence in play",liveEv.length)+
+    kpi("Assumptions challenged",challenged+" / 6")+
+    kpi("Critical, judged one-sided",oneSided)+
+    kpi("Assumptions with a guardrail","2 / 6")+
+    kpi("Weight of evidence against",negWeight);
+
+  // evidence list
+  document.getElementById("evsummary").textContent=liveEv.length+" items eligible at this date";
+  document.getElementById("evlist").innerHTML=liveEv.slice().reverse().map(e=>
+    "<li><span class='d'>"+e.from+"</span>"+e.id+
+    "<span class='tag "+(e.o==="INTERNAL"?"t-in'>company":"t-ex'>world")+"</span>"+
+    (e.record?" <span class='tag t-ex'>publisher declared a record</span>":"")+"</li>").join("");
+}
+const kpi=(l,v)=>"<div class='kpi'><span>"+l+"</span><span>"+v+"</span></div>";
+
+// ---- signal log: computed by walking the dates and detecting state changes ----
+// Company actions are dated public events, shown for comparison. They never
+// enter the assessment. The two after 5 Aug are outcomes, marked as such.
+const ACTIONS=[
+ {d:"2021-02-10",t:"Q4/FY2020: states it is investing aggressively and positioned to capitalise on demand"},
+ {d:"2021-08-05",t:"Q2 10-Q: inventory more than doubled — buying accelerated, not slowed"},
+ {d:"2021-10-18",t:"Pauses new home purchases, citing capacity",outcome:true},
+ {d:"2021-11-02",t:"Winds down Zillow Offers. CEO cites forecasting unpredictability",outcome:true}];
+
+function stateAt(aid,d){
+  let n=0,b=0;
+  E.forEach(e=>{ if(!live(e,d))return; const w=e.b[aid]; if(w===undefined)return; n++;b+=w });
+  if(n===0)return"NOT EVIDENCED";
+  return b>0?"supported":b===0?"mixed":"CHALLENGED";
+}
+function buildTrack(){
+  const sig=[];
+  let prev={};A.forEach(a=>prev[a.id]="NOT EVIDENCED");
+  DATES.forEach(d=>{
+    A.forEach(a=>{
+      const s=stateAt(a.id,d);
+      if(s!==prev[a.id]){
+        if(s==="CHALLENGED"){
+          const cause=E.filter(e=>e.from===d&&e.b[a.id]!==undefined&&e.b[a.id]<0);
+          const org=cause.length?cause[0].o:"INTERNAL";
+          sig.push({d,o:org,a:a.id,
+            t:"<b>"+a.name.split(" ").slice(0,4).join(" ")+"…</b> becomes CHALLENGED"+
+              (cause.length?" <span class='tag "+(org==="INTERNAL"?"t-in'>company":"t-ex'>world")+"</span>":"")});
+        }
+        prev[a.id]=s;
+      }
+    });
+    E.filter(e=>e.from===d&&e.record).forEach(()=>
+      sig.push({d,o:"EXTERNAL",t:"<b>OUTSIDE CALIBRATED RANGE</b> — publisher declared a record; a price model has no data for this regime"}));
+    if(TRIP.obs.from===d&&TRIP.obs.value>TRIP.threshold)
+      sig.push({d,o:"INTERNAL",t:"<b>GUARDRAIL CROSSED</b> — inventory $"+TRIP.obs.value+"m against $"+TRIP.threshold+"m frozen "+fmt(TRIP.frozen)+" → "+TRIP.action});
+  });
+  const all=[...new Set([...sig.map(s=>s.d),...ACTIONS.map(a=>a.d)])].sort();
+  document.getElementById("track").innerHTML=all.map(d=>{
+    const s=sig.filter(x=>x.d===d).map(x=>x.t).join("<br>");
+    const a=ACTIONS.filter(x=>x.d===d);
+    const at=a.map(x=>(x.outcome?"<span class='tag t-ex'>outcome</span> ":"")+x.t).join("<br>");
+    return "<tr><td class='n' style='text-align:left'>"+d+"</td>"+
+      "<td style='color:"+(s?"var(--neg)":"var(--faint)")+"'>"+(s||"—")+"</td>"+
+      "<td style='color:var(--soft)'>"+(at||"—")+"</td></tr>";
+  }).join("");
+
+  const retreat="2021-10-18";
+  const days=x=>Math.round((new Date(retreat)-new Date(x))/864e5);
+  const firstAny=sig[0];
+  const firstExt=sig.find(x=>x.o==="EXTERNAL");
+document.getElementById("gap").innerHTML=
+    "<div class='verdict v-fired'><span class='status'>"+days(firstExt.d)+" days</span><span class='why'>"+
+    "The first signal raised by evidence <b>from outside the company</b> is "+fmt(firstExt.d)+
+    " — the Federal Reserve Beige Book reporting labour shortages and material delays. Zillow's first public retreat is "+
+    "<b>18 Oct 2021</b>, "+days(firstExt.d)+" days later.<br><br>"+
+    "Agnes's earliest signal of any kind is "+fmt(firstAny.d)+", but that comes from Zillow's <b>own</b> 2019 10-K risk factors "+
+    "— standard disclosure language, not a warning that this bet was deteriorating. Counting from there would overstate the case.<br><br>"+
+    "The frozen guardrail is crossed on <b>5 Aug 2021</b>, "+days("2021-08-05")+" days before the retreat.</span></div>";
+}
+
+S.addEventListener("input",render);
+document.getElementById("prev").onclick=()=>{S.value=Math.max(0,+S.value-1);render()};
+document.getElementById("next").onclick=()=>{S.value=Math.min(DATES.length-1,+S.value+1);render()};
+let timer=null;
+document.getElementById("play").onclick=e=>{
+  if(timer){clearInterval(timer);timer=null;e.target.textContent="▶ Play";return}
+  S.value=0;render();e.target.textContent="■ Stop";
+  timer=setInterval(()=>{ if(+S.value>=DATES.length-1){clearInterval(timer);timer=null;e.target.textContent="▶ Play";return}
+    S.value=+S.value+1;render()},900);
+};
+buildTrack();
+render();
+</script>

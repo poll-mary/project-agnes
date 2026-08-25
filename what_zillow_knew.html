@@ -1,0 +1,342 @@
+<title>What Zillow Knew</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F7F8F9;
+  --raised:#FFFFFF;
+  --ink:#161B21;
+  --ink-soft:#4A545F;
+  --ink-faint:#7C8794;
+  --rule:#DDE2E7;
+  --rule-soft:#EAEEF1;
+  --accent:#1E4D7B;
+  --accent-soft:#E8EEF4;
+  --neg:#A54A2A;
+  --neg-soft:#F6EAE5;
+  --pos:#2E6B5E;
+  --pos-soft:#E6EFEC;
+  --shadow:0 1px 2px rgba(22,27,33,.05), 0 8px 24px -12px rgba(22,27,33,.12);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#12161C;
+    --raised:#181D25;
+    --ink:#E6EAEF;
+    --ink-soft:#A3ADB9;
+    --ink-faint:#6F7B88;
+    --rule:#2A323C;
+    --rule-soft:#212832;
+    --accent:#7FB0DC;
+    --accent-soft:#1B2733;
+    --neg:#D98A6A;
+    --neg-soft:#2C211C;
+    --pos:#6FB3A2;
+    --pos-soft:#1A2724;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12161C;
+  --raised:#181D25;
+  --ink:#E6EAEF;
+  --ink-soft:#A3ADB9;
+  --ink-faint:#6F7B88;
+  --rule:#2A323C;
+  --rule-soft:#212832;
+  --accent:#7FB0DC;
+  --accent-soft:#1B2733;
+  --neg:#D98A6A;
+  --neg-soft:#2C211C;
+  --pos:#6FB3A2;
+  --pos-soft:#1A2724;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 28px 100px}
+
+/* ---------- masthead ---------- */
+header.mast{
+  padding:76px 0 40px;
+  border-bottom:1px solid var(--rule);
+  margin-bottom:52px;
+}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 22px;
+}
+h1{
+  font-family:Newsreader,Georgia,serif;
+  font-size:clamp(2.7rem,7vw,4.1rem);
+  font-weight:400;line-height:1.04;letter-spacing:-.018em;
+  margin:0 0 24px;text-wrap:balance;
+}
+.standfirst{
+  font-family:Newsreader,Georgia,serif;
+  font-size:1.24rem;line-height:1.56;color:var(--ink-soft);
+  margin:0;max-width:60ch;
+}
+.standfirst em{color:var(--ink);font-style:italic}
+
+/* ---------- headline stat ---------- */
+.headline-stat{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:0 18px;
+  background:var(--raised);border:1px solid var(--rule);
+  border-left:3px solid var(--neg);
+  border-radius:3px;box-shadow:var(--shadow);
+  padding:26px 30px;margin:0 0 52px;
+}
+.headline-stat .big{
+  font-family:Newsreader,Georgia,serif;
+  font-size:3.3rem;line-height:1;font-weight:500;color:var(--neg);
+  font-variant-numeric:tabular-nums;
+}
+.headline-stat .said{font-size:1.02rem;color:var(--ink-soft);max-width:46ch}
+.headline-stat .said strong{color:var(--ink);font-weight:600}
+
+/* ---------- sections ---------- */
+section{margin:0 0 58px}
+h2{
+  font-family:Newsreader,Georgia,serif;
+  font-size:1.72rem;font-weight:500;letter-spacing:-.01em;
+  margin:0 0 6px;text-wrap:balance;
+}
+.sub{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 20px;
+}
+p{margin:0 0 16px;max-width:66ch}
+p:last-child{margin-bottom:0}
+.lede{font-size:1.06rem}
+strong{font-weight:600}
+
+/* ---------- tables ---------- */
+.tablewrap{
+  overflow-x:auto;
+  background:var(--raised);
+  border:1px solid var(--rule);border-radius:3px;
+  box-shadow:var(--shadow);
+  margin:0 0 14px;
+}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+caption{
+  caption-side:top;text-align:left;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);padding:14px 20px 10px;
+}
+th,td{padding:11px 20px;text-align:left;border-bottom:1px solid var(--rule-soft)}
+thead th{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:400;
+  border-bottom:1px solid var(--rule);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{
+  text-align:right;font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+td.date{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;color:var(--ink-soft);white-space:nowrap}
+.note{font-size:13.5px;color:var(--ink-faint);margin:0 0 4px;max-width:66ch}
+
+/* state chips */
+.chip{
+  display:inline-block;font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:10.5px;letter-spacing:.05em;padding:2px 8px;border-radius:2px;
+  white-space:nowrap;
+}
+.chip.silent{background:var(--accent-soft);color:var(--accent);font-weight:500}
+.chip.neg{background:var(--neg-soft);color:var(--neg)}
+.chip.pos{background:var(--pos-soft);color:var(--pos)}
+.chip.none{color:var(--ink-faint)}
+
+tr.spotlight td{background:var(--accent-soft)}
+tr.spotlight td:first-child{font-weight:600}
+
+/* ---------- pull quote ---------- */
+blockquote{
+  margin:0 0 20px;padding:0 0 0 22px;
+  border-left:2px solid var(--accent);
+  font-family:Newsreader,Georgia,serif;
+  font-size:1.2rem;line-height:1.5;color:var(--ink);
+}
+blockquote cite{
+  display:block;margin-top:10px;
+  font-family:"IBM Plex Sans",sans-serif;font-size:13px;font-style:normal;
+  color:var(--ink-faint);
+}
+
+/* ---------- disclaimer ---------- */
+.limits{
+  background:var(--raised);border:1px solid var(--rule);
+  border-radius:3px;padding:26px 30px;box-shadow:var(--shadow);
+}
+.limits ul{margin:0;padding-left:20px}
+.limits li{margin-bottom:9px;color:var(--ink-soft);font-size:15px}
+.limits li:last-child{margin-bottom:0}
+.limits li strong{color:var(--ink)}
+
+footer{
+  margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px;letter-spacing:.05em;color:var(--ink-faint);
+}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Project Agnes · Decision graph · Historical replay</p>
+  <h1>What Zillow Knew</h1>
+  <p class="standfirst">On 10 February 2021, Zillow was scaling a bet that rested on six things being true. Six months later, the evidence against it had grown by 80% — and <em>not one thing about how the decision was being managed had changed.</em></p>
+</header>
+
+<div class="headline-stat">
+  <span class="big">+80%</span>
+  <span class="said">growth in the weight of evidence <strong>against</strong> the bet between February and August 2021. Over the same period: no gap closed, no guardrail added, no blind spot filled.</span>
+</div>
+
+<section>
+  <h2>The decision did not respond</h2>
+  <p class="sub">Same six measures, two dates</p>
+  <p class="lede">These measure how the <em>decision</em> was being managed — not how the business was doing. Nothing here is specific to real estate, and nothing here requires knowing how the story ended.</p>
+  <div class="tablewrap">
+    <table>
+      <caption>Decision health at each checkpoint</caption>
+      <thead><tr><th>Measure</th><th class="num">10 Feb 2021</th><th class="num">5 Aug 2021</th></tr></thead>
+      <tbody>
+        <tr><td>Assumptions with any evidence</td><td class="num">6 / 6</td><td class="num">6 / 6</td></tr>
+        <tr><td>Critical assumptions judged from one side only</td><td class="num">2</td><td class="num">2</td></tr>
+        <tr><td>Assumptions with a pre-committed trigger</td><td class="num">2 / 6</td><td class="num">2 / 6</td></tr>
+        <tr><td>Assumptions currently challenged</td><td class="num">4</td><td class="num">4</td></tr>
+        <tr class="spotlight"><td>Weight of evidence against the bet</td><td class="num">10</td><td class="num">18</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Note the fourth row. The <em>count</em> of challenged assumptions never moved — the same four got worse. A monitor that counted problems would have reported no change.</p>
+</section>
+
+<section>
+  <h2>The company never spoke to the thing that ended it</h2>
+  <p class="sub">Evidence by origin, both checkpoints</p>
+  <p>Each assumption is judged only on what was public at the time. The two columns separate what Zillow itself disclosed from what the surrounding world published.</p>
+  <div class="tablewrap">
+    <table>
+      <caption>What had to be true — and who said anything about it</caption>
+      <thead>
+        <tr>
+          <th>Must be true</th>
+          <th class="num">Feb · company</th><th class="num">Feb · world</th>
+          <th class="num">Aug · company</th><th class="num">Aug · world</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="spotlight">
+          <td>Forward resale prices can be forecast within tolerable error</td>
+          <td class="num"><span class="chip silent">SILENT</span></td><td class="num">−2</td>
+          <td class="num"><span class="chip silent">SILENT</span></td><td class="num">−6</td>
+        </tr>
+        <tr>
+          <td>Renovation and resale throughput keeps pace with acquisitions</td>
+          <td class="num">−1</td><td class="num">−2</td><td class="num">−2</td><td class="num">−3</td>
+        </tr>
+        <tr>
+          <td>Unit economics remain defensible as volume scales</td>
+          <td class="num">−2</td><td class="num">−1</td><td class="num">−2</td><td class="num">0</td>
+        </tr>
+        <tr>
+          <td>Inventory can be liquidated quickly under adverse moves</td>
+          <td class="num">−2</td><td class="num"><span class="chip none">silent</span></td>
+          <td class="num">−5</td><td class="num"><span class="chip none">silent</span></td>
+        </tr>
+        <tr>
+          <td>Working capital and financing stay acceptable at scale</td>
+          <td class="num">+2</td><td class="num"><span class="chip none">silent</span></td>
+          <td class="num">0</td><td class="num"><span class="chip none">silent</span></td>
+        </tr>
+        <tr>
+          <td>Consumer demand for instant cash offers exists at scale</td>
+          <td class="num">+2</td><td class="num">+4</td><td class="num">+4</td><td class="num">+3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Zillow's own filings say <strong>nothing</strong> about forward price forecasting — not in February, not in August. Every piece of evidence bearing on it comes from outside the company.</p>
+  <blockquote>
+    We've determined the unpredictability in forecasting home prices far exceeds what we anticipated.
+    <cite>Rich Barton, announcing the closure of Zillow Offers — 2 November 2021</cite>
+  </blockquote>
+  <p class="note">Two further readings. In February, the world's warning on throughput (−2, from the Federal Reserve Beige Book's report of labour shortages and material delays) was <em>stronger</em> than anything Zillow had disclosed (−1). And liquidity and working capital show <em>silent</em> in both world columns — those are balance-sheet facts only the company can report. The model does not pretend otherwise.</p>
+</section>
+
+<section>
+  <h2>A threshold frozen in February, fired in August</h2>
+  <p class="sub">Pre-commitment, evaluated at query time</p>
+  <p>The graph stores no record of whether this fired. The condition and the threshold were committed on 10 February and never touched; whether it trips is computed against whatever evidence was public at the date being asked about.</p>
+  <div class="tablewrap">
+    <table>
+      <caption>Inventory concentration guardrail · threshold $1,000.0m · frozen 2021-02-10</caption>
+      <thead><tr><th>Assessed on</th><th class="num">Observed</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td class="date">2021-02-10</td><td class="num">—</td><td><span class="chip none">nothing public yet to test against</span></td></tr>
+        <tr class="spotlight"><td class="date">2021-08-05</td><td class="num">$1,169.6m</td><td><span class="chip neg">FIRED → REASSESS / PAUSE-SCALE</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Four of the six assumptions had no guardrail at all — including the one that ended the business.</p>
+</section>
+
+<section>
+  <h2>A third of the evidence cuts both ways</h2>
+  <p class="sub">Six of eighteen items argue in two directions at once</p>
+  <p>On 27 July 2021, S&amp;P published a release headlined <em>Record High Annual Home Price Gain of 16.6%</em>. That single fact supports one assumption and undermines another.</p>
+  <div class="tablewrap">
+    <table>
+      <caption>The same fact, read two ways</caption>
+      <thead><tr><th>Published</th><th>Supports</th><th>Challenges</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="date">2021-07-27</td>
+          <td><span class="chip pos">Consumer demand</span><br><span class="note">held inventory appreciates while held</span></td>
+          <td><span class="chip neg">Price forecasting</span><br><span class="note">a model calibrated on history has no data for a record regime</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A written summary has to choose one reading, and would have to choose six separate times across this evidence set. A graph holds both and names the tension.</p>
+</section>
+
+<section>
+  <h2>What is not claimed</h2>
+  <p class="sub">The limits, stated plainly</p>
+  <div class="limits">
+    <ul>
+      <li><strong>Not that Agnes saw what Zillow could not.</strong> Zillow held vastly more data than this graph. The company was silent <em>publicly</em> — that is not evidence it never measured forecast error internally.</li>
+      <li><strong>Not that anyone would have acted differently</strong>, or that pausing would have saved the money. Both unfalsifiable.</li>
+      <li><strong>Not that the architecture predicts anything.</strong> One case, with no matched success, cannot separate "detects deterioration" from "pessimistic about everything".</li>
+      <li><strong>Not that the strategy comparison works.</strong> It scores risk with no upside term, so it can only ever prefer inaction. Found by this project's own sensitivity test, and left documented rather than patched with an invented number.</li>
+      <li><strong>Not that the world panel is complete.</strong> Six indicators were declared relevant; two carry no data at all, and the graph reports its own blind spots rather than hiding them.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Zillow Offers · replayed at 2021-02-10 and 2021-08-05 · evidence from SEC filings, S&amp;P Dow Jones Indices, the National Association of Realtors, the Federal Reserve Beige Book, Freddie Mac, Opendoor and Redfin · every item carries the date it became public
+</footer>
+
+</div>
