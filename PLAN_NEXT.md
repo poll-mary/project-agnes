@@ -141,3 +141,28 @@ within-case controls (demand stays positive; the world rehabilitated unit econom
 
 Phase 3 is the decision point. If a second decision loads cleanly, Agnes is a product with
 two instances. If it does not, Agnes is Zillow analysis and we learn that cheaply.
+
+---
+
+## Found while building the confidence layer *(25 Aug, late)*
+
+**Agnes is most confident about the assumption that mattered least.**
+
+Observed directly from `32_confidence.cypher`:
+- `A_DEMAND` — 6 sources, company + world, 0 blind spots → **GOOD**
+- `A_FORECAST` — 3 sources, **all external**, company silent → **MODERATE, one side only**
+
+Demand was never the problem. Forecasting is what Barton named as the reason the business
+closed. Agnes's confidence is inversely related to what mattered.
+
+**Cause:** confidence is computed from source count and breadth alone. It has no notion of
+how much the assumption *matters*. A well-covered irrelevance and a thinly-covered decider
+currently look similar.
+
+**Fix:** weight confidence by criticality — an assumption that decides the outcome should
+complain louder when thinly sourced. Requires a criticality measure that is not the broken
+risk-only score, so it depends on the scoring fix.
+
+**Why this matters beyond Zillow:** a decision tool that is confident about the wrong
+things is worse than one that admits uncertainty everywhere. This is a real defect class,
+and it only became visible after building the confidence layer and looking at the output.
