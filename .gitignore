@@ -1,5 +1,8 @@
 # Secrets — never commit
 .env
+Neo4j-*.txt
+Neo4j-*-Created-*.txt
+*credentials*.txt
 .env.local
 *.pem
 *.key
