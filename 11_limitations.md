@@ -163,3 +163,29 @@ supposed to produce.
 Implemented in `36_simulate_fixed.cypher`. SHADOW-MONITOR works again as a result:
 capital-light's advantage is now an evidence-driven ratio, not an artefact of having
 fewer dependencies.
+
+### Correction to the fix above (same day)
+
+The first version of the corrected simulation asked *"does this belief failing change
+which strategy wins?"* and reported that consumer demand did. **That was wrong** — the
+graph returned no such row. Capital-light wins in every case, because it owns nothing;
+that is true by construction and is not a finding.
+
+The error came from checking the wrong thing: the *ordering* of second and third place
+moved, not the winner.
+
+**The correct question is the swing.** If a belief turned out false, how far does each
+strategy's exposure move?
+
+| if this fails | Aggressive | Hybrid | Capital-light |
+|---|---|---|---|
+| *(baseline)* | 71% | 67% | 20% |
+| consumer demand | 88% | 89% | **80%** |
+| financing | 82% | 78% | 40% |
+| unit economics / throughput / liquidation / forecasting | 71% | 67% | 20% |
+
+**Four of six beliefs move nothing**, because they are already unproven — failing tells
+you nothing new. Only demand and financing are still load-bearing, and demand is the one
+that would take the safe option down with everything else.
+
+Implemented in `38_sensitivity.cypher`.
