@@ -38,17 +38,15 @@ h1{font-size:21px;font-weight:700;margin:0}
 .head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.28;z-index:1;pointer-events:none}
 
 .mk{position:absolute;top:0;height:500px;width:0;z-index:3;pointer-events:none}
-.mk .pin{position:absolute;left:-6px;width:12px;height:12px}
-.mk.a .pin{top:188px;background:var(--ag);transform:rotate(45deg);border-radius:2px}
-.mk.z .pin{top:190px;background:var(--zi);border-radius:50%}
-.mk.a.fire .pin{background:var(--red);width:15px;height:15px;left:-7px;top:186px}
+.mk .pin{position:absolute;left:-5px;width:10px;height:10px;border-radius:50%}
+.mk.a .pin{top:190px;background:var(--ag)}
+.mk.z .pin{top:190px;background:var(--zi)}
 .mk .stem{position:absolute;left:0;width:1px;background:var(--line)}
 .mk .box{position:absolute;width:134px;padding:8px 10px;border-radius:8px;font-size:12.5px;line-height:1.34;
  border:1px solid var(--line);background:var(--card)}
 .mk .box .dt{display:block;font:700 10px ui-monospace,Menlo,monospace;letter-spacing:.04em;
  opacity:.72;margin-bottom:3px}
 .mk.a .box{border-color:var(--ag);color:var(--ag)}
-.mk.a.fire .box{border-color:var(--red);background:var(--redbg);color:var(--red);font-weight:600}
 .mk.z .box{border-color:var(--zi);color:var(--zi)}
 .mk.future{opacity:.15}
 .mk.future .box{visibility:hidden}
@@ -161,7 +159,7 @@ function box(m,k){
   const stem = k==="a" ? "top:"+(y+66)+"px;height:"+(188-y-66)+"px"
                        : "top:202px;height:"+(y-202)+"px";
   const edge = pc(m.d)>88 ? "right:-6px" : "left:-8px";
-  return "<div class='mk "+k+(m.fire?" fire":"")+"' data-d='"+m.d+"' style='left:"+pc(m.d)+"%'>"+
+  return "<div class='mk "+k+"' data-d='"+m.d+"' style='left:"+pc(m.d)+"%'>"+
    "<div class='stem' style='"+stem+"'></div><div class='pin'></div>"+
    "<div class='box' style='top:"+y+"px;"+edge+"'><span class='dt'>"+nice(m.d)+"</span>"+m.t+"</div></div>";
 }
