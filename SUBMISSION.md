@@ -4,29 +4,35 @@
 **Agnes**
 
 ## Project Description
-When you make a big decision, you are betting that certain things are true.
-Agnes makes you write those things down. Then it watches the world and tells you when one
-of them stops looking true.
+A company making a big decision normally needs a team to hold it together — strategy,
+finance, operations, market research — each watching one piece, none of them holding the
+whole thing, and nobody re-reading the original reasoning six months later.
 
-That is all it is. A list of what your decision depends on, that checks itself.
+**Agnes does that job.** It holds what the decision depends on, watches every input that
+bears on it, and says when something has changed. The same information those people would
+have. Continuously. Without forgetting.
+
+It is not trying to see more than a company can see. It is doing what a company's own
+people would do if they never stopped looking.
+
+We tested it on Zillow's 2021 bet on buying homes because the evidence is public, so
+anyone can check our work. Inside a company, Agnes would have the internal numbers too.
 
 Every piece of evidence carries the date it became public, and Agnes refuses to look at
 anything published later. Move the date and it recomputes from nothing — so you see what
 could genuinely have been known at the time, not what you know now.
 
-We tested it on a real, resolved decision: Zillow's 2021 bet on buying homes directly.
+**The finding.** Zillow had teams and far better data than this graph. The information was not the
+problem.
 
-**The finding.** Zillow had far more data than this graph does. What it did not have was a written record
-of what the bet depended on, checked as the world moved.
+The problem is that a decision's reasoning lives in a slide deck nobody opens again. The
+assumption that ended the company — that it could predict what a home would resell for —
+was never re-examined in public once. It took a competitor's filing in May and record
+price data in July to challenge it, and neither landed on anyone's desk next to the
+original argument.
 
-The assumption that ended the company — that it could predict what a home would resell for
-— was never tested in anything Zillow published. Every signal about it came from outside:
-a competitor's filing in May stating its own profits depended on prices continuing to
-rise; record price data in July that put the model outside anything it was calibrated on.
-Zillow retreated in October.
-
-This was not an information failure. It was a monitoring failure — nobody was checking
-whether the original reasoning still held. That is the kind you can build a tool for.
+Agnes is the thing that keeps them next to each other. Not a smarter analyst — the
+same work a department already does, done continuously and without forgetting.
 
 ## Team Lead Name and Email
 Mary Rojas — mcrw.de@gmail.com
