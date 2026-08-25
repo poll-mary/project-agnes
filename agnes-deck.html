@@ -40,6 +40,8 @@ body{background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;
 /* nav */
 .nav{position:fixed;left:0;right:0;bottom:0;height:clamp(64px,7vw,88px);
  display:flex;align-items:center;gap:22px;padding:0 clamp(40px,6vw,90px);z-index:20}
+.mark{font-size:clamp(13px,1.15vw,17px);font-weight:800;letter-spacing:.2em;
+ text-transform:uppercase;color:var(--ink);white-space:nowrap;margin-right:clamp(14px,1.6vw,24px)}
 .dots{display:flex;gap:9px}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--rule);cursor:pointer}
 .dot.on{background:var(--ink)}
@@ -266,6 +268,7 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 </section>
 
 <nav class="nav">
+  <div class="mark">Project&nbsp;Agnes</div>
   <div class="dots" id="dots"></div>
   <div class="sp"><button id="prev">Back</button><button class="pri" id="next">Next</button></div>
 </nav>
@@ -342,10 +345,10 @@ function layoutLanes(){
     });
   });
 }
-layoutLanes();
 addEventListener("resize",layoutLanes);
 
 function draw(){
+  layoutLanes();          // slide must be visible to measure; draw() only runs then
   const d=addD(cur);
   document.getElementById("now").textContent=nice(d);
   const px=(cur/SPAN*100)+"%";
