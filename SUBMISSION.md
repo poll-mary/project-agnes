@@ -4,19 +4,22 @@
 **Agnes**
 
 ## Project Description
-Holding a big decision together takes a department — strategy, finance, operations,
-research. Each watches one piece. Nobody holds the whole thing.
+Companies make high-stakes strategic bets using fragmented documents and disconnected
+evidence. I built a living evidence graph that lets decision-makers rewind to what was
+knowable at a specific moment, see which assumptions their strategy depends on, and
+understand how new evidence should change the decision.
 
-**Agnes does that job.** Three things, continuously:
+It does three things, continuously:
 
-- **Validate** — what has to be true for this to work, and does the evidence actually
-  support it, or is it just unexamined?
+- **Validate** — what has to be true for this to work, and does the evidence support it,
+  or has nobody actually checked?
 - **Simulate** — run the alternatives in parallel against the same evidence. Change the
-  variables, change how the bet is built, and see which version the evidence supports.
+  variables and see which version the evidence supports.
 - **Monitor** — re-score every time something new is published, and say when the case has
   changed enough to act.
 
-Same information those people would have. Without forgetting what was originally assumed.
+That is the work a strategy department does. Agnes does it without forgetting what was
+originally assumed.
 
 We tested it on Zillow's 2021 bet on buying homes, because the evidence is public and
 anyone can check our work. Inside a company, Agnes would have the internal numbers too.
