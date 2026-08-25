@@ -166,3 +166,55 @@ risk-only score, so it depends on the scoring fix.
 **Why this matters beyond Zillow:** a decision tool that is confident about the wrong
 things is worse than one that admits uncertainty everywhere. This is a real defect class,
 and it only became visible after building the confidence layer and looking at the output.
+
+---
+
+## The agentic layer — Mary's formulation
+
+> 1. You ask Agnes an unstructured strategic question.
+> 2. Agnes determines what it needs to know.
+> 3. It interviews you for internal context.
+> 4. It researches the relevant external context.
+> 5. It constructs and evaluates the decision.
+> 6. It remembers the reasoning and monitors whether it continues to hold.
+
+**Why this is not a feature but the viability answer.** Today measured the input cost: one
+strategist, one working day, six assumptions and eight evidence items, for one bet. Step 3
+is what collapses that. Without it, Agnes requires the strategic work it exists to help
+perform.
+
+**Two layers, complementary:**
+- What exists now = the **state** layer. Given a structured decision, evaluate it over time
+  with dated provenance.
+- What is described above = the **construction and maintenance** layer.
+
+**The graph is what makes the agent trustworthy.** An agent that proposes assumptions is
+doing strategy. The graph records *who proposed what and when* — `declared_by` and
+`declared_on` already exist on every assumption — so the influence is auditable instead of
+invisible.
+
+### Risks, in order of severity
+
+**1 · Anchoring.** If Agnes proposes and the human approves, Agnes decided. Design
+constraints: elicit the user's assumptions *before* revealing Agnes's; generate competing
+framings rather than one authoritative framing; require at least one assumption Agnes did
+not propose.
+
+**2 · Step 4 is the hardest engineering problem in the product.** Automatic external
+research means getting publication vintages right. It took a full afternoon to do this
+correctly for *two* Case-Shiller releases, and the thesis's forbidden list exists precisely
+because this is easy to get wrong. An agent that mis-dates `public_from` destroys the
+point-in-time property, which everything else rests on.
+
+**3 · Step 6 needs persistence.** Assessments stored and diffed, with each change attributed
+to the evidence that caused it. Designed, not built.
+
+### What already supports it
+
+| Built today | Feeds |
+|---|---|
+| `MissingEvidence` nodes | what the agent should ask about |
+| `WorldIndicator` panel with `NOT_LOADED` | what the agent should go and find |
+| Decision-health KPIs | which gap the agent should close first |
+| `declared_by` / `declared_on` on assumptions | the anchoring audit trail |
+| `origin` INTERNAL/EXTERNAL | which of steps 3 and 4 supplied each fact |
