@@ -1,0 +1,271 @@
+<title>Agnes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap">
+<style>
+:root{
+  --paper:#FBFBF9; --ink:#14161A; --mute:#6E747C; --rule:#E2E2DD;
+  --red:#B3271A; --redsoft:#F3E2DF; --blue:#12456F; --bluesoft:#E6EDF3;
+  --ff:Archivo,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#12140F; --ink:#F2F1EC; --mute:#9AA0A6; --rule:#2E3138;
+  --red:#E8705C; --redsoft:#2A1A16; --blue:#8FB6D8; --bluesoft:#16212C;}}
+:root[data-theme="dark"]{
+  --paper:#12140F; --ink:#F2F1EC; --mute:#9AA0A6; --rule:#2E3138;
+  --red:#E8705C; --redsoft:#2A1A16; --blue:#8FB6D8; --bluesoft:#16212C;}
+
+*{box-sizing:border-box;font-family:var(--ff);margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-variant-numeric:tabular-nums;
+ -webkit-font-smoothing:antialiased;overflow:hidden}
+
+.slide{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;
+ padding:clamp(40px,6vw,90px);padding-bottom:clamp(90px,10vw,130px)}
+.slide.on{display:flex}
+
+.eyebrow{font-size:clamp(13px,1.15vw,17px);font-weight:600;letter-spacing:.22em;
+ text-transform:uppercase;color:var(--mute);margin-bottom:clamp(20px,2.4vw,34px)}
+.big{font-size:clamp(38px,5.6vw,86px);font-weight:800;line-height:1.02;letter-spacing:-.03em;
+ max-width:19ch;text-wrap:balance}
+.mid{font-size:clamp(24px,3vw,46px);font-weight:600;line-height:1.18;letter-spacing:-.02em;
+ max-width:24ch;text-wrap:balance}
+.sub{font-size:clamp(19px,1.9vw,30px);line-height:1.45;color:var(--mute);
+ max-width:34ch;margin-top:clamp(20px,2.2vw,34px)}
+.sub b{color:var(--ink);font-weight:600}
+.red{color:var(--red)}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;height:clamp(64px,7vw,88px);
+ display:flex;align-items:center;gap:22px;padding:0 clamp(40px,6vw,90px);z-index:20}
+.dots{display:flex;gap:9px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--rule);cursor:pointer}
+.dot.on{background:var(--ink)}
+.nav .sp{margin-left:auto;display:flex;gap:10px}
+button{font-size:clamp(14px,1.15vw,17px);font-weight:600;padding:11px 20px;border:none;
+ border-radius:999px;background:transparent;color:var(--mute);cursor:pointer}
+button:hover{color:var(--ink)}
+button.pri{background:var(--ink);color:var(--paper)}
+button.pri:hover{opacity:.86;color:var(--paper)}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* ---- timeline slide ---- */
+#s6{justify-content:flex-start;padding-top:clamp(28px,3.4vw,52px)}
+.tlhead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:clamp(14px,1.6vw,24px)}
+.tldate{font-size:clamp(30px,3.6vw,54px);font-weight:800;letter-spacing:-.025em}
+.tlhint{font-size:clamp(13px,1.05vw,16px);color:var(--mute)}
+
+.verdict{font-size:clamp(20px,2.3vw,34px);font-weight:700;letter-spacing:-.015em;
+ display:flex;align-items:center;gap:14px;min-height:1.5em}
+.verdict .who{font-size:clamp(11px,.85vw,13px);font-weight:600;letter-spacing:.2em;
+ text-transform:uppercase;color:var(--mute);width:78px;flex-shrink:0}
+.verdict.alarm{color:var(--red)}
+.vsub{font-size:clamp(14px,1.2vw,19px);color:var(--mute);margin-left:92px;line-height:1.4}
+
+.tl{position:relative;flex:1;min-height:200px;margin:clamp(14px,1.8vw,26px) 0;
+ cursor:ew-resize;touch-action:none;user-select:none}
+.tl:focus-visible{outline:3px solid var(--blue);outline-offset:6px}
+.axis{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule)}
+.mon{position:absolute;top:calc(50% + 12px);transform:translateX(-50%);
+ font-size:clamp(11px,.9vw,14px);color:var(--mute)}
+.head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.22}
+.knob{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;
+ background:var(--paper);border:3px solid var(--ink);z-index:5}
+.ev{position:absolute;width:0}
+.ev .dt{position:absolute;left:-4px;width:8px;height:8px;border-radius:50%;top:-4px}
+.ev.a .dt{background:var(--blue)} .ev.z .dt{background:var(--mute)}
+.ev.a.hot .dt{background:var(--red);width:12px;height:12px;left:-6px;top:-6px}
+.ev .lb{position:absolute;width:150px;font-size:clamp(13px,1.05vw,16px);line-height:1.3}
+.ev .lb i{display:block;font-style:normal;font-size:clamp(11px,.85vw,13px);
+ color:var(--mute);margin-bottom:3px}
+.ev.a .lb{color:var(--blue)} .ev.z .lb{color:var(--mute)}
+.ev.a.hot .lb{color:var(--red);font-weight:600}
+.ev.fut{opacity:.14} .ev.fut .lb{visibility:hidden}
+
+.count{font-size:clamp(15px,1.35vw,21px);color:var(--red);font-weight:600;min-height:1.4em}
+.count b{font-size:clamp(24px,2.6vw,40px);font-weight:800;letter-spacing:-.02em}
+.count.none{color:var(--mute);font-weight:400}
+
+/* ---- finding slide ---- */
+.rows{display:flex;flex-direction:column;gap:clamp(16px,2vw,30px);margin-top:clamp(24px,3vw,44px)}
+.row{display:flex;align-items:baseline;gap:clamp(18px,2vw,32px)}
+.row .n{font-size:clamp(40px,5vw,78px);font-weight:800;letter-spacing:-.03em;
+ color:var(--red);width:4.6ch;text-align:right;flex-shrink:0}
+.row .t{font-size:clamp(17px,1.6vw,25px);line-height:1.3;color:var(--mute)}
+.row .t b{color:var(--ink);font-weight:600;display:block}
+</style>
+
+<!-- 1 -->
+<section class="slide on" id="s1">
+  <div class="eyebrow">Project Agnes</div>
+  <h1 class="big">A big bet fails, and nobody can say what was known at the time.</h1>
+  <p class="sub">Agnes writes down <b>what has to be true</b> for a bet to work — then keeps checking it as evidence arrives.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide" id="s2">
+  <div class="eyebrow">One &nbsp;·&nbsp; Validate</div>
+  <h2 class="big">What has to be true for this to work?</h2>
+  <p class="sub">Strategy decks list goals, not the conditions underneath them.<br><b>If nobody writes down what must be true, nobody notices when it stops being true.</b></p>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="s3">
+  <div class="eyebrow">Two &nbsp;·&nbsp; Simulate</div>
+  <h2 class="big">If this breaks, what does it cost?</h2>
+  <p class="sub">The same failure costs wildly different amounts depending on how the bet was built.<br><b>Owning seven thousand houses fails very differently from referring buyers to a partner.</b></p>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="s4">
+  <div class="eyebrow">Three &nbsp;·&nbsp; Monitor</div>
+  <h2 class="big">Has anything changed enough to act?</h2>
+  <p class="sub">The evidence that kills a bet arrives slowly, inside ordinary quarterly filings.<br><b>Nobody re-reads the original reasoning each time a new one lands.</b></p>
+</section>
+
+<!-- 5 -->
+<section class="slide" id="s5">
+  <div class="eyebrow">The rule that makes it honest</div>
+  <h2 class="big">Agnes only sees what was public that day.</h2>
+  <p class="sub">Nothing from later. Move the date and she recomputes from nothing.<br><b>So this is what could genuinely have been known — not what we know now.</b></p>
+</section>
+
+<!-- 6 · timeline -->
+<section class="slide" id="s6">
+  <div class="tlhead">
+    <div class="tldate" id="now"></div>
+    <div class="tlhint">Drag, or use ← →</div>
+  </div>
+  <div class="verdict" id="vA"><span class="who">Agnes</span><span id="vAt"></span></div>
+  <div class="vsub" id="vAs"></div>
+  <div class="tl" id="tl" tabindex="0" role="slider" aria-label="Date">
+    <div class="head" id="head"></div><div class="axis"></div>
+    <div id="months"></div><div id="marks"></div>
+    <div class="knob" id="knob"></div>
+  </div>
+  <div class="verdict" id="vZ"><span class="who">Zillow</span><span id="vZt"></span></div>
+  <div class="vsub" id="vZs"></div>
+  <div class="count" id="count" style="margin-top:clamp(14px,1.6vw,24px)"></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" id="s7">
+  <div class="eyebrow">What Agnes found</div>
+  <h2 class="mid">Every warning came first. Every reaction came late.</h2>
+  <div class="rows">
+    <div class="row"><div class="n">278</div><div class="t"><b>days</b>from “homes may sit unsold too long” until Zillow paused buying</div></div>
+    <div class="row"><div class="n">175</div><div class="t"><b>days</b>from “price predictions look unreliable” until Zillow shut it down, blaming exactly that</div></div>
+    <div class="row"><div class="n">0</div><div class="t"><b>times</b>Zillow ever published evidence that it could predict resale prices</div></div>
+  </div>
+</section>
+
+<nav class="nav">
+  <div class="dots" id="dots"></div>
+  <div class="sp"><button id="prev">Back</button><button class="pri" id="next">Next</button></div>
+</nav>
+
+<script>
+const N=7; let i=1;
+const dots=document.getElementById("dots");
+for(let k=1;k<=N;k++){const d=document.createElement("div");d.className="dot";d.onclick=()=>go(k);dots.appendChild(d)}
+function go(n){
+  i=Math.max(1,Math.min(N,n));
+  for(let k=1;k<=N;k++)document.getElementById("s"+k).classList.toggle("on",k===i);
+  [...dots.children].forEach((d,k)=>d.classList.toggle("on",k+1===i));
+  document.getElementById("prev").disabled=i===1;
+  document.getElementById("next").textContent=i===N?"Done":"Next";
+  if(i===6){draw();document.getElementById("tl").focus()}
+}
+document.getElementById("next").onclick=()=>go(i+1);
+document.getElementById("prev").onclick=()=>go(i-1);
+
+/* ---------- timeline ---------- */
+const T0=new Date("2020-12-01"),T1=new Date("2021-11-30"),SPAN=(T1-T0)/864e5;
+const dn=s=>Math.round((new Date(s)-T0)/864e5), pc=s=>dn(s)/SPAN*100;
+const nice=s=>new Date(s+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+const addD=n=>new Date(T0.getTime()+n*864e5).toISOString().slice(0,10);
+
+const AG=[{d:"2021-01-13",t:"Homes may sit unsold too long",lane:0},
+ {d:"2021-02-10",t:"Losing money on each home",lane:1},
+ {d:"2021-05-11",t:"Price predictions look unreliable",lane:0,hot:1},
+ {d:"2021-07-27",t:"House prices at an all-time record",lane:1,hot:1},
+ {d:"2021-08-05",t:"Stop buying and reassess",lane:0,hot:1}];
+const ZI=[{d:"2021-02-10",t:"“Investing aggressively”",lane:0},
+ {d:"2021-08-05",t:"Bought more than they sold",lane:0},
+ {d:"2021-10-18",t:"Paused buying, blaming capacity",lane:1},
+ {d:"2021-11-02",t:"Shut it down, blaming price predictions",lane:0}];
+const G=[{a:"2021-01-13",t:"homes may sit unsold too long",z:"2021-10-18"},
+ {a:"2021-05-11",t:"price predictions look unreliable",z:"2021-11-02"},
+ {a:"2021-08-05",t:"stop buying and reassess",z:"2021-10-18"}];
+
+let cur=dn("2021-01-05");
+
+document.getElementById("months").innerHTML=
+ ["2021-01-01","2021-03-01","2021-05-01","2021-07-01","2021-09-01","2021-11-01"]
+ .map(m=>"<div class='mon' style='left:"+pc(m)+"%'>"+
+  new Date(m).toLocaleDateString("en-GB",{month:"short"})+"</div>").join("");
+
+function ev(m,k){
+  const up=k==="a", off=m.lane?1:0;
+  const y=up?`bottom:calc(50% + ${28+off*74}px)`:`top:calc(50% + ${28+off*74}px)`;
+  const edge=pc(m.d)>80?"right:-6px":"left:-8px";
+  return `<div class='ev ${k}${m.hot?" hot":""}' data-d='${m.d}' style='left:${pc(m.d)}%;top:50%'>`+
+   `<div class='dt'></div><div class='lb' style='${y};${edge}'><i>${nice(m.d)}</i>${m.t}</div></div>`;
+}
+document.getElementById("marks").innerHTML=AG.map(m=>ev(m,"a")).join("")+ZI.map(m=>ev(m,"z")).join("");
+
+function draw(){
+  const d=addD(cur);
+  document.getElementById("now").textContent=nice(d);
+  const px=(cur/SPAN*100)+"%";
+  document.getElementById("head").style.left=px;
+  document.getElementById("knob").style.left=px;
+  document.querySelectorAll(".ev").forEach(e=>e.classList.toggle("fut",e.dataset.d>d));
+
+  const stop=d>="2021-08-05", alert=d>="2021-05-11";
+  const vA=document.getElementById("vA");
+  vA.className="verdict"+(alert?" alarm":"");
+  document.getElementById("vAt").textContent=
+    stop?"Stop buying and reassess":alert?"Verify price predictions before buying more":"Keep going, with conditions";
+  document.getElementById("vAs").textContent=
+    stop?"The $1bn inventory limit set in February has been crossed.":
+    alert?"A competitor just said its profits depend on prices continuing to rise.":
+    "Nothing has crossed a pre-set limit yet.";
+
+  const open=G.filter(g=>d>=g.a&&d<g.z);
+  const vZ=document.getElementById("vZ");
+  let zt,zs;
+  if(d>="2021-11-02"){zt="Shut it down";zs="Blaming the unpredictability of price forecasting."}
+  else if(d>="2021-10-18"){zt="Paused buying";zs="Blaming capacity — 74 days after Agnes said stop."}
+  else if(open.length){zt="Still buying";zs="Agnes advised “"+open[open.length-1].t+"”. Not done."}
+  else {zt="Still buying";zs="Nothing announced."}
+  vZ.className="verdict"+(open.length&&stop?" alarm":"");
+  document.getElementById("vZt").textContent=zt;
+  document.getElementById("vZs").textContent=zs;
+
+  const c=document.getElementById("count");
+  if(!open.length){c.className="count none";c.textContent=d>="2021-10-18"?"Every warning finally acted on.":"No warning raised yet."}
+  else{
+    const g=open[0], days=Math.round((new Date(d)-new Date(g.a))/864e5);
+    c.className="count";
+    c.innerHTML="<b>"+days+" days</b> since Agnes warned “"+g.t+"”, and Zillow has not acted";
+  }
+}
+
+const tl=document.getElementById("tl");
+const setX=x=>{const r=tl.getBoundingClientRect();
+ cur=Math.max(0,Math.min(SPAN,Math.round((x-r.left)/r.width*SPAN)));draw()};
+let down=false;
+tl.addEventListener("pointerdown",e=>{down=true;tl.setPointerCapture(e.pointerId);setX(e.clientX)});
+tl.addEventListener("pointermove",e=>{if(down)setX(e.clientX)});
+tl.addEventListener("pointerup",()=>down=false);
+tl.addEventListener("pointercancel",()=>down=false);
+
+addEventListener("keydown",e=>{
+  if(i===6&&(e.key==="ArrowRight"||e.key==="ArrowLeft")){
+    cur=Math.max(0,Math.min(SPAN,cur+(e.key==="ArrowRight"?4:-4)));draw();e.preventDefault();return}
+  if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown")go(i+1);
+  if(e.key==="ArrowLeft"||e.key==="PageUp")go(i-1);
+});
+go(1);
+</script>
