@@ -13,9 +13,17 @@ We tested it on a real, resolved decision: Zillow's 2021 bet on buying homes dir
 Every piece of evidence carries the date it became public, and the graph refuses to return
 anything published later. Moving the date recomputes the whole assessment from scratch.
 
-The finding: Zillow's own filings never once addressed the assumption its CEO later blamed
-for shutting the business down. External evidence challenged that assumption from January
-onward. Zillow's first public retreat came in October.
+**The finding.** Zillow had far more data than this graph does. What it did not have was a written record
+of what the bet depended on, checked as the world moved.
+
+The assumption that ended the company — that it could predict what a home would resell for
+— was never tested in anything Zillow published. Every signal about it came from outside:
+a competitor's filing in May stating its own profits depended on prices continuing to
+rise; record price data in July that put the model outside anything it was calibrated on.
+Zillow retreated in October.
+
+This was not an information failure. It was a monitoring failure — nobody was checking
+whether the original reasoning still held. That is the kind you can build a tool for.
 
 ## Team Lead Name and Email
 Mary Rojas — mcrw.de@gmail.com
