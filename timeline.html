@@ -52,13 +52,21 @@ h1{font-size:21px;font-weight:700;margin:0}
 .mon{position:absolute;top:207px;transform:translateX(-50%);font-size:11px;
  color:var(--faint);z-index:2}
 /* playhead: faint line behind the labels, plus a white handle on the axis */
-.span{position:absolute;top:222px;height:34px;z-index:5;border-radius:4px;
+.span{position:absolute;top:230px;height:22px;z-index:5;border-radius:4px;
  background:var(--redbg);border:1px solid var(--red);border-right-width:3px;
- display:flex;align-items:center;justify-content:flex-end;padding-right:12px;
  transition:width .12s ease,left .12s ease}
-.span .cap{font-weight:700;font-size:12.5px;color:var(--red);text-align:right;
- line-height:1.25;max-width:100%}
+.span .cap{position:absolute;top:0;line-height:20px;white-space:nowrap;
+ font-weight:700;font-size:12.5px;color:var(--red)}
+.span .cap.out{left:100%;margin-left:10px}
+.span .cap.in{right:10px}
 .span.hide{display:none}
+.shouldve{position:absolute;top:262px;z-index:6;transform:translateX(-50%);
+ display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.shouldve .arw{font-size:17px;color:var(--red);line-height:1}
+.shouldve .txt{margin-top:2px;font-weight:700;font-size:11.5px;color:var(--red);
+ background:var(--redbg);border:1px solid var(--red);border-radius:20px;
+ padding:3px 11px;white-space:nowrap}
+.shouldve.hide{display:none}
 .head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.18;z-index:1;pointer-events:none}
 .knob{position:absolute;top:184px;left:0;width:22px;height:22px;margin-left:-11px;border-radius:50%;
  background:#fff;border:3px solid var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.35);
@@ -104,8 +112,8 @@ h2{font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase
 .gap.idle .num{color:var(--faint)}
 
 /* ===== beliefs ===== */
-.low{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;margin-top:30px}
-@media(max-width:900px){.low{grid-template-columns:1fr}}
+.low{display:block;margin-top:30px}
+.low>div+div{margin-top:28px}
 .row{display:flex;align-items:center;gap:12px;padding:9px 14px;border-radius:8px;background:var(--card);
  border:1px solid var(--line);margin-bottom:6px}
 .row .w{flex:1;font-size:14.5px}
@@ -118,9 +126,11 @@ h2{font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase
 .verd.alarm{border-color:var(--red);background:var(--redbg)}
 .verd .h{font-size:18px;font-weight:700}.verd.alarm .h{color:var(--red)}
 .verd .s{font-size:13.5px;color:var(--soft);margin-top:2px}
-.note{font-size:13px;color:var(--soft);background:var(--card);border:1px solid var(--line);
- border-left:3px solid var(--ag);border-radius:6px;padding:11px 13px}
-.note b{color:var(--ink)}
+.note{font-size:15.5px;line-height:1.55;color:var(--soft);background:var(--card);
+ border:1px solid var(--line);border-left:4px solid var(--ag);border-radius:8px;padding:18px 22px}
+.note b{color:var(--ink);font-weight:700}
+.note p{margin:0 0 12px}
+.note p:last-child{margin:0}
 </style>
 
 <div class="wrap">
@@ -138,10 +148,10 @@ h2{font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase
   <div class="stamp bot" id="zstamp"><div class="tag">Zillow</div><div><div class="h" id="zh"></div><div class="s" id="zs"></div></div></div>
 
   <div class="low">
-    <div><h2>What has to be true</h2><div id="beliefs"></div></div>
-    <div><h2>Why</h2>
+    <div><h2>Why this matters</h2>
       <div class="verd" id="verd" hidden><div class="h" id="vh"></div><div class="s" id="vs"></div></div>
       <div class="note" id="note"></div></div>
+    <div><h2>What has to be true</h2><div id="beliefs"></div></div>
   </div>
 </div>
 
@@ -204,7 +214,10 @@ function box(m,k){
 }
 document.getElementById("marks").innerHTML=AG.map(m=>box(m,"a")).join("")+ZI.map(m=>box(m,"z")).join("");
 
-document.getElementById("glines").innerHTML="<div class='span hide' id='span'><span class='cap'></span></div>";
+document.getElementById("glines").innerHTML=
+ "<div class='span hide' id='span'><span class='cap'></span></div>"+
+ "<div class='shouldve hide' id='shouldve'><span class='arw'>&#9650;</span>"+
+ "<span class='txt'>Zillow should have acted here</span></div>";
 const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
 
 function draw(){
@@ -223,14 +236,30 @@ function draw(){
 
   const openNow=G.filter(g=>d>=g.a&&d<g.z).sort((x,y)=>x.a.localeCompare(y.a));
   const sp=document.getElementById("span");
-  if(!openNow.length){ sp.classList.add("hide"); }
+  const sv=document.getElementById("shouldve");
+  if(!openNow.length){ sp.classList.add("hide"); sv.classList.add("hide"); }
   else{
     const g=openNow[0], days=Math.round((new Date(d)-new Date(g.a))/864e5);
     sp.classList.remove("hide");
     sp.style.left=pc(g.a)+"%";
     sp.style.width=Math.max(0,(cur - dn(g.a))/SPAN*100)+"%";
-    sp.querySelector(".cap").textContent=
-      "Agnes warned \u201c"+g.at.toLowerCase()+"\u201d "+days+" days ago \u2014 Zillow has not acted";
+    const cap=sp.querySelector(".cap");
+    const tr=document.getElementById("tl").getBoundingClientRect();
+    const full=days+" days since Agnes warned \u201c"+g.at.toLowerCase()+"\u201d, and Zillow has not acted";
+    const mid=days+" days, no action on \u201c"+g.at.toLowerCase()+"\u201d";
+    const brief=days+" days, no action";
+    const fits=()=>{const r=cap.getBoundingClientRect();return r.left>=tr.left+6&&r.right<=tr.right-6};
+    let done=false;
+    for(const txt of [full,mid,brief]){
+      for(const side of ["out","in"]){
+        cap.textContent=txt; cap.className="cap "+side;
+        if(fits()){done=true;break}
+      }
+      if(done)break;
+    }
+    sv.classList.remove("hide");
+    sv.style.left=pc(g.a)+"%";
+    sv.querySelector(".txt").textContent="Zillow should have acted here";
   }
 
   let bad=0,worldOnlyF=false,html="";
@@ -269,21 +298,24 @@ function draw(){
   let zh,zsub;
   if(d>="2021-11-02"){zh="Shut the business down";zsub="Blaming the unpredictability of price forecasting."}
   else if(d>="2021-10-18"){zh="Paused buying homes";zsub="Blaming capacity, 74 days after Agnes said stop."}
-  else if(past.length){zh="Still buying";zsub="Latest: "+past[past.length-1].t.replace(/[“”]/g,'\'')+" ("+nice(past[past.length-1].d)+")."}
+  else if(past.length){zh="Still buying";zsub="Latest: "+past[past.length-1].t.replace(/[\u201c\u201d]/g,'\'')+" ("+nice(past[past.length-1].d)+")."}
   else {zh="Still buying";zsub="Nothing announced yet."}
   const open=G.filter(g=>d>=g.a&&d<g.z).sort((x,y)=>y.w-x.w||x.a.localeCompare(y.a));
-  if(open.length){
+  if(open.length&&d<"2021-10-18"){
     const top=open[0], ago=Math.round((new Date(d)-new Date(top.a))/864e5);
+    zh="Still buying \u2014 despite \u201c"+top.at.toLowerCase()+"\u201d";
     zsub="Agnes advised: "+top.rec+" \u2014 "+ago+" days ago. Zillow has not done it."
-      +(open.length>1?" ("+open.length+" warnings unanswered.)":"");
+      +(open.length>1?" "+open.length+" warnings unanswered in total.":"");
   }
   zs.className="stamp bot"+(fired&&d<"2021-10-18"?" alarm":"");
   document.getElementById("zh").textContent=zh;
   document.getElementById("zs").textContent=zsub;
 
   document.getElementById("note").innerHTML=worldOnlyF
-    ?"<b>Zillow has never said anything</b> about whether it can predict resale prices — everything Agnes knows came from outside the company. That is the reason its CEO gave for shutting the business down."
-    :"Drag forward to watch the evidence arrive.";
+    ?"<p>Zillow's whole business depended on one thing: being able to predict what a home would resell for. <b>In everything Zillow published, it never once showed evidence that it could.</b></p>"+
+     "<p>Every single thing Agnes knows about that question came from outside the company \u2014 a competitor's results, national price data, industry reports. The company itself stayed silent on it, at every date on this timeline.</p>"+
+     "<p><b>On 2 November 2021 Zillow shut the business down, and its CEO gave exactly that as the reason:</b> home prices had turned out to be far less predictable than they had assumed.</p>"
+    :"<p>Drag the timeline forward and watch the evidence arrive. Agnes only ever uses what was public on the date you are looking at \u2014 nothing from later.</p>";
 }
 
 const tl=document.getElementById("tl");
