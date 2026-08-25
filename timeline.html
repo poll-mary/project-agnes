@@ -1,0 +1,278 @@
+<title>Agnes</title>
+<style>
+:root{--bg:#fafbfc;--card:#fff;--ink:#14171b;--soft:#69727c;--faint:#9aa3ad;--line:#e3e7eb;
+--ag:#1f4e79;--agbg:#e9f0f7;--zi:#7a4a17;--zibg:#f8f1e6;
+--red:#c0392b;--redbg:#fdeeeb;--green:#1f7a5c;--greenbg:#e9f4f0;--amb:#8a5a10;--ambbg:#fbf2e0;--greybg:#f0f2f4;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1216;--card:#171b21;--ink:#e9edf1;
+--soft:#98a2ad;--faint:#6a737d;--line:#282f37;--ag:#78acd8;--agbg:#16222e;--zi:#d1a05f;--zibg:#251d12;
+--red:#e28368;--redbg:#2a1c18;--green:#63b092;--greenbg:#16231f;--amb:#d3a04a;--ambbg:#282116;--greybg:#1d222a;}}
+:root[data-theme="dark"]{--bg:#0f1216;--card:#171b21;--ink:#e9edf1;--soft:#98a2ad;--faint:#6a737d;
+--line:#282f37;--ag:#78acd8;--agbg:#16222e;--zi:#d1a05f;--zibg:#251d12;--red:#e28368;--redbg:#2a1c18;
+--green:#63b092;--greenbg:#16231f;--amb:#d3a04a;--ambbg:#282116;--greybg:#1d222a;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:400 16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 24px 60px}
+.hdr{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:21px;font-weight:700;margin:0;letter-spacing:-.01em}
+.hdr .q{font-size:15px;color:var(--soft)}
+.hdr .now{margin-left:auto;font:600 24px ui-monospace,SFMono-Regular,Menlo,monospace;
+ font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---------- timeline ---------- */
+.tl{position:relative;height:350px;margin:0 0 8px;user-select:none;touch-action:none;cursor:ew-resize}
+.tl:focus-visible{outline:3px solid var(--ag);outline-offset:6px;border-radius:6px}
+.axis{position:absolute;left:0;right:0;top:150px;height:2px;background:var(--line)}
+.mon{position:absolute;top:157px;transform:translateX(-50%);font-size:11px;color:var(--faint);
+ letter-spacing:.04em;white-space:nowrap}
+.mon i{position:absolute;left:50%;top:-9px;width:1px;height:7px;background:var(--line);display:block}
+.lane{position:absolute;left:0;right:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.lane.a{top:2px;color:var(--ag)}
+.lane.z{top:336px;color:var(--zi)}
+
+.mk{position:absolute;top:0;height:350px;width:0}
+.mk .dot{position:absolute;left:-7px;width:14px;height:14px;border-radius:50%;border:3px solid var(--bg);
+ transition:transform .15s ease;cursor:pointer;pointer-events:auto}
+.mk{pointer-events:none}
+.mk .stem{position:absolute;left:-1px;width:2px;background:var(--line)}
+.mk .lbl{position:absolute;width:172px;font-size:12.5px;line-height:1.32;padding:7px 9px;border-radius:7px;
+ transition:opacity .18s ease}
+.mk .lbl .d{display:block;font:600 10.5px ui-monospace,Menlo,monospace;letter-spacing:.03em;opacity:.75;margin-bottom:2px}
+/* agnes above */
+.mk.a .dot{background:var(--ag);top:144px}
+.mk.a .stem{top:130px;height:14px}
+.mk.a .lbl{bottom:220px;background:var(--agbg);color:var(--ag);border:1px solid transparent}
+.mk.a.fire .dot{background:var(--red)}
+.mk.a.fire .lbl{background:var(--redbg);color:var(--red);border-color:var(--red);font-weight:600}
+/* zillow below */
+.mk.z .dot{background:var(--zi);top:144px}
+.mk.z .stem{top:222px;height:24px}
+.mk.z .lbl{top:248px;background:var(--zibg);color:var(--zi);border:1px solid transparent}
+/* future = invisible content, dot only */
+.mk.future .dot{background:var(--line);transform:scale(.55)}
+.mk.future .lbl,.mk.future .stem{opacity:0;pointer-events:none}
+.mk.quiet .lbl,.mk.quiet .stem{opacity:0;pointer-events:none}
+.mk.quiet .dot{transform:scale(.72)}
+.mk:hover .lbl,.mk:hover .stem{opacity:1!important}
+.mk:hover .lbl{z-index:9}
+
+/* waiting connectors */
+.wait{position:absolute;height:0;border-top:2px dashed var(--red);opacity:.85}
+.wait b{position:absolute;left:50%;top:-11px;transform:translateX(-50%);
+ background:var(--redbg);color:var(--red);border:1px solid var(--red);border-radius:20px;
+ padding:2px 11px;font:700 12px ui-monospace,Menlo,monospace;white-space:nowrap}
+.wait.done{border-top-style:solid;opacity:.5}
+.wait.done b{background:var(--card);border-color:var(--line);color:var(--soft);font-weight:500}
+
+.head{position:absolute;top:0;bottom:0;width:2px;background:var(--ink);pointer-events:none}
+.head::after{content:"";position:absolute;left:-6px;top:144px;width:14px;height:14px;
+ background:var(--ink);border-radius:3px;transform:rotate(45deg)}
+
+.hint{font-size:13px;color:var(--faint);margin:0 0 26px}
+
+/* ---------- lower panels ---------- */
+.grid{display:grid;grid-template-columns:1.35fr 1fr;gap:22px}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+h2{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0 0 10px}
+.row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--card);
+ border:1px solid var(--line);margin-bottom:6px}
+.row .w{flex:1;font-size:15px;min-width:150px}
+.row .t{font-size:13px;font-weight:600;padding:3px 10px;border-radius:14px;white-space:nowrap}
+.t.bad{background:var(--redbg);color:var(--red)}
+.t.warn{background:var(--ambbg);color:var(--amb)}
+.t.good{background:var(--greenbg);color:var(--green)}
+.t.none{background:var(--greybg);color:var(--faint)}
+.row .o{font-size:12.5px;color:var(--faint);width:104px;text-align:right;flex-shrink:0}
+.row .o.only{color:var(--ag);font-weight:700}
+.verd{border:2px solid var(--line);background:var(--card);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.verd.alarm{border-color:var(--red);background:var(--redbg)}
+.verd .h{font-size:19px;font-weight:700;margin-bottom:3px}
+.verd.alarm .h{color:var(--red)}
+.verd .s{font-size:14px;color:var(--soft)}
+.note{font-size:13.5px;color:var(--soft);background:var(--card);border:1px solid var(--line);
+ border-left:3px solid var(--ag);border-radius:6px;padding:12px 14px}
+.note b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <div class="hdr">
+    <h1>Agnes</h1>
+    <span class="q">Should Zillow keep buying homes?</span>
+    <span class="now" id="now"></span>
+  </div>
+
+  <div class="tl" id="tl" tabindex="0" role="slider" aria-label="Drag through time" aria-valuemin="0" aria-valuemax="364">
+    <div class="lane a">Agnes</div>
+    <div class="axis"></div>
+    <div id="months"></div>
+    <div id="waits"></div>
+    <div id="marks"></div>
+    <div class="lane z">Zillow</div>
+    <div class="head" id="head"></div>
+  </div>
+  <p class="hint">Drag anywhere on the timeline. Nothing to the right of the marker is readable — Agnes can't see the future either.</p>
+
+  <div class="grid">
+    <div>
+      <h2>What has to be true</h2>
+      <div id="beliefs"></div>
+    </div>
+    <div>
+      <h2>Agnes says</h2>
+      <div class="verd" id="verd"><div class="h" id="vh"></div><div class="s" id="vs"></div></div>
+      <div class="note" id="note"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const T0=new Date("2020-12-01"), T1=new Date("2021-11-30");
+const SPAN=(T1-T0)/864e5;
+const dnum=s=>Math.round((new Date(s)-T0)/864e5);
+const pct=s=>dnum(s)/SPAN*100;
+const nice=s=>new Date(s+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+const addD=n=>new Date(T0.getTime()+n*864e5).toISOString().slice(0,10);
+
+const A=[{id:"F",t:"We can predict resale prices"},{id:"T",t:"We can renovate and resell fast enough"},
+ {id:"U",t:"We make money on each home"},{id:"L",t:"We can offload homes if the market turns"},
+ {id:"C",t:"We can afford to keep buying"},{id:"D",t:"People want instant cash offers"}];
+
+const E=[
+ {d:"2020-02-19",x:null,o:"co",b:{L:-2,T:-1}},
+ {d:"2020-12-29",x:"2021-01-26",o:"w",b:{D:1,F:-1}},
+ {d:"2021-01-13",x:"2021-07-14",o:"w",b:{T:-2,U:-1}},
+ {d:"2021-01-22",x:"2021-07-22",o:"w",b:{D:2,F:-1}},
+ {d:"2021-01-26",x:"2021-07-27",o:"w",b:{D:1,F:-1}},
+ {d:"2021-02-04",x:null,o:"w",b:{D:1}},
+ {d:"2021-02-10",x:null,o:"co",b:{U:-2,D:2,C:2}},
+ {d:"2021-02-12",x:null,o:"co",b:{L:-1}},
+ {d:"2021-05-11",x:null,o:"w",b:{U:1,F:-2,T:-1}},
+ {d:"2021-07-14",x:null,o:"w",b:{T:-2,U:-1}},
+ {d:"2021-07-22",x:null,o:"w",b:{D:2,F:-2}},
+ {d:"2021-07-27",x:null,o:"w",b:{D:1,F:-2}},
+ {d:"2021-07-30",x:null,o:"w",b:{D:-1}},
+ {d:"2021-08-05",x:null,o:"co",b:{T:-1,D:2,L:-2,C:-2}}];
+
+const AG=[
+ {d:"2021-01-13",t:"Resell speed now in doubt",s:"Fed reports builder shortages and delays"},
+ {d:"2021-02-10",t:"Losing money per home",s:"Zillow's own Q4 results"},
+ {d:"2021-05-11",t:"Price prediction in trouble",s:"Rival admits profits need rising prices",fire:1},
+ {d:"2021-07-27",t:"Prices outside anything the model has seen",s:"S&P declares an all-time record",fire:1},
+ {d:"2021-08-05",t:"STOP AND REASSESS",s:"$1bn inventory limit set in February is crossed",fire:1}];
+
+const ZI=[
+ {d:"2021-02-10",t:"“Investing aggressively”",s:"Q4 results"},
+ {d:"2021-02-12",t:"Annual report filed",s:""},
+ {d:"2021-08-05",t:"Bought more than they sold",s:"Q2: inventory doubled"},
+ {d:"2021-10-18",t:"Pauses buying — blames capacity",s:""},
+ {d:"2021-11-02",t:"Shuts it down — blames price prediction",s:""}];
+
+const WAITS=[
+ {a:"2021-01-13",z:"2021-10-18",l:"resell speed"},
+ {a:"2021-05-11",z:"2021-11-02",l:"price prediction"},
+ {a:"2021-08-05",z:"2021-10-18",l:"the stop signal"}];
+
+let cur=dnum("2021-01-05");
+
+// static scaffolding
+document.getElementById("months").innerHTML=
+ ["2020-12-01","2021-01-01","2021-02-01","2021-03-01","2021-04-01","2021-05-01","2021-06-01",
+  "2021-07-01","2021-08-01","2021-09-01","2021-10-01","2021-11-01"].map(m=>
+  "<div class='mon' style='left:"+pct(m)+"%'><i></i>"+
+  new Date(m).toLocaleDateString("en-GB",{month:"short"})+"</div>").join("");
+
+document.getElementById("marks").innerHTML=
+ AG.map((m,i)=>mk(m,"a",i)).join("")+ZI.map((m,i)=>mk(m,"z",i)).join("");
+function mk(m,k,i){
+  const off=i%2?30:0;
+  return "<div class='mk "+k+"' data-d='"+m.d+"' style='left:"+pct(m.d)+"%'>"+
+   "<div class='stem' style='"+(k==="a"?"top:"+(130-off)+"px;height:"+(14+off)+"px":"top:222px;height:"+(24+off)+"px")+"'></div>"+
+   "<div class='dot'></div>"+
+   "<div class='lbl' style='"+(k==="a"?"bottom:"+(220+off)+"px":"top:"+(248+off)+"px")+";"+
+     (pct(m.d)>78?"right:0":"left:-10px")+"'>"+
+     "<span class='d'>"+nice(m.d)+"</span>"+m.t+(m.s?"<span style='opacity:.72'><br>"+m.s+"</span>":"")+"</div></div>";
+}
+document.getElementById("waits").innerHTML=WAITS.map((w,i)=>
+ "<div class='wait' data-i='"+i+"' style='left:"+pct(w.a)+"%;width:0;top:"+(174+i*17)+"px'><b></b></div>").join("");
+
+const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
+
+function draw(){
+  const d=addD(cur);
+  document.getElementById("now").textContent=nice(d);
+  document.getElementById("head").style.left=(cur/SPAN*100)+"%";
+  document.getElementById("tl").setAttribute("aria-valuenow",cur);
+  document.getElementById("tl").setAttribute("aria-valuetext",nice(d));
+
+  const latestA=AG.filter(m=>m.d<=d).slice(-1)[0];
+  const latestZ=ZI.filter(m=>m.d<=d).slice(-1)[0];
+  document.querySelectorAll(".mk").forEach(el=>{
+    const fut=el.dataset.d>d;
+    el.classList.toggle("future",fut);
+    const isA=el.classList.contains("a");
+    const keep=isA?(latestA&&el.dataset.d===latestA.d):(latestZ&&el.dataset.d===latestZ.d);
+    el.classList.toggle("quiet",!fut&&!keep);
+    const m=[...AG,...ZI].find(x=>x.d===el.dataset.d&&
+      ((el.classList.contains("a")&&AG.includes(x))||(el.classList.contains("z")&&ZI.includes(x))));
+    if(el.classList.contains("a")&&m&&m.fire&&!fut)el.classList.add("fire");
+    else el.classList.remove("fire");
+  });
+
+  document.querySelectorAll(".wait").forEach(el=>{
+    const w=WAITS[+el.dataset.i];
+    if(d<w.a){el.style.width="0";el.querySelector("b").textContent="";el.style.opacity=0;return}
+    el.style.opacity="";
+    const end=d<w.z?d:w.z, done=d>=w.z;
+    el.style.width=(pct(end)-pct(w.a))+"%";
+    el.classList.toggle("done",done);
+    const days=Math.round((new Date(end)-new Date(w.a))/864e5);
+    el.querySelector("b").textContent=done
+      ? days+" days before Zillow acted on "+w.l
+      : "waiting "+days+(days===1?" day":" days");
+  });
+
+  let bad=0,onlyWorldF=false,html="";
+  A.forEach(a=>{
+    let n=0,v=0,co=0;
+    E.forEach(e=>{const w=e.b[a.id];if(w===undefined||!live(e,d))return;n++;v+=w;if(e.o==="co")co++});
+    let t,c;
+    if(!n){t="nothing known";c="none"}
+    else if(v>0){t="holding up";c="good"}
+    else if(v===0){t="mixed";c="none"}
+    else if(v>=-2){t="some doubt";c="warn"}
+    else{t="in trouble";c="bad";bad++}
+    if(a.id==="F"&&n&&!co)onlyWorldF=true;
+    html+="<div class='row'><div class='w'>"+a.t+"</div><div class='t "+c+"'>"+t+"</div>"+
+      "<div class='o"+(n&&!co?" only":"")+"'>"+(!n?"—":co?(n>co?"both":"Zillow only"):"world only")+"</div></div>";
+  });
+  document.getElementById("beliefs").innerHTML=html;
+
+  const fired=d>="2021-08-05";
+  const v=document.getElementById("verd");
+  v.className="verd"+(fired?" alarm":"");
+  document.getElementById("vh").textContent=fired?"Stop and reassess":"Keep going — with conditions";
+  document.getElementById("vs").textContent=fired
+    ? "The $1bn inventory limit frozen in February has been crossed. "+bad+" of 6 in trouble."
+    : bad+" of 6 in trouble. No pre-set limit crossed yet.";
+  document.getElementById("note").innerHTML=onlyWorldF
+    ? "<b>Zillow has never said anything</b> about whether it can predict resale prices — everything Agnes knows about it came from outside the company. That is the reason its CEO gave for shutting the business down."
+    : "Drag forward to watch the evidence arrive.";
+}
+
+// dragging
+const tl=document.getElementById("tl");
+const setFromX=cx=>{const r=tl.getBoundingClientRect();
+  cur=Math.max(0,Math.min(SPAN,Math.round((cx-r.left)/r.width*SPAN)));draw()};
+let down=false;
+tl.addEventListener("pointerdown",e=>{down=true;tl.setPointerCapture(e.pointerId);setFromX(e.clientX)});
+tl.addEventListener("pointermove",e=>{if(down)setFromX(e.clientX)});
+tl.addEventListener("pointerup",()=>down=false);
+tl.addEventListener("pointercancel",()=>down=false);
+tl.addEventListener("keydown",e=>{
+  const k={ArrowRight:1,ArrowLeft:-1,PageUp:14,PageDown:-14}[e.key];
+  if(k){cur=Math.max(0,Math.min(SPAN,cur+k));draw();e.preventDefault()}
+  if(e.key==="Home"){cur=0;draw();e.preventDefault()}
+  if(e.key==="End"){cur=SPAN;draw();e.preventDefault()}
+});
+draw();
+</script>
