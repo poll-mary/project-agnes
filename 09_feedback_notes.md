@@ -11,7 +11,18 @@ capturing the moment of confusion produces useful ones. One line is enough.
 
 ## Worked
 
-_(fill in as we go)_
+- **Seeding a graph from a pasted script was frictionless.** ~250 lines, 42 statements,
+  every one green first time, no dialect surprises. `MERGE`-based idempotent seeding
+  behaved exactly as documented.
+- **Date-typed properties made point-in-time filtering trivial.** `date()` comparisons in
+  `WHERE` are the whole mechanism of our product, and they needed no special handling.
+  The off-by-one boundary test (evidence dated 12 Feb invisible on the 11th) passed first try.
+- **`UNION ALL` let us run a 7-part acceptance-test suite as a single query** and get one
+  clean PASS/FAIL table. That turned verification from eight separate pastes into one.
+- **Aggregation over optional relationships** (`OPTIONAL MATCH` + `sum(CASE WHEN ... )`)
+  expressed "no evidence" versus "negative evidence" cleanly. Distinguishing those two is
+  central to what we are building, and the query language made it natural rather than a
+  workaround.
 
 ## Confusing
 
