@@ -49,8 +49,17 @@ button.pri{background:var(--ink);color:var(--paper)}
 button.pri:hover{opacity:.86;color:var(--paper)}
 button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 
+.three{display:flex;flex-direction:column;gap:clamp(18px,2.4vw,38px);margin-top:clamp(26px,3vw,46px)}
+.three .r{display:block}
+.three .r .k{display:block;font-size:clamp(30px,3.6vw,56px);font-weight:800;letter-spacing:-.025em;
+ line-height:1.05}
+.three .r .x{display:block;margin-top:clamp(4px,.5vw,9px);
+ font-size:clamp(17px,1.65vw,27px);line-height:1.35;color:var(--mute);max-width:34ch}
+.three .r.now .k{color:var(--red)}
+.three .r.dim{opacity:.32}
+
 /* ---- timeline slide ---- */
-#s6{justify-content:flex-start;padding-top:clamp(28px,3.4vw,52px)}
+#s7{justify-content:flex-start;padding-top:clamp(28px,3.4vw,52px)}
 .tlhead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:clamp(14px,1.6vw,24px)}
 .tldate{font-size:clamp(30px,3.6vw,54px);font-weight:800;letter-spacing:-.025em}
 .tlhint{font-size:clamp(13px,1.05vw,16px);color:var(--mute)}
@@ -102,36 +111,50 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
   <p class="sub">Agnes writes down <b>what has to be true</b> for a bet to work — then keeps checking it as evidence arrives.</p>
 </section>
 
-<!-- 2 -->
+<!-- 2 · the three, up front -->
 <section class="slide" id="s2">
+  <div class="eyebrow">Agnes does three things</div>
+  <div class="three">
+    <div class="r"><span class="k">Validate</span><span class="x">what has to be true for the bet to work</span></div>
+    <div class="r"><span class="k">Simulate</span><span class="x">how a different strategy would hold up against the same evidence</span></div>
+    <div class="r"><span class="k">Monitor</span><span class="x">whether the evidence still supports it, as time passes</span></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="s3">
   <div class="eyebrow">One &nbsp;·&nbsp; Validate</div>
   <h2 class="big">What has to be true for this to work?</h2>
   <p class="sub">Strategy decks list goals, not the conditions underneath them.<br><b>If nobody writes down what must be true, nobody notices when it stops being true.</b></p>
 </section>
 
 <!-- 3 -->
-<section class="slide" id="s3">
+<section class="slide" id="s4">
   <div class="eyebrow">Two &nbsp;·&nbsp; Simulate</div>
-  <h2 class="big">If this breaks, what does it cost?</h2>
-  <p class="sub">The same failure costs wildly different amounts depending on how the bet was built.<br><b>Owning seven thousand houses fails very differently from referring buyers to a partner.</b></p>
+  <h2 class="big">Would a different strategy have held up?</h2>
+  <p class="sub">Change the shape of the bet — own the houses, share the risk with partners, or just refer buyers — and recompute against <b>the same evidence</b>.<br>Zillow owned them, so every wrong prediction cost it real money. The same evidence barely touches a business that owns nothing.</p>
 </section>
 
 <!-- 4 -->
-<section class="slide" id="s4">
+<section class="slide" id="s5">
   <div class="eyebrow">Three &nbsp;·&nbsp; Monitor</div>
   <h2 class="big">Has anything changed enough to act?</h2>
   <p class="sub">The evidence that kills a bet arrives slowly, inside ordinary quarterly filings.<br><b>Nobody re-reads the original reasoning each time a new one lands.</b></p>
 </section>
 
-<!-- 5 -->
-<section class="slide" id="s5">
-  <div class="eyebrow">The rule that makes it honest</div>
-  <h2 class="big">Agnes only sees what was public that day.</h2>
-  <p class="sub">Nothing from later. Move the date and she recomputes from nothing.<br><b>So this is what could genuinely have been known — not what we know now.</b></p>
+<!-- 6 · what we built -->
+<section class="slide" id="s6">
+  <div class="eyebrow">What we built</div>
+  <div class="three">
+    <div class="r"><span class="k">A decision graph</span><span class="x">in Neo4j — the bet, the six things that had to be true, and every piece of evidence for or against each one</span></div>
+    <div class="r"><span class="k">18 dated facts</span><span class="x">from Zillow's own filings and from the world around it — a competitor's results, national price data, Federal Reserve reports</span></div>
+    <div class="r"><span class="k">One hard rule</span><span class="x">every fact carries the date it became public, and Agnes only ever sees what was published on or before the date you pick</span></div>
+  </div>
 </section>
 
 <!-- 6 · timeline -->
-<section class="slide" id="s6">
+<section class="slide" id="s7">
+  <div class="eyebrow">Monitor, running</div>
   <div class="tlhead">
     <div class="tldate" id="now"></div>
     <div class="tlhint">Drag, or use ← →</div>
@@ -149,7 +172,7 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 </section>
 
 <!-- 7 -->
-<section class="slide" id="s7">
+<section class="slide" id="s8">
   <div class="eyebrow">What Agnes found</div>
   <h2 class="mid">Every warning came first. Every reaction came late.</h2>
   <div class="rows">
@@ -159,13 +182,23 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
   </div>
 </section>
 
+<!-- 9 · feedback -->
+<section class="slide" id="s9">
+  <div class="eyebrow">Biggest feedback</div>
+  <h2 class="mid">Two things cost us time.</h2>
+  <div class="three">
+    <div class="r"><span class="k">Free vs trial</span><span class="x">the workshop said “create an Aura Free database”; the signup flow ran a five-step wizard and started a 14-day trial instead. We could not tell if we were on the right thing.</span></div>
+    <div class="r"><span class="k">Silent success</span><span class="x">pasting a long seed script runs every statement and shows a tick for each — but hides the final result. It read as a failure when everything had worked.</span></div>
+  </div>
+</section>
+
 <nav class="nav">
   <div class="dots" id="dots"></div>
   <div class="sp"><button id="prev">Back</button><button class="pri" id="next">Next</button></div>
 </nav>
 
 <script>
-const N=7; let i=1;
+const N=9; let i=1;
 const dots=document.getElementById("dots");
 for(let k=1;k<=N;k++){const d=document.createElement("div");d.className="dot";d.onclick=()=>go(k);dots.appendChild(d)}
 function go(n){
@@ -174,7 +207,7 @@ function go(n){
   [...dots.children].forEach((d,k)=>d.classList.toggle("on",k+1===i));
   document.getElementById("prev").disabled=i===1;
   document.getElementById("next").textContent=i===N?"Done":"Next";
-  if(i===6){draw();document.getElementById("tl").focus()}
+  if(i===7)draw();
 }
 document.getElementById("next").onclick=()=>go(i+1);
 document.getElementById("prev").onclick=()=>go(i-1);
@@ -262,7 +295,7 @@ tl.addEventListener("pointerup",()=>down=false);
 tl.addEventListener("pointercancel",()=>down=false);
 
 addEventListener("keydown",e=>{
-  if(i===6&&(e.key==="ArrowRight"||e.key==="ArrowLeft")){
+  if(i===7&&(e.key==="ArrowRight"||e.key==="ArrowLeft")){
     cur=Math.max(0,Math.min(SPAN,cur+(e.key==="ArrowRight"?4:-4)));draw();e.preventDefault();return}
   if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown")go(i+1);
   if(e.key==="ArrowLeft"||e.key==="PageUp")go(i-1);
