@@ -21,6 +21,31 @@ h1{font-size:21px;font-weight:700;margin:0}
  font-variant-numeric:tabular-nums;white-space:nowrap}
 .hint{font-size:13px;color:var(--faint);margin:0 0 12px}
 
+/* ===== intro ===== */
+#demo{display:none}
+.intro h1{font-size:38px;letter-spacing:-.02em;margin:0 0 6px}
+.intro .lead{font-size:20px;line-height:1.5;color:var(--soft);max-width:70ch;margin:0 0 34px}
+.intro .lead b{color:var(--ink);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px}
+@media(max-width:920px){.cards{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--ag);
+ border-radius:10px;padding:20px 22px}
+.card .k{font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--ag);margin-bottom:10px}
+.card .d{font-size:16px;line-height:1.5;margin-bottom:14px}
+.card .w{font-size:14.5px;line-height:1.55;color:var(--soft);
+ border-top:1px solid var(--line);padding-top:12px}
+.card .w em{font-style:normal;font-weight:700;color:var(--ink)}
+.rule{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);
+ border-radius:8px;padding:16px 20px;font-size:16px;line-height:1.55;color:var(--soft);
+ margin-bottom:30px}
+.rule b{color:var(--ink)}
+.go{font-size:17px;font-weight:700;padding:13px 26px;border-radius:10px;
+ border:none;background:var(--ag);color:#fff;cursor:pointer}
+.go:hover{opacity:.9}
+.back{margin-left:auto;font-size:14px;padding:7px 14px;border-radius:8px;
+ border:1px solid var(--line);background:var(--card);color:var(--soft);cursor:pointer}
+
 /* ===== timeline ===== */
 .tl{position:relative;height:610px;border-radius:0;user-select:none;touch-action:none;cursor:ew-resize;
  background:var(--card);border:1px solid var(--line);overflow:hidden}
@@ -53,8 +78,7 @@ h1{font-size:21px;font-weight:700;margin:0}
  color:var(--faint);z-index:2}
 /* playhead: faint line behind the labels, plus a white handle on the axis */
 .span{position:absolute;top:230px;height:22px;z-index:5;border-radius:4px;
- background:var(--redbg);border:1px solid var(--red);border-right-width:3px;
- transition:width .12s ease,left .12s ease}
+ background:var(--redbg);border:1px solid var(--red);border-right-width:3px}
 .span .cap{position:absolute;top:0;line-height:20px;white-space:nowrap;
  font-weight:700;font-size:12.5px;color:var(--red)}
 .span .cap.out{left:100%;margin-left:10px}
@@ -133,9 +157,40 @@ h2{font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase
 .note p:last-child{margin:0}
 </style>
 
-<div class="wrap">
+<div class="wrap intro" id="intro">
+  <h1>Agnes</h1>
+  <p class="lead">A company makes a big bet. Years later it fails, and nobody can say what was actually known at the time.
+  <b>Agnes writes down what has to be true for a bet to work, then keeps checking it against evidence as the evidence arrives.</b></p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="k">Validate</div>
+      <div class="d">Write down every condition the bet depends on, and score each one against dated evidence — for, against, or nothing known.</div>
+      <div class="w"><em>Why it matters.</em> Strategy documents list goals, not the conditions underneath them. If nobody writes down what must be true, nobody notices when it stops being true.</div>
+    </div>
+    <div class="card">
+      <div class="k">Simulate</div>
+      <div class="d">Break one of those conditions on purpose and follow what it costs under each different way of making the same bet.</div>
+      <div class="w"><em>Why it matters.</em> The same failure costs wildly different amounts depending on how you structured the bet. Owning seven thousand houses and referring buyers to a partner fail very differently.</div>
+    </div>
+    <div class="card">
+      <div class="k">Monitor</div>
+      <div class="d">Every time something new is published, recompute — and raise a warning the moment the case changes.</div>
+      <div class="w"><em>Why it matters.</em> The evidence that kills a bet arrives slowly, inside ordinary quarterly filings. Nobody re-reads the original reasoning each time a new one lands.</div>
+    </div>
+  </div>
+
+  <div class="rule"><b>The rule that makes this honest:</b> Agnes only ever sees what was published on or before the date you are looking at. Nothing from later. Move the date and she recomputes from scratch — so you see what could genuinely have been known at the time, not what we know now.</div>
+
+  <p class="lead" style="font-size:17px;margin-bottom:26px">What follows is a real decision replayed this way: <b>Zillow's bet on buying homes in 2021</b>, built from eighteen dated pieces of evidence — its own filings, and the world around it.</p>
+
+  <button class="go" id="go">See what Agnes would have said &rarr;</button>
+</div>
+
+<div class="wrap" id="demo">
   <div class="hdr"><h1>Agnes</h1><span class="q">Should Zillow keep buying homes?</span>
-    <span class="now" id="now"></span></div>
+    <span class="now" id="now"></span>
+    <button class="back" id="back2">&larr; Back</button></div>
   <p class="hint">Drag the timeline. Agnes above the line, Zillow below.</p>
 
   <div class="stamp top" id="stamp"><div class="tag">Agnes</div><div><div class="h"><span class="lvl" id="lvl2"></span><span id="vh2"></span></div><div class="s" id="vs2"></div></div></div>
@@ -216,8 +271,8 @@ document.getElementById("marks").innerHTML=AG.map(m=>box(m,"a")).join("")+ZI.map
 
 document.getElementById("glines").innerHTML=
  "<div class='span hide' id='span'><span class='cap'></span></div>"+
- "<div class='shouldve hide' id='shouldve'><span class='arw'>&#9650;</span>"+
- "<span class='txt'>Zillow should have acted here</span></div>";
+ G.map((g,i)=>"<div class='shouldve hide' data-i='"+i+"' style='left:"+pc(g.a)+"%'>"+
+   "<span class='arw'>&#9650;</span><span class='txt'>Zillow should have acted here</span></div>").join("");
 const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
 
 function draw(){
@@ -236,30 +291,31 @@ function draw(){
 
   const openNow=G.filter(g=>d>=g.a&&d<g.z).sort((x,y)=>x.a.localeCompare(y.a));
   const sp=document.getElementById("span");
-  const sv=document.getElementById("shouldve");
-  if(!openNow.length){ sp.classList.add("hide"); sv.classList.add("hide"); }
+  document.querySelectorAll(".shouldve").forEach(el=>{
+    const g=G[+el.dataset.i];
+    el.classList.toggle("hide", !(d>=g.a && d<g.z));
+  });
+  if(!openNow.length){ sp.classList.add("hide"); }
   else{
     const g=openNow[0], days=Math.round((new Date(d)-new Date(g.a))/864e5);
     sp.classList.remove("hide");
     sp.style.left=pc(g.a)+"%";
     sp.style.width=Math.max(0,(cur - dn(g.a))/SPAN*100)+"%";
     const cap=sp.querySelector(".cap");
-    const tr=document.getElementById("tl").getBoundingClientRect();
-    const full=days+" days since Agnes warned \u201c"+g.at.toLowerCase()+"\u201d, and Zillow has not acted";
-    const mid=days+" days, no action on \u201c"+g.at.toLowerCase()+"\u201d";
-    const brief=days+" days, no action";
-    const fits=()=>{const r=cap.getBoundingClientRect();return r.left>=tr.left+6&&r.right<=tr.right-6};
-    let done=false;
-    for(const txt of [full,mid,brief]){
-      for(const side of ["out","in"]){
-        cap.textContent=txt; cap.className="cap "+side;
-        if(fits()){done=true;break}
-      }
-      if(done)break;
+    const W=document.getElementById("tl").getBoundingClientRect().width;
+    const x0=pc(g.a)/100*W, x1=cur/SPAN*W;          // bar start / end, in px
+    const opts=[days+" days since Agnes warned \u201c"+g.at.toLowerCase()+"\u201d, and Zillow has not acted",
+                days+" days, no action on \u201c"+g.at.toLowerCase()+"\u201d",
+                days+" days, no action"];
+    let placed=false;
+    for(const txt of opts){
+      cap.textContent=txt;
+      cap.className="cap out";                       // measure width free of the bar transition
+      const cw=cap.getBoundingClientRect().width;
+      if(x1+10+cw<=W-8){placed=true;break}           // room to the right of the bar
+      if(x1-10-cw>=8){cap.className="cap in";placed=true;break}   // fits inside the bar
     }
-    sv.classList.remove("hide");
-    sv.style.left=pc(g.a)+"%";
-    sv.querySelector(".txt").textContent="Zillow should have acted here";
+    if(!placed){cap.textContent=days+" days";cap.className="cap in"}
   }
 
   let bad=0,worldOnlyF=false,html="";
@@ -330,5 +386,14 @@ tl.addEventListener("keydown",e=>{const k={ArrowRight:1,ArrowLeft:-1,PageUp:14,P
  if(k){cur=Math.max(0,Math.min(SPAN,cur+k));draw();e.preventDefault()}
  if(e.key==="Home"){cur=0;draw();e.preventDefault()}
  if(e.key==="End"){cur=SPAN;draw();e.preventDefault()}});
+document.getElementById("go").onclick=()=>{
+  document.getElementById("intro").style.display="none";
+  document.getElementById("demo").style.display="block";
+  draw(); tl.focus();
+};
+document.getElementById("back2").onclick=()=>{
+  document.getElementById("demo").style.display="none";
+  document.getElementById("intro").style.display="block";
+};
 draw();
 </script>
