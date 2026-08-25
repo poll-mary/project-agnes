@@ -89,13 +89,28 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
  color:var(--mute);max-width:56ch;line-height:1.35}
 .note b{color:var(--ink);font-weight:600}
 
-/* ---- capabilities row ---- */
-.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3.4vw,64px);
- margin-top:clamp(28px,3.4vw,52px)}
-.cap .k{font-size:clamp(24px,2.9vw,44px);font-weight:800;letter-spacing:-.025em;line-height:1.05}
-.cap .x{margin-top:clamp(6px,.8vw,12px);font-size:clamp(15px,1.4vw,22px);
+/* ---- type scale for the four-slide deck ----
+   eyebrow  → label
+   .big     → the one dominant idea
+   .lead    → one supporting line, ink
+   .fine    → detail, mute
+   nothing below .big may ever be larger than .big            */
+.lead{font-size:clamp(19px,1.95vw,31px);line-height:1.32;font-weight:500;
+ letter-spacing:-.01em;max-width:46ch;margin-top:clamp(16px,1.8vw,26px)}
+.fine{font-size:clamp(15px,1.4vw,22px);line-height:1.4;color:var(--mute);
+ max-width:52ch;margin-top:clamp(12px,1.4vw,20px)}
+.fine b{color:var(--ink);font-weight:600}
+
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3.2vw,60px);
+ margin-top:clamp(30px,3.6vw,56px)}
+.cap .k{font-size:clamp(20px,2.1vw,32px);font-weight:700;letter-spacing:-.02em;
+ line-height:1.1;padding-bottom:clamp(7px,.8vw,11px);
+ border-bottom:1px solid var(--rule)}
+.cap .x{margin-top:clamp(8px,.9vw,13px);font-size:clamp(14px,1.3vw,20px);
  line-height:1.35;color:var(--mute)}
-@media(max-width:820px){.caps{grid-template-columns:1fr;gap:clamp(16px,2vw,24px)}}
+@media(max-width:820px){.caps{grid-template-columns:1fr;gap:clamp(16px,2vw,22px)}}
+.caps+.fine{margin-top:clamp(30px,3.6vw,54px);padding-top:clamp(14px,1.6vw,22px);
+ border-top:1px solid var(--rule);max-width:none}
 
 /* ---- timeline slide ---- */
 #s7{justify-content:flex-start;padding-top:clamp(28px,3.4vw,52px)}
@@ -147,20 +162,21 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 <section class="slide on" id="s1">
   <div class="eyebrow">What did you try</div>
   <h1 class="big">Assumptions stop being true. Companies notice too late.</h1>
-  <p class="sub" style="max-width:44ch">Strategic decisions rest on assumptions scattered across reports, market signals and internal metrics.<br><br><b>We tested whether a knowledge graph could act as an early-warning system for a consequential strategic bet</b> — using the collapse of Zillow Offers as our historical test case.</p>
+  <p class="lead">We tested whether a knowledge graph could act as an early-warning system for a consequential strategic bet.</p>
+  <p class="fine">Strategic decisions rest on assumptions scattered across reports, market signals and internal metrics. Our historical test case: <b>the collapse of Zillow Offers.</b></p>
 </section>
 
 <!-- 2 · what did you build -->
 <section class="slide" id="s2">
   <div class="eyebrow">What did you build</div>
-  <h2 class="mid" style="max-width:30ch">Agnes — a living decision graph.</h2>
-  <p class="sub" style="max-width:58ch">Connecting a strategy to its assumptions, evidence, risks, exposure, alternatives and triggers.</p>
+  <h2 class="big">Agnes — a living decision graph.</h2>
+  <p class="lead">Connecting a strategy to its assumptions, evidence, risks, exposure, alternatives and triggers.</p>
   <div class="caps">
     <div class="cap"><div class="k">Validate</div><div class="x">whether a strategy is supported</div></div>
     <div class="cap"><div class="k">Simulate</div><div class="x">how changing a parameter affects the decision</div></div>
     <div class="cap"><div class="k">Monitor</div><div class="x">new evidence for signs the strategy is breaking</div></div>
   </div>
-  <p class="note" style="max-width:64ch">Every assessment is <b>time-bounded</b> — Agnes only ever sees information available at that historical moment. No hindsight.</p>
+  <p class="fine">Every assessment is <b>time-bounded</b> — Agnes only ever sees information available at that historical moment. No hindsight.</p>
 </section>
 
 <!-- 3 · show it -->
@@ -186,7 +202,8 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 <section class="slide" id="s4">
   <div class="eyebrow">Biggest blocker</div>
   <h2 class="big">Making Agnes project-agnostic.</h2>
-  <p class="sub" style="max-width:46ch">Zillow was modelled specifically. The next challenge is <b>a reusable structure that maps any strategic bet</b> into assumptions, evidence, exposure, alternatives and triggers — without hard-coding each case.</p>
+  <p class="lead">Zillow was modelled specifically. The next challenge is a reusable structure that maps any strategic bet into assumptions, evidence, exposure, alternatives and triggers.</p>
+  <p class="fine">Without hard-coding each case.</p>
 </section>
 
 <nav class="nav">
