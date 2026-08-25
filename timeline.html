@@ -21,7 +21,7 @@ h1{font-size:21px;font-weight:700;margin:0}
 .hint{font-size:13px;color:var(--faint);margin:0 0 12px}
 
 /* ===== timeline ===== */
-.tl{position:relative;height:430px;user-select:none;touch-action:none;cursor:ew-resize;
+.tl{position:relative;height:500px;user-select:none;touch-action:none;cursor:ew-resize;
  border-radius:10px;background:var(--card);border:1px solid var(--line);overflow:hidden}
 .tl:focus-visible{outline:3px solid var(--ag);outline-offset:3px}
 .band{position:absolute;left:0;right:0;z-index:0}
@@ -37,7 +37,7 @@ h1{font-size:21px;font-weight:700;margin:0}
 /* playhead sits BEHIND every label */
 .head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.28;z-index:1;pointer-events:none}
 
-.mk{position:absolute;top:0;height:430px;width:0;z-index:3;pointer-events:none}
+.mk{position:absolute;top:0;height:500px;width:0;z-index:3;pointer-events:none}
 .mk .pin{position:absolute;left:-6px;width:12px;height:12px}
 .mk.a .pin{top:188px;background:var(--ag);transform:rotate(45deg);border-radius:2px}
 .mk.z .pin{top:190px;background:var(--zi);border-radius:50%}
@@ -141,8 +141,8 @@ const AG=[{d:"2021-01-13",t:"Resell speed in doubt",lane:0},
 const ZI=[{d:"2021-02-10",t:"“Investing aggressively”",lane:0},
  {d:"2021-02-12",t:"Annual report filed",lane:1},
  {d:"2021-08-05",t:"Bought more than they sold",lane:0},
- {d:"2021-10-18",t:"Pauses buying — blames capacity",lane:1},
- {d:"2021-11-02",t:"Shuts it down — blames price prediction",lane:0}];
+ {d:"2021-10-18",t:"Pauses buying — blames capacity",lane:2},
+ {d:"2021-11-02",t:"Shuts it down — blames price prediction",lane:1}];
 const G=[{a:"2021-01-13",at:"Resell speed in doubt",z:"2021-10-18",zt:"Pauses buying, blames capacity"},
  {a:"2021-05-11",at:"Price prediction in trouble",z:"2021-11-02",zt:"Shuts it down, blames price prediction"},
  {a:"2021-08-05",at:"STOP AND REASSESS",z:"2021-10-18",zt:"Pauses buying"}];
@@ -157,7 +157,7 @@ document.getElementById("months").innerHTML=["2020-12-01","2021-01-01","2021-02-
 // AGNES  lane0 box top 108 (h~66) ; lane1 box top 24
 // ZILLOW lane0 box top 226        ; lane1 box top 312
 function box(m,k){
-  const y = k==="a" ? (m.lane?24:108) : (m.lane?312:226);
+  const y = k==="a" ? (m.lane?24:108) : [226,312,398][m.lane];
   const stem = k==="a" ? "top:"+(y+66)+"px;height:"+(188-y-66)+"px"
                        : "top:202px;height:"+(y-202)+"px";
   const edge = pc(m.d)>88 ? "right:-6px" : "left:-8px";
