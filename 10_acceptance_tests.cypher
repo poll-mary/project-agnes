@@ -66,6 +66,7 @@ WITH cutoff, a, d, count(e) AS cnt,
      sum(CASE WHEN e IS NULL THEN 0 ELSE r.direction*r.weight END) AS bal
 WITH cutoff, sum(d.criticality * ((CASE WHEN bal < 0 THEN abs(bal) ELSE 0 END) +
                                   (CASE WHEN cnt = 0 THEN 2 ELSE 0 END))) AS risk
+ORDER BY cutoff
 WITH collect(risk) AS risks
 RETURN 'T5 structural non-response' AS test, risks,
        CASE WHEN risks[0] = risks[1] THEN 'PASS' ELSE 'FAIL' END AS result;
@@ -87,10 +88,12 @@ RETURN 'T6 tripwire computed' AS test, prebaked_edges,
 // only reveal more, never less.
 UNWIND [date('2019-01-01'), date('2021-02-10'), date('2021-02-12'), date('2021-08-05')] AS cutoff
 MATCH (e:Evidence) WHERE e.project = 'zillow_strategy_time_machine' AND e.public_from <= cutoff
-WITH cutoff, count(e) AS n ORDER BY cutoff
+WITH cutoff, count(e) AS n
+ORDER BY cutoff
 WITH collect(n) AS counts
 RETURN 'T7 monotonic eligibility' AS test, counts,
-       CASE WHEN counts[0] <= counts[1] <= counts[2] <= counts[3] THEN 'PASS' ELSE 'FAIL' END AS result;
+       CASE WHEN counts[0] <= counts[1] AND counts[1] <= counts[2]
+                 AND counts[2] <= counts[3] THEN 'PASS' ELSE 'FAIL' END AS result;
 
 
 // --- T8 · DETERMINISM (run manually, twice) ----------------------------------
