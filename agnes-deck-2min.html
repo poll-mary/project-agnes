@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Agnes</title>
+<title>Agnes — Two Minutes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap">
@@ -89,6 +89,14 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
  color:var(--mute);max-width:56ch;line-height:1.35}
 .note b{color:var(--ink);font-weight:600}
 
+/* ---- capabilities row ---- */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3.4vw,64px);
+ margin-top:clamp(28px,3.4vw,52px)}
+.cap .k{font-size:clamp(24px,2.9vw,44px);font-weight:800;letter-spacing:-.025em;line-height:1.05}
+.cap .x{margin-top:clamp(6px,.8vw,12px);font-size:clamp(15px,1.4vw,22px);
+ line-height:1.35;color:var(--mute)}
+@media(max-width:820px){.caps{grid-template-columns:1fr;gap:clamp(16px,2vw,24px)}}
+
 /* ---- timeline slide ---- */
 #s7{justify-content:flex-start;padding-top:clamp(28px,3.4vw,52px)}
 .tlhead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:clamp(14px,1.6vw,24px)}
@@ -135,96 +143,28 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .row .t b{color:var(--ink);font-weight:600;display:block}
 </style>
 
-<!-- 1 -->
+<!-- 1 · what did you try -->
 <section class="slide on" id="s1">
-  <div class="eyebrow">Project Agnes</div>
-  <h1 class="big">High-stakes bets, made on fragmented evidence.</h1>
-  <p class="sub">A living evidence graph. <b>Rewind to what was knowable at any moment, see what the strategy depends on, and how new evidence changes it.</b></p>
+  <div class="eyebrow">What did you try</div>
+  <h1 class="big">Assumptions stop being true. Companies notice too late.</h1>
+  <p class="sub" style="max-width:44ch">Strategic decisions rest on assumptions scattered across reports, market signals and internal metrics.<br><br><b>We tested whether a knowledge graph could act as an early-warning system for a consequential strategic bet</b> — using the collapse of Zillow Offers as our historical test case.</p>
 </section>
 
-<!-- 2 · the three, up front -->
+<!-- 2 · what did you build -->
 <section class="slide" id="s2">
-  <div class="eyebrow">Agnes does three things</div>
-  <div class="three">
-    <div class="r"><span class="k">Validate</span><span class="x">what has to be true — and whether anyone has actually checked</span></div>
-    <div class="r"><span class="k">Simulate</span><span class="x">run the alternatives in parallel — change the variables and see which version the evidence supports</span></div>
-    <div class="r"><span class="k">Monitor</span><span class="x">re-score all of them every time something new is published</span></div>
+  <div class="eyebrow">What did you build</div>
+  <h2 class="mid" style="max-width:30ch">Agnes — a living decision graph.</h2>
+  <p class="sub" style="max-width:58ch">Connecting a strategy to its assumptions, evidence, risks, exposure, alternatives and triggers.</p>
+  <div class="caps">
+    <div class="cap"><div class="k">Validate</div><div class="x">whether a strategy is supported</div></div>
+    <div class="cap"><div class="k">Simulate</div><div class="x">how changing a parameter affects the decision</div></div>
+    <div class="cap"><div class="k">Monitor</div><div class="x">new evidence for signs the strategy is breaking</div></div>
   </div>
+  <p class="note" style="max-width:64ch">Every assessment is <b>time-bounded</b> — Agnes only ever sees information available at that historical moment. No hindsight.</p>
 </section>
 
-<!-- 3 -->
+<!-- 3 · show it -->
 <section class="slide" id="s3">
-  <div class="eyebrow">One &nbsp;·&nbsp; Validate</div>
-  <h2 class="mid">Six questions. Any bet, any industry.</h2>
-  <div class="six">
-    <div class="hd">The question Agnes always asks</div>
-    <div class="hd">What Zillow's answer had to be</div>
-
-    <div class="q"><span class="sl">Reading</span>Is what we believe about the world actually true?</div>
-    <div class="an">We can predict what a house will resell for.</div>
-
-    <div class="q"><span class="sl">Capability</span>Can we actually do the thing?</div>
-    <div class="an">We can renovate and resell as fast as we buy.</div>
-
-    <div class="q"><span class="sl">Endurance</span>Can we keep doing it long enough to find out?</div>
-    <div class="an">We can fund buying at this scale.</div>
-
-    <div class="q"><span class="sl">Payoff</span>Is it worth more than what it costs us?</div>
-    <div class="an">We make money on each house.</div>
-
-    <div class="q"><span class="sl">Cooperation</span>Will the people outside our control do their part?</div>
-    <div class="an">Sellers want an instant cash offer.</div>
-
-    <div class="q"><span class="sl">Reversibility</span>If we are wrong, can we get out?</div>
-    <div class="an">We can offload the houses quickly if the market turns.</div>
-  </div>
-  <p class="note">The left column never changes. <b>The right column is your project.</b> A city building a rail line fills the same six — and finds that its answer to <i>can we get out</i> is <b>no</b>.</p>
-</section>
-
-<!-- 3 -->
-<section class="slide" id="s4">
-  <div class="eyebrow">Two &nbsp;·&nbsp; Simulate</div>
-  <h2 class="mid">Three ways to run the same business.</h2>
-  <p class="sub" style="max-width:54ch;margin-top:clamp(10px,1.2vw,18px)">All three need <b>the same six things</b> to be true. What changes is how badly each one hurts you.</p>
-  <div class="ways">
-    <div class="way">
-      <div class="n red">82%</div><div class="nl">of what it needed was unproven</div>
-      <div class="h">Buy the houses yourself</div>
-      <div class="p">Most money per sale. Any of the six can wipe you out — you own the thing that goes wrong.</div>
-    </div>
-    <div class="way">
-      <div class="n">77%</div><div class="nl">of what it needed was unproven</div>
-      <div class="h">Share the risk with partners</div>
-      <div class="p">The same six, but someone else carries part of the loss.</div>
-    </div>
-    <div class="way">
-      <div class="n">67%</div><div class="nl">of what it needed was unproven</div>
-      <div class="h">Own nothing, take a fee</div>
-      <div class="p">Less money per sale. Still the same six — but most barely scratch you, because you never own a house.</div>
-    </div>
-  </div>
-  <p class="chose">Zillow chose the first. <b>Same evidence, same six questions, same day.</b></p>
-</section>
-
-<!-- 4 -->
-<section class="slide" id="s5">
-  <div class="eyebrow">Three &nbsp;·&nbsp; Monitor</div>
-  <h2 class="big">Has anything changed enough to act?</h2>
-  <p class="sub">The evidence that kills a bet arrives slowly, inside ordinary quarterly filings.<br><b>Nobody re-reads the original reasoning each time a new one lands.</b></p>
-</section>
-
-<!-- 6 · what we built -->
-<section class="slide" id="s6">
-  <div class="eyebrow">What we built</div>
-  <div class="three">
-    <div class="r"><span class="k">A decision graph</span><span class="x">in Neo4j — the bet, the six things that had to be true, and every piece of evidence for or against each one</span></div>
-    <div class="r"><span class="k">18 dated facts</span><span class="x">from Zillow's own filings and from the world around it — a competitor's results, national price data, Federal Reserve reports</span></div>
-    <div class="r"><span class="k">One hard rule</span><span class="x">every fact carries the date it became public, and Agnes only ever sees what was published on or before the date you pick</span></div>
-  </div>
-</section>
-
-<!-- 6 · timeline -->
-<section class="slide" id="s7">
   <div class="eyebrow">Monitor, running</div>
   <div class="tlhead">
     <div class="tldate" id="now"></div>
@@ -242,26 +182,11 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
   <div class="count" id="count" style="margin-top:clamp(14px,1.6vw,24px)"></div>
 </section>
 
-<!-- 7 -->
-<section class="slide" id="s8">
-  <div class="eyebrow">What Agnes found</div>
-  <h2 class="mid">Zillow had the information. And the teams.</h2>
-  <p class="sub" style="max-width:46ch;margin-top:clamp(10px,1.2vw,18px)">Nobody had <b>the original reasoning next to the new evidence.</b></p>
-  <div class="rows">
-    <div class="row"><div class="n">278</div><div class="t"><b>days</b>from “homes may sit unsold too long” until Zillow paused buying</div></div>
-    <div class="row"><div class="n">175</div><div class="t"><b>days</b>from “price predictions look unreliable” until they shut it down, blaming exactly that</div></div>
-    <div class="row"><div class="n">0</div><div class="t"><b>times</b>Zillow ever published evidence it could predict resale prices</div></div>
-  </div>
-</section>
-
-<!-- 9 · feedback -->
-<section class="slide" id="s9">
-  <div class="eyebrow">Biggest feedback</div>
-  <h2 class="mid">Two things cost us time.</h2>
-  <div class="three">
-    <div class="r"><span class="k">Free vs trial</span><span class="x">the workshop said “create an Aura Free database”; the signup flow ran a five-step wizard and started a 14-day trial instead. We could not tell if we were on the right thing.</span></div>
-    <div class="r"><span class="k">Silent success</span><span class="x">pasting a long seed script runs every statement and shows a tick for each — but hides the final result. It read as a failure when everything had worked.</span></div>
-  </div>
+<!-- 4 · blocker -->
+<section class="slide" id="s4">
+  <div class="eyebrow">Biggest blocker</div>
+  <h2 class="big">Making Agnes project-agnostic.</h2>
+  <p class="sub" style="max-width:46ch">Zillow was modelled specifically. The next challenge is <b>a reusable structure that maps any strategic bet</b> into assumptions, evidence, exposure, alternatives and triggers — without hard-coding each case.</p>
 </section>
 
 <nav class="nav">
@@ -270,7 +195,7 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 </nav>
 
 <script>
-const N=9; let i=1;
+const N=4; let i=1;
 const dots=document.getElementById("dots");
 for(let k=1;k<=N;k++){const d=document.createElement("div");d.className="dot";d.onclick=()=>go(k);dots.appendChild(d)}
 function go(n){
@@ -279,7 +204,7 @@ function go(n){
   [...dots.children].forEach((d,k)=>d.classList.toggle("on",k+1===i));
   document.getElementById("prev").disabled=i===1;
   document.getElementById("next").textContent=i===N?"Done":"Next";
-  if(i===7)draw();
+  if(i===3)draw();
 }
 document.getElementById("next").onclick=()=>go(i+1);
 document.getElementById("prev").onclick=()=>go(i-1);
