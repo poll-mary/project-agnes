@@ -67,5 +67,5 @@ WITH cutoff, count(e) AS n
 ORDER BY cutoff
 WITH collect(n) AS c
 RETURN 'T7  evidence only ever accumulates, never vanishes' AS test,
-       'visible over time: '+toString(c) AS detail,
+       'visible over time: '+toString(c[0])+' -> '+toString(c[1])+' -> '+toString(c[2])+' -> '+toString(c[3]) AS detail,
        CASE WHEN c[0]<=c[1] AND c[1]<=c[2] AND c[2]<=c[3] THEN 'PASS' ELSE 'FAIL' END AS result;
