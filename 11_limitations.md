@@ -112,3 +112,24 @@ effort, not the strategy's actual risk.
 Never say capital-light was better. Say: *lower modelled exposure under the assumptions
 currently represented.* If pressed, concede this directly — it is the honest answer and
 conceding it costs nothing.
+
+## 7. The scenario score is risk-only, so it can only ever prefer inaction
+
+Found at 16:55 by the inverse simulation — a test built to find decision-critical
+assumptions, which instead found this.
+
+Flip **any** assumption to total failure and capital-light still wins. There is no upside
+term in the score, so the strategy with the fewest dependencies wins unconditionally,
+regardless of evidence.
+
+**What this invalidates:** SHADOW-MONITOR as currently built. Capital-light "winning" is
+structural, not evidence-driven. And "capital-light stayed flat at 2 because the evidence
+did not touch it" is mostly explained by it having three dependencies instead of six.
+
+**Why it is not fixed:** an upside term requires inventing a figure for how much more
+transaction economics the aggressive strategy captures. That is the arbitrary-parameter
+trap this project fell into twice already. Better to report the flaw than to paper it with
+a number nobody can defend.
+
+**What it does not affect:** VALIDATE, CONTROL, the context signal, and the forward
+simulation. None of those use the scenario score.
