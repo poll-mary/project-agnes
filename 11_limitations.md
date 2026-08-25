@@ -113,7 +113,7 @@ Never say capital-light was better. Say: *lower modelled exposure under the assu
 currently represented.* If pressed, concede this directly — it is the honest answer and
 conceding it costs nothing.
 
-## 7. The scenario score is risk-only, so it can only ever prefer inaction
+## 7. ~~The scenario score is risk-only~~ — FIXED 25 Aug, see below
 
 Found at 16:55 by the inverse simulation — a test built to find decision-critical
 assumptions, which instead found this.
@@ -133,3 +133,33 @@ a number nobody can defend.
 
 **What it does not affect:** VALIDATE, CONTROL, the context signal, and the forward
 simulation. None of those use the scenario score.
+
+
+## FIXED · the risk-only scoring flaw (limitation 7)
+
+**The flaw:** the score summed risk in absolute terms, so the strategy with the fewest
+dependencies won unconditionally. Flipping any assumption to total failure never changed
+the answer. Found by our own inverse-simulation test.
+
+**The fix, without inventing numbers:** score a **ratio** instead of a sum —
+*what fraction of what this strategy needs is currently unproven?* Normalising by each
+strategy's own total dependency weight removes the dependency-count artefact.
+
+| Strategy | 10 Feb | 5 Aug |
+|---|---|---|
+| Aggressive — own the houses | 71% unproven | **82%** |
+| Hybrid — share the risk | 67% | 78% |
+| Capital-light — own nothing | 20% | 40% |
+
+**What this unlocked:** the inverse simulation now returns a real answer. Flip any of
+forecasting, throughput, unit economics or liquidity and all three strategies move
+together — the choice does not change. Flip **consumer demand** and the ranking inverts:
+hybrid becomes worse than aggressive.
+
+So of six things that had to be true, **exactly one decides which strategy to pick.**
+That is where diligence money should go, and it is the output SIMULATE was always
+supposed to produce.
+
+Implemented in `36_simulate_fixed.cypher`. SHADOW-MONITOR works again as a result:
+capital-light's advantage is now an evidence-driven ratio, not an artefact of having
+fewer dependencies.
