@@ -49,26 +49,29 @@ reasoning under "anything missing" below.)*
 
 ## What is your graph problem, and how / why did you implement these technologies?
 
-One fact means different things to different parts of a decision, and its meaning depends
-on when you ask.
+**The same piece of news is good for one part of your decision and bad for another.**
 
-"US house prices hit an all-time record", published 27 July 2021, **supports** the belief
-that homes will resell easily and at the same time **undermines** the belief that a pricing
-model trained on history still works. A document summary has to pick one reading. A graph
-holds both — two edges of opposite polarity from the same node — and can report the
-contradiction itself as a finding. Six of our eighteen evidence items do this.
+In July 2021 house prices hit an all-time record. For Zillow that was good news — the
+houses they already owned were worth more. It was also bad news — their software guessed
+what a house would sell for, and it had never seen prices this high, so nobody could know
+if it still worked.
 
-Time is the other half. Every evidence node carries `public_from`; market readings also
-carry `public_until`, because a monthly index reading is superseded by the next one while a
-quarterly filing is permanent. Eligibility is a single predicate —
-`public_from <= cutoff AND (public_until IS NULL OR public_until > cutoff)` — and that is
-what makes rewinding to a past moment honest rather than decorative.
+A report has to pick one. It says "prices are up, good." A graph can say both, because one
+fact can point at two things at once and disagree with itself. Six of our eighteen facts do
+exactly that, and Agnes flags it rather than hiding it.
 
-**Why AuraDB.** The ontology is six domain-neutral labels — StrategicBet, Scenario,
-Assumption, Evidence, Exposure, Tripwire — and nothing in it mentions real estate, so each
-decision carries its own structure without a schema change. Traversal does what joins
-otherwise would: evidence → assumption → exposure → strategy, where the same failure is
-priced differently depending on how the bet was built. We used Aura and Cypher only.
+**The second problem is time.** Every fact has a date it became public. If you ask Agnes
+what was known in February, it refuses to show you anything from March. That is what makes
+it a real rewind instead of hindsight dressed up.
+
+**Why a graph and not a spreadsheet.** Every decision has a different shape — different
+things that must be true, different evidence, different consequences. A spreadsheet has
+fixed columns, so a new decision means a new spreadsheet. A graph does not care what shape
+the decision is. And the useful questions are chains, not lookups: this fact affects this
+belief, which affects this risk, which hurts one strategy three times more than another.
+Following chains is what a graph is for.
+
+We used Neo4j Aura and Cypher only.
 
 ## What was the biggest technical challenge?
 
