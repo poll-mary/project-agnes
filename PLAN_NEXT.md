@@ -63,8 +63,7 @@ description rather than an identifier.
 
 ## Phase 3 · Prove portability with a second case *(one to two days)*
 
-**Which case is Mary's call. It is not decided.** *(An earlier draft of this plan assumed
-CADI. That came from a pasted third-party suggestion, not from Mary, and has been removed.)*
+**Which case is Mary's call. It is not decided, and this plan does not assume one.**
 
 Whatever the case, the test is the same: **load a second decision without changing the
 schema, the scoring engine, the monitoring logic or the output format.** Only these may
@@ -95,8 +94,8 @@ costs. Deriving assumptions from there:
 - destroys the hindsight objection, because the company pre-registered its own risks
 - gives every assumption a source instead of an author
 
-For CADI the equivalent is the founder's own written risk list, dated before evidence
-arrives.
+**Open problem:** this works where a company publishes a risk register. Where none exists,
+the input-cost problem is unsolved and simply relabelled. No answer yet.
 
 ### 4.2 Weight by rule, not by judgement
 ~30 hand-picked weights today. Replace with **weight = source authority × specificity**.
@@ -133,12 +132,12 @@ within-case controls (demand stays positive; the world rehabilitated unit econom
 ## Sequencing
 
 ```
-1 (defect)  →  2 (portable)  →  3 (CADI: the real test)
+1 (defect)  →  2 (portable)  →  3 (second case: the real test)
                                     ↓
                               4 (input cost)  →  6 (validation)
                                     ↓
                               5 (quality, anytime)
 ```
 
-Phase 3 is the decision point. If CADI loads cleanly, Agnes is a product with two
-instances. If it does not, Agnes is Zillow analysis and we learn that cheaply.
+Phase 3 is the decision point. If a second decision loads cleanly, Agnes is a product with
+two instances. If it does not, Agnes is Zillow analysis and we learn that cheaply.
