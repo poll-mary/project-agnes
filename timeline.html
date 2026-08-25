@@ -44,16 +44,22 @@ h1{font-size:21px;font-weight:700;margin:0}
 .stamp.bot .tag{color:var(--zi)}
 .stamp.alarm{border-color:var(--red);background:var(--redbg)}
 .stamp.alarm .h{color:var(--red)}
+.stamp.alert{border-color:var(--amb);background:var(--ambbg)}
+.stamp.alert .h{color:var(--amb)}
+.stamp .lvl{font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+ padding:3px 9px;border-radius:20px;margin-right:10px;white-space:nowrap}
+.stamp.alert .lvl{background:var(--amb);color:var(--bg)}
+.stamp.alarm .lvl{background:var(--red);color:var(--bg)}
 .axis{position:absolute;left:0;right:0;top:200px;height:2px;background:var(--line);z-index:2}
 .mon{position:absolute;top:207px;transform:translateX(-50%);font-size:11px;
  color:var(--faint);z-index:2}
 /* playhead: faint line behind the labels, plus a white handle on the axis */
-.gline{position:absolute;height:16px;border-radius:3px;z-index:5;
- border:1.5px solid var(--red);background:var(--redbg);transition:width .15s ease,left .15s ease}
-.gline.open{border-style:dashed;background:none}
-.gline .cap{position:absolute;top:0;right:7px;line-height:16px;white-space:nowrap;
- font-weight:700;font-size:11.5px;color:var(--red)}
-.gline.hide{display:none}
+.span{position:absolute;top:222px;height:34px;z-index:5;border-radius:4px;
+ background:var(--redbg);border:1px solid var(--red);border-right-width:3px;
+ display:flex;align-items:center;justify-content:flex-end;padding-right:12px;
+ transition:width .12s ease,left .12s ease}
+.span .cap{font-weight:700;font-size:13px;color:var(--red);white-space:nowrap}
+.span.hide{display:none}
 .head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.18;z-index:1;pointer-events:none}
 .knob{position:absolute;top:184px;left:0;width:22px;height:22px;margin-left:-11px;border-radius:50%;
  background:#fff;border:3px solid var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.35);
@@ -73,6 +79,11 @@ h1{font-size:21px;font-weight:700;margin:0}
 .mk.z .box{border-color:var(--zi);color:var(--zi)}
 .mk.future{opacity:.15}
 .mk.future .box{visibility:hidden}
+.mk .warn{position:absolute;left:-13px;width:26px;height:23px;display:none;z-index:8}
+.mk.alerting .warn,.mk.stopping .warn{display:block}
+.mk.alerting .box{border-color:var(--amb);background:var(--ambbg);color:var(--amb);font-weight:600}
+.mk.stopping .warn svg polygon{fill:var(--red)}
+.mk.stopping .box{border-color:var(--red);background:var(--redbg);color:var(--red);font-weight:700}
 
 /* ===== gap block ===== */
 .gaps{margin-top:28px}
@@ -117,7 +128,7 @@ h2{font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase
     <span class="now" id="now"></span></div>
   <p class="hint">Drag the timeline. Agnes above the line, Zillow below.</p>
 
-  <div class="stamp top" id="stamp"><div class="tag">Agnes</div><div><div class="h" id="vh2"></div><div class="s" id="vs2"></div></div></div>
+  <div class="stamp top" id="stamp"><div class="tag">Agnes</div><div><div class="h"><span class="lvl" id="lvl2"></span><span id="vh2"></span></div><div class="s" id="vs2"></div></div></div>
   <div class="tl" id="tl" tabindex="0" role="slider" aria-label="Time" aria-valuemin="0" aria-valuemax="364">
     <div class="band a"></div><div class="band z"></div>
     <div class="head" id="head"></div><div class="knob" id="knob"></div>
@@ -182,11 +193,16 @@ function box(m,k){
   const edge = pc(m.d)>88 ? "right:-6px" : "left:-8px";
   return "<div class='mk "+k+"' data-d='"+m.d+"' style='left:"+pc(m.d)+"%'>"+
    "<div class='stem' style='"+stem+"'></div><div class='pin'></div>"+
+   (k==="a"?"<div class='warn' style='top:"+(y-27)+"px'>"+
+     "<svg viewBox='0 0 26 23' width='26' height='23' aria-hidden='true'>"+
+     "<polygon points='13,1 25,22 1,22' fill='var(--amb)' stroke='var(--bg)' stroke-width='1.5' stroke-linejoin='round'/>"+
+     "<rect x='11.7' y='7' width='2.6' height='8' rx='1.3' fill='var(--bg)'/>"+
+     "<circle cx='13' cy='18' r='1.5' fill='var(--bg)'/></svg></div>":"")+
    "<div class='box' style='top:"+y+"px;"+edge+"'><span class='dt'>"+nice(m.d)+"</span>"+m.t+"</div></div>";
 }
 document.getElementById("marks").innerHTML=AG.map(m=>box(m,"a")).join("")+ZI.map(m=>box(m,"z")).join("");
 
-document.getElementById("glines").innerHTML=G.map((g,i)=>"<div class='gline hide' data-i='"+i+"' style='top:"+(242+i*24)+"px'><span class='cap'></span></div>").join("");
+document.getElementById("glines").innerHTML="<div class='span hide' id='span'><span class='cap'></span></div>";
 const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
 
 function draw(){
@@ -196,19 +212,24 @@ function draw(){
   document.getElementById("head").style.left=px;
   document.getElementById("knob").style.left=px;
   document.getElementById("tl").setAttribute("aria-valuetext",nice(d));
-  document.querySelectorAll(".mk").forEach(el=>el.classList.toggle("future",el.dataset.d>d));
-
-  document.querySelectorAll(".gline").forEach(el=>{
-    const g=G[+el.dataset.i], cap=el.querySelector(".cap");
-    if(d<g.a){el.classList.add("hide");return}
-    el.classList.remove("hide");
-    const end=d<g.z?d:g.z, done=d>=g.z;
-    const days=Math.round((new Date(end)-new Date(g.a))/864e5);
-    el.classList.toggle("open",!done);
-    el.style.left=pc(g.a)+"%";
-    el.style.width=(pc(end)-pc(g.a))+"%";
-    cap.textContent=done?(days+" days until Zillow acted"):(days+" days, Zillow silent");
+  document.querySelectorAll(".mk").forEach(el=>{
+    el.classList.toggle("future",el.dataset.d>d);
+    const isA=el.classList.contains("a"), live=el.dataset.d<=d;
+    el.classList.toggle("alerting",isA&&live&&el.dataset.d==="2021-05-11");
+    el.classList.toggle("stopping",isA&&live&&el.dataset.d==="2021-08-05");
   });
+
+  const openNow=G.filter(g=>d>=g.a&&d<g.z).sort((x,y)=>x.a.localeCompare(y.a));
+  const sp=document.getElementById("span");
+  if(!openNow.length){ sp.classList.add("hide"); }
+  else{
+    const g=openNow[0], days=Math.round((new Date(d)-new Date(g.a))/864e5);
+    sp.classList.remove("hide");
+    sp.style.left=pc(g.a)+"%";
+    sp.style.width=Math.max(0,(cur - dn(g.a))/SPAN*100)+"%";
+    sp.querySelector(".cap").textContent=
+      days+" days since Agnes warned, and Zillow has not acted";
+  }
 
   let bad=0,worldOnlyF=false,html="";
   A.forEach(a=>{let n=0,v=0,co=0;
@@ -224,14 +245,22 @@ function draw(){
   document.getElementById("beliefs").innerHTML=html;
 
   const fired=d>="2021-08-05";
-  document.getElementById("verd").className="verd"+(fired?" alarm":"");
-  document.getElementById("vh").textContent=fired?"Stop and reassess":"Keep going — with conditions";
-  document.getElementById("vs").textContent=fired
-    ?"The $1bn inventory limit frozen in February has been crossed. "+bad+" of 6 in trouble."
-    :bad+" of 6 in trouble. No pre-set limit crossed yet.";
-  document.getElementById("stamp").className="stamp"+(fired?" alarm":"");
-  document.getElementById("vh2").textContent=document.getElementById("vh").textContent;
-  document.getElementById("vs2").textContent=document.getElementById("vs").textContent;
+  const priceBad=d>="2021-05-11";          // price prediction crosses into trouble
+  let lvl,head,sub;
+  if(fired){lvl="Stop";head="Stop buying and reassess";
+    sub="The $1bn inventory limit frozen in February has been crossed, and Zillow still cannot show its price predictions work.";}
+  else if(priceBad){lvl="Alert";head="Verify price predictions before buying more";
+    sub="A competitor has just stated publicly that its profits depend on prices continuing to rise. Zillow has published nothing showing its own predictions are accurate.";}
+  else {lvl="";head="Keep going — with conditions";
+    sub=bad+" of 6 things that must be true are in trouble. No pre-set limit crossed yet.";}
+  document.getElementById("verd").className="verd";
+  document.getElementById("vh").textContent=head;
+  document.getElementById("vs").textContent=sub;
+  document.getElementById("stamp").className="stamp top"+(fired?" alarm":(priceBad?" alert":""));
+  document.getElementById("lvl2").textContent=lvl;
+  document.getElementById("lvl2").style.display=lvl?"":"none";
+  document.getElementById("vh2").textContent=head;
+  document.getElementById("vs2").textContent=sub;
   const past=ZI.filter(m=>m.d<=d);
   const openGaps=G.filter(g=>d>=g.a&&d<g.z).length;
   const zs=document.getElementById("zstamp");
