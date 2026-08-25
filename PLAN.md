@@ -72,7 +72,8 @@ Local git only, private, `.env` gitignored and verified before commit #1. No Git
 
 ## Verified numbers
 
-Simulation of the kit's own formula, after `01b` + `01c`. **Not yet run in Aura.**
+**CONFIRMED IN AURA, 25 Aug 13:20.** Seed 22/40, +additions 25/47, +revision 29/50.
+All seven acceptance tests PASS. All five capabilities demonstrated live.
 
 | Scenario | 10 Feb | 5 Aug |
 |---|---|---|
