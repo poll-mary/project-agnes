@@ -161,6 +161,16 @@ feel rigorous while doing it.
 
 ---
 
+## Why the corrections strengthen the concept
+
+The evidence corrections changed what Agnes *concludes from particular evidence*. They did
+not change the product.
+
+Agnes saying **"this is concerning, but the decisive metric is missing"** demonstrates the
+concept better than a confident Zillow-failure prediction would. A tool that always
+produces a verdict is not assessing — it is performing. Naming the missing evidence is the
+capability, not a shortfall of it.
+
 ## The three claims, kept separate
 
 1. **The machinery works** — Zillow can demonstrate this. Acceptance tests, not narrative.
