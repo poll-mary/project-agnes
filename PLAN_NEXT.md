@@ -63,19 +63,24 @@ description rather than an identifier.
 
 ## Phase 3 · Prove portability with a second case *(one to two days)*
 
-**Load CADI without changing the schema, the scoring engine, the monitoring logic or the
-output format.** Only these may change: objective, options, assumptions, evidence sources,
-exposures, thresholds, actions.
+**Which case is Mary's call. It is not decided.** *(An earlier draft of this plan assumed
+CADI. That came from a pasted third-party suggestion, not from Mary, and has been removed.)*
+
+Whatever the case, the test is the same: **load a second decision without changing the
+schema, the scoring engine, the monitoring logic or the output format.** Only these may
+change: objective, options, assumptions, evidence sources, exposures, thresholds, actions.
 
 **If new node types are needed, or calculations rewritten, or bespoke queries written —
 the prototype is Zillow-shaped and Phase 2 failed.**
 
-CADI is the right second case precisely because it is *unlike* Zillow: live rather than
-historical, private evidence rather than public filings, no known outcome. Zillow tests
-historical replay; CADI tests live usefulness. Together they test whether this is a
-reusable product or a clever Zillow analysis.
+What this test does and does not show:
+- **Does show:** whether the machinery accepts a different domain. Portability.
+- **Does NOT show:** whether the output is useful. That needs a user acting on it, which
+  is a separate test with a separate design.
 
----
+A second case with **no known outcome** is more informative for portability than another
+historical replay, because it cannot be unconsciously fitted. But it also cannot validate
+the assessment — only that the structure holds.
 
 ## Phase 4 · Attack the input bottleneck *(the real viability risk)*
 
