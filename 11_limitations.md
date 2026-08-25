@@ -89,8 +89,26 @@ This is the clearest demonstration in the whole build that the graph can disting
 
 Not *"the Q2 evidence proved the bet was breaking."* The supported claim is:
 
-> Between February and August, the assumptions that mattered most stayed unevidenced,
-> and exposure to them roughly tripled.
+> The public evidence available to our model did not establish key assumptions, while
+> disclosed capital exposure increased.
 
-`A_FORECAST` has zero evidence at **both** checkpoints. The governance failure is scaling
-into something never verified — and that claim needs none of the contested Q2 readings.
+`A_FORECAST` has zero eligible evidence at **both** checkpoints. Note carefully what this
+does and does not say: **absence of public evidence is not absence of internal
+verification.** Zillow may well have measured forecast accuracy internally. Our graph sees
+only what was disclosed, and says so. The claim needs none of the contested Q2 readings.
+
+
+## 6. Asymmetric modelling depth — the mirror of the pessimism problem
+
+The aggressive scenario is modelled in detail: six assumptions, ten evidence edges, real
+disclosed figures. Capital-light is modelled shallowly: three assumptions, almost no
+evidence bearing on them.
+
+**A scenario modelled less thoroughly will always look safer.** Capital-light has genuine
+risks we simply did not represent — partner dependency, thinner margins, weaker defensibility,
+commoditisation of the referral layer. Its low model score partly reflects our modelling
+effort, not the strategy's actual risk.
+
+Never say capital-light was better. Say: *lower modelled exposure under the assumptions
+currently represented.* If pressed, concede this directly — it is the honest answer and
+conceding it costs nothing.

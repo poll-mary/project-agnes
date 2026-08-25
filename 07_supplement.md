@@ -44,11 +44,16 @@ underneath it — those are the finding; the aggregate is just a summary of them
 
 **Capital-light does not move. At all.** That is the strongest single line in the demo:
 
-> The capital-light alternative doesn't get better. Its number is identical. None of the
-> new evidence touches the two assumptions it depends on, because it doesn't hold
-> inventory. The graph cannot know how an unchosen strategy *would* have performed — it
-> updates how that alternative would *currently be expected* to perform. Those are
-> different claims and only the second one is honest.
+> Capital-light carried **lower modelled exposure under the assumptions currently
+> represented**. Its number is identical at both dates, because none of the new evidence
+> touches the assumptions it depends on.
+>
+> Two things that is NOT saying. It is not saying capital-light would have succeeded —
+> the graph cannot know how an unchosen strategy would have performed, only how it would
+> currently be expected to perform. And it is not saying capital-light is objectively
+> safer: we modelled it in less depth, with fewer assumptions and no evidence bearing on
+> them. **A scenario modelled less thoroughly will look safer.** That is a property of our
+> model, not of the strategy.
 
 ### Tripwire (Query 6)
 

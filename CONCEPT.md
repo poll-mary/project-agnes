@@ -81,7 +81,7 @@ than the chosen path.*
 | | |
 |---|---|
 | **Today** | Capital-light scores 2 at both checkpoints while aggressive moves 21 → 33. |
-| **Mary's caveat, said out loud** | Agnes **cannot know how an unchosen strategy would have performed.** It updates how that alternative would *currently be expected* to perform. Capital-light does not improve — it simply is not exposed to the evidence that moved. |
+| **Mary's caveat, said out loud** | Agnes **cannot know how an unchosen strategy would have performed.** It updates how that alternative would *currently be expected* to perform. Capital-light does not improve — it is simply not exposed to the evidence that moved. Say it as **lower modelled exposure under the assumptions currently represented**, never as objectively safer: we modelled it in less depth, and a scenario modelled less thoroughly will look safer. |
 | **Full product** | Rejected alternatives preserved along with the reasons they were rejected. |
 
 ---
@@ -182,6 +182,11 @@ Conflating them is the fastest way to lose credibility. Today is claim 1 only.
 ---
 
 ## Roadmap
+
+**Order matters: interaction before ingestion.** The natural-language question against a
+date-bounded graph is the product's actual shape. Automated ingestion feeds it, but
+building the pipeline before the interaction exists means building toward nothing.
+
 
 - Point-in-time market-data vintages (as-printed, not as-revised)
 - Deliberate supporting **and disconfirming** retrieval

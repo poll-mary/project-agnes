@@ -91,11 +91,13 @@ changes underneath — those are the finding.
 Not *"the Q2 evidence proved the bet was breaking."* `A_FORECAST` has **zero evidence at
 both checkpoints**:
 
-> Between February and August, the assumptions that mattered most stayed unevidenced,
-> and exposure to them grew substantially.
+> The public evidence available to our model did not establish key assumptions, while
+> disclosed capital exposure increased.
 
-A governance failure — scaling into something never verified — needing none of the
-contested Q2 readings.
+`A_FORECAST` has zero eligible evidence at **both** checkpoints. Note carefully what this
+does and does not say: **absence of public evidence is not absence of internal
+verification.** Zillow may well have measured forecast accuracy internally. Our graph sees
+only what was disclosed, and says so. The claim needs none of the contested Q2 readings.
 
 ## Order of work
 
@@ -113,11 +115,14 @@ contested Q2 readings.
 
 ## The 15:00 stretch — one, not both
 
-**Document Intelligence** *(preferred)* — documents → entities → knowledge graph. Turns the
-top row of the prototype/product table from promise into demo.
+**Neo4j MCP** *(chosen)* — ask Agnes a natural-language strategic question, get a
+graph-grounded, date-bounded answer. This completes today's **core interaction**: it is the
+product's actual shape, not a side pipeline. It also makes the Agentic GraphRAG mapping
+live rather than asserted — the SME Cypher templates become tools the agent calls.
 
-**Neo4j MCP** — agent queries the graph in natural language, calling the SME Cypher
-templates as tools. Makes the Agentic GraphRAG mapping live rather than asserted.
+**Document Intelligence** — deferred to immediately after the hackathon. Automated
+ingestion is genuinely the next thing, but it feeds a pipeline that isn't yet connected to
+an interaction. Interaction first, ingestion second.
 
 **Market-data nodes — not today.** And when added, as an external **comparator**, never as
 Zillow's operational denominator. Favourable housing conditions can make a macro
