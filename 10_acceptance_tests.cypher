@@ -87,7 +87,8 @@ RETURN 'T6 tripwire computed' AS test, prebaked_edges,
 // Evidence count must never DECREASE as the cutoff advances. A later date can
 // only reveal more, never less.
 UNWIND [date('2019-01-01'), date('2021-02-10'), date('2021-02-12'), date('2021-08-05')] AS cutoff
-MATCH (e:Evidence) WHERE e.project = 'zillow_strategy_time_machine' AND e.public_from <= cutoff
+OPTIONAL MATCH (e:Evidence)
+  WHERE e.project = 'zillow_strategy_time_machine' AND e.public_from <= cutoff
 WITH cutoff, count(e) AS n
 ORDER BY cutoff
 WITH collect(n) AS counts
