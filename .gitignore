@@ -25,3 +25,6 @@ node_modules/
 
 # Working output
 screenshots/
+
+# Local Aura connection — never commit
+agnes-live-config.js
