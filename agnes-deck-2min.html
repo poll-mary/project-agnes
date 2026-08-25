@@ -254,13 +254,38 @@ document.getElementById("months").innerHTML=
   new Date(m).toLocaleDateString("en-GB",{month:"short"})+"</div>").join("");
 
 function ev(m,k){
-  const up=k==="a", off=m.lane?1:0;
-  const y=up?`bottom:calc(50% + ${28+off*74}px)`:`top:calc(50% + ${28+off*74}px)`;
   const edge=pc(m.d)>80?"right:-6px":"left:-8px";
   return `<div class='ev ${k}${m.hot?" hot":""}' data-d='${m.d}' style='left:${pc(m.d)}%;top:50%'>`+
-   `<div class='dt'></div><div class='lb' style='${y};${edge}'><i>${nice(m.d)}</i>${m.t}</div></div>`;
+   `<div class='dt'></div><div class='lb' style='${edge}'><i>${nice(m.d)}</i>${m.t}</div></div>`;
 }
 document.getElementById("marks").innerHTML=AG.map(m=>ev(m,"a")).join("")+ZI.map(m=>ev(m,"z")).join("");
+
+/* Lanes are packed, not hand-assigned: measure each label's horizontal
+   span, then drop it to the first lane where nothing already sits. */
+const LANE0=28, GAP=12, VGAP=10;
+function layoutLanes(){
+  ["a","z"].forEach(k=>{
+    const up = k==="a";
+    const items=[...document.querySelectorAll(".ev."+k)]
+      .map(e=>{const lb=e.querySelector(".lb"), b=lb.getBoundingClientRect();
+               return {lb, l:b.left, r:b.right, h:b.height};})
+      .sort((x,y)=>x.l-y.l);
+    // lane step follows the tallest label in this track, so a
+    // three-line label can never bleed into the lane below it
+    const step=Math.max(...items.map(it=>it.h))+VGAP;
+    const lanes=[];               // lanes[i] = rightmost edge used in lane i
+    items.forEach(it=>{
+      let n=0;
+      while(lanes[n]!==undefined && it.l < lanes[n]+GAP) n++;
+      lanes[n]=it.r;
+      const off=LANE0+n*step;
+      it.lb.style.top=""; it.lb.style.bottom="";
+      it.lb.style[up?"bottom":"top"]=`calc(50% + ${off}px)`;
+    });
+  });
+}
+layoutLanes();
+addEventListener("resize",layoutLanes);
 
 function draw(){
   const d=addD(cur);
