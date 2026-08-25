@@ -34,8 +34,12 @@ h1{font-size:21px;font-weight:700;margin:0}
 .axis{position:absolute;left:0;right:0;top:200px;height:2px;background:var(--line);z-index:2}
 .mon{position:absolute;top:207px;transform:translateX(-50%);font:11px ui-monospace,Menlo,monospace;
  color:var(--faint);z-index:2}
-/* playhead sits BEHIND every label */
-.head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.28;z-index:1;pointer-events:none}
+/* playhead: faint line behind the labels, plus a white handle on the axis */
+.head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.18;z-index:1;pointer-events:none}
+.knob{position:absolute;top:184px;left:0;width:22px;height:22px;margin-left:-11px;border-radius:50%;
+ background:#fff;border:3px solid var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.35);
+ z-index:6;pointer-events:none;transition:transform .1s ease}
+.tl:active .knob{transform:scale(1.12)}
 
 .mk{position:absolute;top:0;height:500px;width:0;z-index:3;pointer-events:none}
 .mk .pin{position:absolute;left:-5px;width:10px;height:10px;border-radius:50%}
@@ -68,6 +72,7 @@ h2{font:700 11.5px ui-sans-serif;letter-spacing:.1em;text-transform:uppercase;co
  border:1.5px solid var(--red);transition:width .2s ease}
 .gap .num{position:absolute;top:5px;font:700 14px ui-monospace,Menlo,monospace;color:var(--red);
  white-space:nowrap;transition:left .2s ease}
+.gap.pending .fill{border-style:dashed;background:none}
 .gap.idle{opacity:.25}
 .gap.idle .num{color:var(--faint)}
 
@@ -99,11 +104,11 @@ h2{font:700 11.5px ui-sans-serif;letter-spacing:.1em;text-transform:uppercase;co
   <div class="tl" id="tl" tabindex="0" role="slider" aria-label="Time" aria-valuemin="0" aria-valuemax="364">
     <div class="band a"></div><div class="band z"></div>
     <div class="who a">Agnes</div><div class="who z">Zillow</div>
-    <div class="head" id="head"></div>
+    <div class="head" id="head"></div><div class="knob" id="knob"></div>
     <div class="axis"></div><div id="months"></div><div id="marks"></div>
   </div>
 
-  <div class="gaps"><h2>How long Zillow took to react</h2><div id="gapblock"></div></div>
+  <div class="gaps"><h2>After Agnes flagged it, how long until Zillow reacted</h2><div id="gapblock"></div></div>
 
   <div class="low">
     <div><h2>What has to be true</h2><div id="beliefs"></div></div>
@@ -176,19 +181,21 @@ const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
 function draw(){
   const d=addD(cur);
   document.getElementById("now").textContent=nice(d);
-  document.getElementById("head").style.left=(cur/SPAN*100)+"%";
+  const px=(cur/SPAN*100)+"%";
+  document.getElementById("head").style.left=px;
+  document.getElementById("knob").style.left=px;
   document.getElementById("tl").setAttribute("aria-valuetext",nice(d));
   document.querySelectorAll(".mk").forEach(el=>el.classList.toggle("future",el.dataset.d>d));
 
   document.querySelectorAll(".gap").forEach(el=>{
     const g=G[+el.dataset.i], f=el.querySelector(".fill"), n=el.querySelector(".num");
-    if(d<g.a){el.className="gap idle";f.style.width="0";n.textContent="not yet flagged";n.style.left="0";return}
+    if(d<g.a){el.className="gap idle";f.style.width="0";n.textContent="Agnes has not flagged this yet";n.style.left="0";return}
     const end=d<g.z?d:g.z, done=d>=g.z;
     const days=Math.round((new Date(end)-new Date(g.a))/864e5);
-    el.className="gap";
+    el.className="gap"+(done?"":" pending");
     const w=days/MAXG*100;
     f.style.width=w+"%";
-    n.textContent=days+" days"+(done?"":" and counting");
+    n.textContent=done?(days+" days"):(days+" days so far");
     if(w>72){n.style.left="auto";n.style.right="calc("+(100-w)+"% + 10px)";
       n.style.color="var(--red)";n.style.background="transparent"}
     else{n.style.right="auto";n.style.left="calc("+w+"% + 10px)"}
