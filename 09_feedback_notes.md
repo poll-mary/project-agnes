@@ -26,11 +26,15 @@ _(fill in as we go)_
 
 ## Product-fit observations
 
-- **Agent Memory Service overlaps with what a decision graph already does.** Our graph
-  stores decisions, their rationale and their provenance as first-class nodes. Adding a
-  separate memory service raises "which is the source of truth?" For this class of
-  application the graph *is* the memory, and we'd want guidance on when the two are
-  meant to compose rather than compete.
+- **Agent Memory Service and a decision graph compose — but the split needs documenting.**
+  Our first instinct was that they compete, because our graph already stores decisions and
+  rationale. On reflection the clean division is by *audit requirement*: the graph holds
+  the decision of record (bet, assumptions, evidence, who froze which threshold when),
+  agent memory holds interaction state (this analyst always asks about liquidity first;
+  we debated that framing last week). Anything that must survive an audit goes in the
+  graph; anything that just makes the assistant less annoying goes in memory. We couldn't
+  find guidance on this boundary and had to reason it out — a page on "when to use Agent
+  Memory alongside a domain graph" would have saved us the detour.
 
 ## Questions we'd have asked with more time
 
