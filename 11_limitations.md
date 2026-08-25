@@ -48,20 +48,42 @@ What to say: *the honest next step is matched cases — bets that succeeded and 
 failed, scored blind. Until then this is an architecture demonstration, not evidence that
 the architecture predicts anything.*
 
-## 4. The evidence does not prove as much as it appears to
+## 4. Three claims were overclaimed. They are now corrected.
 
-Three claims are weaker than they look, and the `reason` fields should say so:
+Applied in `01c_evidence_revision.cypher`.
 
-- **Inventory +138% does not prove throughput failed.** Inventory can grow because you are
-  deliberately scaling. The metric that would settle it — days-to-sale, or inventory
-  turnover — was not disclosed at that granularity. *A decision system naming the evidence
-  it lacks is doing its job.*
-- **Holding costs $5.3m vs $2.6m is year-over-year against Q2 2020, the quarter iBuying
-  was suspended for COVID.** The base is near-zero activity. Verify before saying it on
-  stage; if it holds, this comparison proves very little.
-- **Liquidity** — note that the kit already separates liquidation *speed* (`A_LIQUIDITY`)
-  from cash *adequacy* (`A_FINANCING`), and routes the $3.9bn to the latter. That is
-  correct. But the magnitude on the speed side is still a judgement call.
+**Inventory +138% ⟶ throughput failed** — downgraded 3→2. Inventory growth is also what
+deliberate scaling looks like. Separating the two needs a ratio, not a total.
+
+**Inventory ⟶ liquidation speed** — downgraded 3→2. Direction is sound, magnitude is a
+modelling judgement.
+
+**Holding costs $5.3m vs $2.6m — edge removed entirely.** Worth understanding, because
+the tempting correction is also wrong. It is *tempting* to normalise: 2.6/491.293 ≈ 0.53%
+against 5.3/1,169.601 ≈ 0.45%, concluding efficiency improved. **That arithmetic is
+invalid.** Holding costs are three-month flows (Q2 2020, Q2 2021); the inventory figures
+are balance-sheet stocks at 31 Dec 2020 and 30 Jun 2021. Normalising Q2 2020 requires
+inventory at *30 June 2020*, which we do not hold — and which was depressed by the COVID
+buying suspension.
+
+So we cannot show costs rose per unit, and we cannot show they fell. The item is
+**uninterpretable with the evidence we have**, and it now bears on nothing. The node
+stays in the graph, dated and real, flagged `HELD_NOT_INTERPRETABLE`.
+
+No replacement edge was added. The "absolute exposure grew with scale" content is already
+carried by the inventory edge to `A_FINANCING`; asserting it twice would double-count one
+fact. *(Side note worth knowing: adding that edge would also have moved capital-light from
+2 to 3 and failed acceptance test T5. It was dropped for the double-counting reason, and
+T5 passes because `A_FINANCING` genuinely nets to zero at Q2 — cash +2, inventory −2 — not
+because anything was arranged.)*
+
+**What replaced it:** four `MissingEvidence` nodes naming what would settle each open
+question — inventory turnover, the 30 June 2020 balance, normalised holding costs, and
+realised forecast error. A decision system that lists the evidence it lacks is working,
+not failing.
+
+This is the clearest demonstration in the whole build that the graph can distinguish
+**"the operation got bigger"** from **"the operation got worse."**
 
 ## 5. The honest headline
 

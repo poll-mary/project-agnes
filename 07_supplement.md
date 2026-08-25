@@ -20,20 +20,27 @@ which the formula penalises by +2 — scaling on an unknown is the actual error.
 |---|---|---|
 | A_FORECAST | count 0, balance 0 → **UNKNOWN at both dates** | count 0, balance 0 |
 | A_UNIT | count 2, balance −2 | count 2, balance −2 |
-| A_THROUGHPUT | count 1, balance −1 | count 3, balance **−3** |
-| A_LIQUIDITY | count 1, balance −2 | count 4, balance **−8** |
+| A_THROUGHPUT | count 1, balance −1 | count 3, balance **−2** |
+| A_LIQUIDITY | count 1, balance −2 | count 3, balance **−5** |
 | A_FINANCING | count 1, balance +2 | count 2, balance 0 |
 | A_DEMAND | count 1, balance +2 | count 2, balance **+4** ← *holds* |
 
 Eligible evidence: **4 items at T0, 8 at Q2.**
 
-### Scenario risk (Query 4) — lower is better
+### Scenario model score (Query 4) — lower is better
 
 | Scenario | 10 Feb | 5 Aug | Change |
 |---|---|---|---|
-| Aggressive principal | **21** | **45** | more than doubles |
-| Hybrid / partner | 11 | 19 | +73% |
+| Aggressive principal | **21** | **33** | +57% |
+| Hybrid / partner | 11 | 15 | +36% |
 | Capital-light | **2** | **2** | **unchanged** |
+
+*(after `01c_evidence_revision.cypher`. Before the revision these read 21→45 / 11→19,
+inflated by three overclaimed edges. See `11_limitations.md`.)*
+
+**Call it a model score.** Not a risk measurement, not a probability. It is an ordering
+heuristic built from a formula we chose. Always show the assumption-level changes
+underneath it — those are the finding; the aggregate is just a summary of them.
 
 **Capital-light does not move. At all.** That is the strongest single line in the demo:
 
