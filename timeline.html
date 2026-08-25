@@ -22,27 +22,45 @@ h1{font-size:21px;font-weight:700;margin:0}
 .hint{font-size:13px;color:var(--faint);margin:0 0 12px}
 
 /* ===== timeline ===== */
-.tl{position:relative;height:500px;user-select:none;touch-action:none;cursor:ew-resize;
- border-radius:10px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.tl{position:relative;height:560px;border-radius:0;user-select:none;touch-action:none;cursor:ew-resize;
+ background:var(--card);border:1px solid var(--line);overflow:hidden}
 .tl:focus-visible{outline:3px solid var(--ag);outline-offset:3px}
 .band{position:absolute;left:0;right:0;z-index:0}
 .band.a{top:0;height:200px;background:linear-gradient(180deg,transparent,var(--agbg))}
-.band.z{top:202px;bottom:0;background:linear-gradient(180deg,var(--zibg),transparent)}
+.band.z{top:300px;bottom:0;background:linear-gradient(180deg,var(--zibg),transparent)}
 .who{position:absolute;left:15px;font-weight:700;font-size:11px;letter-spacing:.14em;
  text-transform:uppercase;z-index:1}
 .who.a{top:12px;color:var(--ag)}
 .who.z{bottom:12px;color:var(--zi)}
+.stamp{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:13px 18px;
+ border:2px solid var(--line);background:var(--card)}
+.stamp .tag{font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+ width:66px;flex-shrink:0}
+.stamp .h{font-weight:700;font-size:18px}
+.stamp .s{font-size:13.5px;color:var(--soft)}
+.stamp.top{border-bottom:none;border-radius:10px 10px 0 0}
+.stamp.top .tag{color:var(--ag)}
+.stamp.bot{border-top:none;border-radius:0 0 10px 10px}
+.stamp.bot .tag{color:var(--zi)}
+.stamp.alarm{border-color:var(--red);background:var(--redbg)}
+.stamp.alarm .h{color:var(--red)}
 .axis{position:absolute;left:0;right:0;top:200px;height:2px;background:var(--line);z-index:2}
 .mon{position:absolute;top:207px;transform:translateX(-50%);font-size:11px;
  color:var(--faint);z-index:2}
 /* playhead: faint line behind the labels, plus a white handle on the axis */
+.gline{position:absolute;height:16px;border-radius:3px;z-index:5;
+ border:1.5px solid var(--red);background:var(--redbg);transition:width .15s ease,left .15s ease}
+.gline.open{border-style:dashed;background:none}
+.gline .cap{position:absolute;top:0;right:7px;line-height:16px;white-space:nowrap;
+ font-weight:700;font-size:11.5px;color:var(--red)}
+.gline.hide{display:none}
 .head{position:absolute;top:0;bottom:0;width:1px;background:var(--ink);opacity:.18;z-index:1;pointer-events:none}
 .knob{position:absolute;top:184px;left:0;width:22px;height:22px;margin-left:-11px;border-radius:50%;
  background:#fff;border:3px solid var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.35);
  z-index:6;pointer-events:none;transition:transform .1s ease}
 .tl:active .knob{transform:scale(1.12)}
 
-.mk{position:absolute;top:0;height:500px;width:0;z-index:3;pointer-events:none}
+.mk{position:absolute;top:0;height:560px;width:0;z-index:3;pointer-events:none}
 .mk .pin{position:absolute;left:-5px;width:10px;height:10px;border-radius:50%}
 .mk.a .pin{top:190px;background:var(--ag)}
 .mk.z .pin{top:190px;background:var(--zi)}
@@ -99,19 +117,19 @@ h2{font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase
     <span class="now" id="now"></span></div>
   <p class="hint">Drag the timeline. Agnes above the line, Zillow below.</p>
 
+  <div class="stamp top" id="stamp"><div class="tag">Agnes</div><div><div class="h" id="vh2"></div><div class="s" id="vs2"></div></div></div>
   <div class="tl" id="tl" tabindex="0" role="slider" aria-label="Time" aria-valuemin="0" aria-valuemax="364">
     <div class="band a"></div><div class="band z"></div>
-    <div class="who a">Agnes</div><div class="who z">Zillow</div>
     <div class="head" id="head"></div><div class="knob" id="knob"></div>
-    <div class="axis"></div><div id="months"></div><div id="marks"></div>
+    <div class="axis"></div><div id="months"></div><div id="glines"></div><div id="marks"></div>
   </div>
 
-  <div class="gaps"><h2>Every warning Agnes raised, and how long Zillow took to act on it</h2><div id="gapblock"></div></div>
+  <div class="stamp bot" id="zstamp"><div class="tag">Zillow</div><div><div class="h" id="zh"></div><div class="s" id="zs"></div></div></div>
 
   <div class="low">
     <div><h2>What has to be true</h2><div id="beliefs"></div></div>
-    <div><h2>Agnes says</h2>
-      <div class="verd" id="verd"><div class="h" id="vh"></div><div class="s" id="vs"></div></div>
+    <div><h2>Why</h2>
+      <div class="verd" id="verd" hidden><div class="h" id="vh"></div><div class="s" id="vs"></div></div>
       <div class="note" id="note"></div></div>
   </div>
 </div>
@@ -158,7 +176,7 @@ document.getElementById("months").innerHTML=["2020-12-01","2021-01-01","2021-02-
 // AGNES  lane0 box top 108 (h~66) ; lane1 box top 24
 // ZILLOW lane0 box top 226        ; lane1 box top 312
 function box(m,k){
-  const y = k==="a" ? (m.lane?24:108) : [226,312,398][m.lane];
+  const y = k==="a" ? (m.lane?24:108) : [318,396,474][m.lane];
   const stem = k==="a" ? "top:"+(y+66)+"px;height:"+(188-y-66)+"px"
                        : "top:202px;height:"+(y-202)+"px";
   const edge = pc(m.d)>88 ? "right:-6px" : "left:-8px";
@@ -168,12 +186,7 @@ function box(m,k){
 }
 document.getElementById("marks").innerHTML=AG.map(m=>box(m,"a")).join("")+ZI.map(m=>box(m,"z")).join("");
 
-document.getElementById("gapblock").innerHTML=G.map((g,i)=>
- "<div class='gap idle' data-i='"+i+"'>"+
- "<div class='ln warn' data-warn>&nbsp;</div>"+
- "<div class='barrow'><div class='bar'><div class='fill'></div></div><div class='num'></div></div>"+
- "<div class='ln act' data-act>&nbsp;</div></div>").join("");
-
+document.getElementById("glines").innerHTML=G.map((g,i)=>"<div class='gline hide' data-i='"+i+"' style='top:"+(242+i*24)+"px'><span class='cap'></span></div>").join("");
 const live=(e,d)=>e.d<=d&&(!e.x||e.x>d);
 
 function draw(){
@@ -185,26 +198,16 @@ function draw(){
   document.getElementById("tl").setAttribute("aria-valuetext",nice(d));
   document.querySelectorAll(".mk").forEach(el=>el.classList.toggle("future",el.dataset.d>d));
 
-  document.querySelectorAll(".gap").forEach(el=>{
-    const g=G[+el.dataset.i], f=el.querySelector(".fill"), n=el.querySelector(".num");
-    const warn=el.querySelector("[data-warn]"), act=el.querySelector("[data-act]");
-    if(d<g.a){
-      el.className="gap idle"; f.style.width="0"; n.textContent="";
-      warn.textContent="Agnes has not raised this warning yet.";
-      act.innerHTML="&nbsp;"; return;
-    }
+  document.querySelectorAll(".gline").forEach(el=>{
+    const g=G[+el.dataset.i], cap=el.querySelector(".cap");
+    if(d<g.a){el.classList.add("hide");return}
+    el.classList.remove("hide");
     const end=d<g.z?d:g.z, done=d>=g.z;
     const days=Math.round((new Date(end)-new Date(g.a))/864e5);
-    el.className="gap"+(done?"":" pending");
-    f.style.width=(days/MAXG*100)+"%";
-    warn.innerHTML="On <b>"+nice(g.a)+"</b> Agnes warned: <b>"+g.at.toLowerCase()+"</b>";
-    if(done){
-      n.textContent=days+" days";
-      act.innerHTML="<b>"+days+" days later</b>, on "+nice(g.z)+", Zillow "+g.zt.toLowerCase()+".";
-    }else{
-      n.textContent=days+" days";
-      act.innerHTML="Zillow has still done nothing about it \u2014 <b>"+days+" days</b> and counting.";
-    }
+    el.classList.toggle("open",!done);
+    el.style.left=pc(g.a)+"%";
+    el.style.width=(pc(end)-pc(g.a))+"%";
+    cap.textContent=done?(days+" days until Zillow acted"):(days+" days, Zillow silent");
   });
 
   let bad=0,worldOnlyF=false,html="";
@@ -226,6 +229,22 @@ function draw(){
   document.getElementById("vs").textContent=fired
     ?"The $1bn inventory limit frozen in February has been crossed. "+bad+" of 6 in trouble."
     :bad+" of 6 in trouble. No pre-set limit crossed yet.";
+  document.getElementById("stamp").className="stamp"+(fired?" alarm":"");
+  document.getElementById("vh2").textContent=document.getElementById("vh").textContent;
+  document.getElementById("vs2").textContent=document.getElementById("vs").textContent;
+  const past=ZI.filter(m=>m.d<=d);
+  const openGaps=G.filter(g=>d>=g.a&&d<g.z).length;
+  const zs=document.getElementById("zstamp");
+  let zh,zsub;
+  if(d>="2021-11-02"){zh="Shut the business down";zsub="Blaming the unpredictability of price forecasting."}
+  else if(d>="2021-10-18"){zh="Paused buying homes";zsub="Blaming capacity, 74 days after Agnes said stop."}
+  else if(past.length){zh="Still buying";zsub="Latest: "+past[past.length-1].t.replace(/[“”]/g,'\'')+" ("+nice(past[past.length-1].d)+")."}
+  else {zh="Still buying";zsub="Nothing announced yet."}
+  if(openGaps)zsub+=" "+openGaps+" Agnes warning"+(openGaps>1?"s":"")+" still unanswered.";
+  zs.className="stamp bot"+(fired&&d<"2021-10-18"?" alarm":"");
+  document.getElementById("zh").textContent=zh;
+  document.getElementById("zs").textContent=zsub;
+
   document.getElementById("note").innerHTML=worldOnlyF
     ?"<b>Zillow has never said anything</b> about whether it can predict resale prices — everything Agnes knows came from outside the company. That is the reason its CEO gave for shutting the business down."
     :"Drag forward to watch the evidence arrive.";
